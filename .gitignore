@@ -1,0 +1,12 @@
+# https://github.com/atc0005/mysql2sqlite
+
+# Local test/prototype files that should not be included in this repo
+/scratch
+
+# Ignore locally generated SQLite database file
+/mailserver.db
+
+# Ignore binaries
+*.exe
+/mysql2sqlite
+/check_mysql2sqlite
