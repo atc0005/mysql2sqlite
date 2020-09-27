@@ -1,0 +1,228 @@
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+---
+general:
+  # If enabled, this setting trims all leading and trailing whitespace from
+  # values retrieved from the MySQL database before writing to the SQLite
+  # database.
+  trim_leading_trailing_whitespace: false
+
+  # The number of times a connection should be retried before giving up and
+  # returning an error
+  connection_retries: 5
+
+  # The number of seconds a connection retry attempt should be made.
+  connection_retry_delay: 2
+
+  # The number of seconds a connection should be tried before giving up and
+  # returning an error.
+  connection_timeout: 15
+
+mysql_config:
+  # NOTE: Read-only access to the tables listed within this file is required.
+  # If specific columns are sensitive and you do not wish to mirror the field
+  # values to the SQLite database, provide a placeholder value in the defined
+  # SELECT statements in this file (e.g., 'NULL').
+  username: mysql2sqlite
+
+  # Password for the MySQL database account. Read-only access is sufficient.
+  password: qwerty
+
+  # MySQL database host. If you use a stunnel or other forwarded connection
+  # you will likely wish to set this to 127.0.0.1 and override the default
+  # port setting.
+  host: 127.0.0.1
+
+  # If this script runs on the same box as the MySQL/MariaDB server then you
+  # probably want to enter 3306 here, otherwise if using stunnel or another
+  # port forwarding setup you will likely need to enter an alternate port.
+  port: 3306
+
+  # The database whose contents you wish to mirror to a local SQLite database
+  # Note: make sure to update the queries in this file to reflect the schema
+  # for this database.
+  database: mailserver
+
+  # Driver-specific TLS connection settings.
+  # https://github.com/go-sql-driver/mysql#tls
+  # valid choices: true, false, skip-verify, preferred
+  encryption: preferred
+
+  # Because connections to the MySQL server are periodically closed by
+  # middleware, MySQL or the OS, a maximum connection lifetime should be set
+  # to ensure that it is safely closed by this application before that timeout
+  # is reached. Since some idle connections are closed after 5 minutes, the
+  # lifetime for connections should be shorter than 5 minutes. This setting
+  # helps load balancing and changing system variables too.
+  #
+  # Depending on the size of the source database, the total runtime of this
+  # application may be too short for many of these max_* settings to have much
+  # of an effect.
+  #
+  # Specified in minutes.
+  max_connection_lifetime: 3
+
+  # Maximum number of connections to the MySQL allowed for this application.
+  max_open_connections: 10
+
+  # Recommended to be set the same (or greater than) max_open_connections.
+  max_idle_connections: 10
+
+  # Sets the maximum amount of time a connection may be idle. Expired
+  # connections may be closed lazily before reuse.
+  #
+  # Specified in seconds.
+  max_idle_connection_time: 10
+
+sqlite_config:
+  # The "short" name of the SQLite database file. Do not specify the directory
+  # which will hold the file here.
+  db_filename: mailserver.db
+
+  # The directory that will hold the SQLite database file. The user running
+  # this script should have write access to this location. Make that
+  # applicable daemons (e.g., Postfix, Dovecot, etc) have read access to the
+  # file.
+  base_dir: /var/cache/mysql2sqlite
+
+  # Whether an "index" query will be required for each table query set defined
+  # within this file. If enabled, this application will use the "index" query
+  # when generating the SQLite database file.
+  create_indexes: false
+
+logging:
+  # https://github.com/apex/log
+  # supported settings for this app: debug, info, warn, error, fatal
+  level: "info"
+
+  # supported settings for this app: stdout, stderr
+  output: "stdout"
+
+  # https://github.com/apex/log
+  # supported settings for this app: discard, text, logfmt, json, cli
+  format: "text"
+
+  # Whether connection statistics are logged during application execution.
+  # This can be useful for troubleshooting, but is probably too much
+  # information for normal operation.
+  connection_stats: false
+
+  #######################################################################
+  # Assumptions:
+  #######################################################################
+  #
+  #  * The table names in the SQLite database match those in the source database.
+  #
+  #  * The column types match as closely as possible the source table. The
+  #    notable EXCEPTION is the lack of an auto-increment attribute for target
+  #    "id" columns. This is in an effort to have consistent values between
+  #    the original source MySQL table and the SQLite table. This is because
+  #    the source table might have rows that have been removed instead of
+  #    simply disabled by a flag column. If we allow auto-incrementing id
+  #    values for tables in the SQLite database there is a solid chance that
+  #    the source/destination database tables will have id values out of sync.
+  #    While it may not affect normal use of the SQLite database, it may make
+  #    troubleshooting issues more difficult.
+  #
+  #  * Postfix automatically folds all search strings to lowercase before
+  #    performing a search. While current versions of MySQL default to
+  #    case-insensitive collation, SQLite uses BINARY collation by default.
+  #    This results in case-SENSITIVE string comparison, so we must explicitly
+  #    override the default collation with NOCASE in order to properly handle
+  #    queries from Postfix. While this application is not limited to synching
+  #    data only for Postfix's use, this database requirement is a valid
+  #    real-world use case.
+  #
+  #  * This application expects that there are substitution placeholders used
+  #    in the "write" queries.
+
+queries:
+  # table_name:
+  #
+  #   read: "Query used to read all rows from the MySQL database table"
+  #   new: "Query used to create the local SQLite database table"
+  #   write: "Query used to write a row to the local SQLite database table"
+  #   index: "Query used to create a new index for the local SQLite database table"
+
+  # Virtual domains that our servers are responsible for (primarily mail).
+  virtual_domains:
+    read: "SELECT id, name, ticket_number, created, last_modified, comments FROM virtual_domains"
+    new: "CREATE TABLE IF NOT EXISTS virtual_domains ( id int, name text COLLATE NOCASE, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO virtual_domains VALUES (?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS virtual_domains_idx ON virtual_domains(name COLLATE NOCASE)"
+
+  # Virtual Mailbox users. For now, we are NOT syncing the passwords locally.
+  # This means that for any apps which need that information to validate logins
+  # the apps will need to continue querying against the MySQL database.
+  # This also means that the "read" query below will need to be manually
+  # updated to reflect the current db schema used for the source MySQL db.
+  virtual_users:
+    read: "SELECT id, domain_id, NULL AS password, email, enabled, ticket_number, created, last_modified, comments FROM virtual_users"
+    new: "CREATE TABLE IF NOT EXISTS virtual_users ( id int, domain_id int, password text, email text COLLATE NOCASE, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO virtual_users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS virtual_users_idx ON virtual_users(email COLLATE NOCASE)"
+
+  virtual_aliases:
+    read: "SELECT id, domain_id, source, destination, enabled, ticket_number, created, last_modified, comments FROM virtual_aliases"
+    new: "CREATE TABLE IF NOT EXISTS virtual_aliases ( id int, domain_id int, source text COLLATE NOCASE, destination text, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO virtual_aliases VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS virtual_aliases_idx ON virtual_aliases(source COLLATE NOCASE, enabled)"
+
+  local_aliases:
+    read: "SELECT id, source, destination, enabled, ticket_number, created, last_modified, comments FROM local_aliases"
+    new: "CREATE TABLE IF NOT EXISTS local_aliases ( id int, source text COLLATE NOCASE, destination text, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO local_aliases VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS local_aliases_idx ON local_aliases(source COLLATE NOCASE, enabled)"
+
+  transport_maps:
+    read: "SELECT id, recipient, transport, enabled, ticket_number, created, last_modified, comments FROM transport_maps"
+    new: "CREATE TABLE IF NOT EXISTS transport_maps ( id int, recipient text COLLATE NOCASE, transport text COLLATE NOCASE, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO transport_maps VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS transport_maps_idx ON transport_maps(recipient COLLATE NOCASE, enabled)"
+
+  access_check_clients:
+    read: "SELECT id, client, action, enabled, ticket_number, created, last_modified, comments FROM access_check_clients"
+    new: "CREATE TABLE IF NOT EXISTS access_check_clients ( id int, client text COLLATE NOCASE, action text COLLATE NOCASE, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO access_check_clients VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS access_check_clients_idx ON access_check_clients(client COLLATE NOCASE, enabled)"
+
+  access_check_recipients:
+    read: "SELECT id, recipient, action, enabled, ticket_number, created, last_modified, comments FROM access_check_recipients"
+    new: "CREATE TABLE IF NOT EXISTS access_check_recipients ( id int, recipient text COLLATE NOCASE, action text COLLATE NOCASE, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO access_check_recipients VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS access_check_recipients_idx ON access_check_recipients(recipient COLLATE NOCASE, enabled)"
+
+  access_check_senders:
+    read: "SELECT id, sender, action, enabled, ticket_number, created, last_modified, comments FROM access_check_senders"
+    new: "CREATE TABLE IF NOT EXISTS access_check_senders ( id int, sender text COLLATE NOCASE, action text COLLATE NOCASE, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO access_check_senders VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS access_check_senders_idx ON access_check_senders(sender COLLATE NOCASE, enabled)"
+
+  mail_relay_whitelist:
+    read: "SELECT id, client, action, enabled, ticket_number, created, last_modified, comments FROM mail_relay_whitelist"
+    new: "CREATE TABLE IF NOT EXISTS mail_relay_whitelist ( id int, client text COLLATE NOCASE, action text COLLATE NOCASE, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO mail_relay_whitelist VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS mail_relay_whitelist_idx ON mail_relay_whitelist(client COLLATE NOCASE, enabled)"
+
+  sender_bcc_maps:
+    read: "SELECT id, sender, bcc_recipient, enabled, ticket_number, created, last_modified, comments FROM sender_bcc_maps"
+    new: "CREATE TABLE IF NOT EXISTS sender_bcc_maps ( id int, sender text COLLATE NOCASE, bcc_recipient text COLLATE NOCASE, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO sender_bcc_maps VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS sender_bcc_maps_idx ON sender_bcc_maps(sender COLLATE NOCASE, enabled)"
+
+  recipient_bcc_maps:
+    read: "SELECT id, original_recipient, bcc_recipient, enabled, ticket_number, created, last_modified, comments FROM recipient_bcc_maps"
+    new: "CREATE TABLE IF NOT EXISTS recipient_bcc_maps ( id int, original_recipient text COLLATE NOCASE, bcc_recipient text COLLATE NOCASE, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO recipient_bcc_maps VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS recipient_bcc_maps_idx ON recipient_bcc_maps(original_recipient COLLATE NOCASE, enabled)"
+
+  sender_dependent_default_transport_maps:
+    read: "SELECT id, sender, transport, enabled, ticket_number, created, last_modified, comments FROM sender_dependent_default_transport_maps"
+    new: "CREATE TABLE IF NOT EXISTS sender_dependent_default_transport_maps ( id int, sender text COLLATE NOCASE, transport text COLLATE NOCASE, enabled int, ticket_number int, created date, last_modified date, comments text COLLATE NOCASE )"
+    write: "INSERT INTO sender_dependent_default_transport_maps VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    index: "CREATE INDEX IF NOT EXISTS sender_dependent_default_transport_maps_idx ON sender_dependent_default_transport_maps(sender COLLATE NOCASE, enabled)"
