@@ -13,10 +13,6 @@ import "time"
 
 const (
 
-	// Version reflects the application version. This is overridden via Makefile
-	// for release builds.
-	Version string = "dev build"
-
 	// MyAppName is the branded name of this application/project. This value will
 	// be used in user-facing output.
 	MyAppName string = "mysql2sqlite"

@@ -19,6 +19,10 @@ import (
 
 // see `constants.go` for other related values
 
+// Version reflects the application version. This is overridden via Makefile
+// for release builds.
+var Version string = "dev build"
+
 func (c Config) String() string {
 	return fmt.Sprintf(
 		"UnifiedConfig: { LogLevel: %s, LogFormat: %s, LogOutput: %s, "+
