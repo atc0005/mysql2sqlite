@@ -27,7 +27,8 @@ func main() {
 
 	cfg, err := config.NewConfig()
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Error(err.Error())
+		return
 	}
 
 	log.Info(config.Branding())
@@ -48,8 +49,10 @@ func main() {
 
 	mysqlDB, err := sql.Open("mysql", mysqlDSN)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Error(err.Error())
+		return
 	}
+
 	defer func(db string, host string) {
 		if err := mysqlDB.Close(); err != nil {
 			log.Errorf(
@@ -73,7 +76,7 @@ func main() {
 	mysqlDB.SetMaxIdleConns(cfg.MySQLMaxIdleConns())
 
 	// Disabled for now in order to support Go 1.14. See GH-28 for details.
-	//mysqlDB.SetConnMaxIdleTime(cfg.MySQLConnMaxIdleTime()) // Go 1.15+
+	// mysqlDB.SetConnMaxIdleTime(cfg.MySQLConnMaxIdleTime()) // Go 1.15+
 
 	// test MySQL database connection before proceeding further
 	if err = dbqs.VerifyDBConn(
@@ -83,10 +86,11 @@ func main() {
 		cfg.ConnectionRetryDelay(),
 		cfg.ConnectionTimeout(),
 	); err != nil {
-		log.Fatalf(
+		log.Errorf(
 			"verifying MySQL database connection failed: %v",
 			err,
 		)
+		return
 	}
 	log.Infof(
 		"Connection established to source database server at %s:%d",
@@ -124,7 +128,8 @@ func main() {
 	)
 	sqliteDB, err := sql.Open("sqlite3", sqliteDSN)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Error(err.Error())
+		return
 	}
 	defer func(db string) {
 		if err := sqliteDB.Close(); err != nil {
@@ -144,7 +149,7 @@ func main() {
 	// is to use a sql.Conn to force queries to run across a single
 	// connection.
 	//
-	//sqliteDB.SetMaxOpenConns(1)
+	// sqliteDB.SetMaxOpenConns(1)
 
 	logConnStats := func() {
 		if cfg.LogDBStats() {
@@ -162,10 +167,11 @@ func main() {
 		cfg.ConnectionRetryDelay(),
 		cfg.ConnectionTimeout(),
 	); err != nil {
-		log.Fatalf(
+		log.Errorf(
 			"verifying SQLite database connection failed: %v",
 			err,
 		)
+		return
 	}
 	log.Infof("Connection established to SQLite database at %s", sqliteDBFile)
 	logConnStats()
@@ -176,19 +182,21 @@ func main() {
 	// pass nil here?
 	sqliteTX, sqliteTXErr := sqliteDB.BeginTx(ctx, nil)
 	if sqliteTXErr != nil {
-		log.Fatalf(
+		log.Errorf(
 			"failed to start SQL transaction for SQLite database: %v",
 			sqliteTXErr,
 		)
+		return
 	}
 
 	// TODO: Move these elsewhere?
 	rollbackTX := func(tx *sql.Tx) {
 		if txRollbackErr := tx.Rollback(); txRollbackErr != nil {
-			log.Fatalf(
+			log.Errorf(
 				"failed to roll back transaction: %v",
 				txRollbackErr,
 			)
+			return
 		}
 		log.Warn("Transaction rollback complete")
 	}
@@ -207,7 +215,8 @@ func main() {
 		rowsCount, rowsCountErr := dbqs.RowsCount(mysqlDB, table)
 		if rowsCountErr != nil {
 			rollbackTX(sqliteTX)
-			log.Fatal(rowsCountErr.Error())
+			log.Error(rowsCountErr.Error())
+			return
 		}
 		logConnStats()
 
@@ -215,7 +224,8 @@ func main() {
 		mysqlRows, err := mysqlDB.Query(querySet[config.SQLQueriesRead])
 		if err != nil {
 			rollbackTX(sqliteTX)
-			log.Fatal(err.Error())
+			log.Error(err.Error())
+			return
 		}
 		log.Debug("Rows retrieved from source MySQL database")
 		logConnStats()
@@ -228,11 +238,12 @@ func main() {
 		dropTableStmt := fmt.Sprintf("DROP TABLE IF EXISTS %s", table)
 		if _, err := sqliteTX.Exec(dropTableStmt); err != nil {
 			rollbackTX(sqliteTX)
-			log.Fatalf(
+			log.Errorf(
 				"failed to run query to drop (potentially) preexisting table %s: %v",
 				table,
 				err,
 			)
+			return
 		}
 		log.Debugf("Successfully ran DROP TABLE query for table %s", table)
 		logConnStats()
@@ -240,22 +251,24 @@ func main() {
 		dropIndexStmt := fmt.Sprintf("DROP INDEX IF EXISTS %s", table)
 		if _, err := sqliteTX.Exec(dropIndexStmt); err != nil {
 			rollbackTX(sqliteTX)
-			log.Fatalf(
+			log.Errorf(
 				"failed to run query to drop (potentially) preexisting index for table %s: %v",
 				table,
 				err,
 			)
+			return
 		}
 		log.Debugf("Successfully ran DROP INDEX query for table %s", table)
 		logConnStats()
 
 		if _, err := sqliteTX.Exec(querySet[config.SQLQueriesNew]); err != nil {
 			rollbackTX(sqliteTX)
-			log.Fatalf(
+			log.Errorf(
 				"failed to run query to create table %s: %v",
 				table,
 				err,
 			)
+			return
 		}
 		log.Debugf("Created table %s in SQLite database", table)
 		logConnStats()
@@ -267,21 +280,23 @@ func main() {
 		// Our validation method will have to catch problems like this one.
 		//
 		// if _, err := sqliteDB.Exec(""); err != nil {
-		// 	log.Fatalf(
+		// 	log.Errorf(
 		// 		"failed to run empty exec query for table %s",
 		// 		table,
 		// 		err,
 		// 	)
+		//	return
 		// }
 
 		if cfg.SQLiteCreateIndexes() {
 			if _, err := sqliteTX.Exec(querySet[config.SQLQueriesIndex]); err != nil {
 				rollbackTX(sqliteTX)
-				log.Fatalf(
+				log.Errorf(
 					"failed to run query to create index for table %s: %v",
 					table,
 					err,
 				)
+				return
 			}
 			log.Debugf("Created index for table %s in SQLite database", table)
 			logConnStats()
@@ -292,11 +307,12 @@ func main() {
 		columnNames, err := mysqlRows.Columns()
 		if err != nil {
 			rollbackTX(sqliteTX)
-			log.Fatalf(
+			log.Errorf(
 				"unable to fetch column names for table %s: %v",
 				table,
 				err,
 			)
+			return
 		}
 
 		colCount := len(columnNames)
@@ -335,7 +351,8 @@ func main() {
 
 				if err = mysqlRows.Scan(valuePtrs...); err != nil {
 					rollbackTX(sqliteTX)
-					log.Fatal(err.Error())
+					log.Error(err.Error())
+					return
 				}
 				log.Debug("Completed scanning from MySQL row, before SQLite insert")
 				logConnStats()
@@ -366,7 +383,7 @@ func main() {
 							// expose sensitive data (e.g., passwords)
 							//
 							// log.Debugf("value is %q before trim", values[idx])
-							sqliteOutput[idx] = strings.TrimSpace(string(string(byteArray)))
+							sqliteOutput[idx] = strings.TrimSpace(string(byteArray))
 							// log.Debugf("value is %q after trim", values[idx])
 						}
 					}
@@ -381,7 +398,8 @@ func main() {
 				// Populate SQLite database with row retrieved from MySQL
 				if _, err = sqliteTX.Exec(querySet[config.SQLQueriesWrite], sqliteOutput...); err != nil {
 					rollbackTX(sqliteTX)
-					log.Fatal(err.Error())
+					log.Error(err.Error())
+					return
 				}
 				log.Debug("No errors encountered from SQLite database insert")
 				logConnStats()
@@ -393,7 +411,8 @@ func main() {
 				// changes as there may be some critical data that we're
 				// missing
 				rollbackTX(sqliteTX)
-				log.Fatal(err.Error())
+				log.Error(err.Error())
+				return
 			}
 			logConnStats()
 
@@ -407,11 +426,12 @@ func main() {
 			// to persist the database connection for longer than necessary
 			if err := mysqlRows.Close(); err != nil {
 				rollbackTX(sqliteTX)
-				log.Fatalf(
+				log.Errorf(
 					"error closing mysqlRows for table %s: %v",
 					table,
 					err,
 				)
+				return
 			}
 			log.Debug("Successfully closed mysqlRows")
 			logConnStats()
@@ -430,10 +450,11 @@ func main() {
 	if err := sqliteTX.Commit(); err != nil {
 		// FIXME: This is a pretty serious failure; what else can we
 		// do at this point?
-		log.Fatalf(
+		log.Errorf(
 			"failed to commit transaction for SQLite database: %v",
 			err,
 		)
+		return
 	}
 	log.Info("Successfully completed SQLite database transaction commit")
 
