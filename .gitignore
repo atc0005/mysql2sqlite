@@ -10,3 +10,4 @@
 *.exe
 /mysql2sqlite
 /check_mysql2sqlite
+/release_assets
