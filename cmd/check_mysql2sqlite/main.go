@@ -27,17 +27,11 @@ import (
 
 func main() {
 
-	//
-	// FIXME: Connection close info isn't being logged to nagios.log file
-	//
-
 	// Set initial "state" as valid, adjust as we go.
 	var nagiosExitState = nagios.ExitState{
 		LastError:      nil,
 		ExitStatusCode: nagios.StateOKExitCode,
 	}
-
-	//nagiosExitState.ServiceOutput = "Tacos"
 
 	// defer this from the start so it is the last deferred function to run
 	defer nagiosExitState.ReturnCheckResults()
@@ -143,7 +137,7 @@ func main() {
 	mysqlDB.SetMaxIdleConns(cfg.MySQLMaxIdleConns())
 
 	// Disabled for now in order to support Go 1.14. See GH-28 for details.
-	//mysqlDB.SetConnMaxIdleTime(cfg.MySQLConnMaxIdleTime()) // Go 1.15+
+	// mysqlDB.SetConnMaxIdleTime(cfg.MySQLConnMaxIdleTime()) // Go 1.15+
 
 	// test MySQL database connection before proceeding further
 	if err = mysqlDB.Ping(); err != nil {
@@ -309,7 +303,7 @@ func main() {
 		// validate that the same number of rows are present in each table
 		if mysqlRowsCount != sqliteRowsCount {
 			err := fmt.Errorf(
-				"Mismatched number of rows for %s table; MySQL: %d, SQLite: %d",
+				"mismatched number of rows for %s table; MySQL: %d, SQLite: %d",
 				table,
 				mysqlRowsCount,
 				sqliteRowsCount,
@@ -427,7 +421,7 @@ func main() {
 		// validate that the same number of columns are present in each table
 		if mysqlColCount != sqliteColCount {
 			err := fmt.Errorf(
-				"Mismatched number of columns for %s table; MySQL: %d, SQLite: %d",
+				"mismatched number of columns for %s table; MySQL: %d, SQLite: %d",
 				table,
 				mysqlColCount,
 				sqliteColCount,
@@ -540,7 +534,7 @@ func main() {
 
 						if cfg.TrimWhitespace() {
 							log.Debugf("Trimming whitespace from field %q", mysqlColumnNames[idx])
-							mysqlData[idx] = strings.TrimSpace(string(string(byteArray)))
+							mysqlData[idx] = strings.TrimSpace(string(byteArray))
 						}
 					}
 					timeValue, ok := mysqlRowValues[idx].(time.Time)
@@ -571,7 +565,7 @@ func main() {
 
 						if cfg.TrimWhitespace() {
 							log.Debugf("Trimming whitespace from field %q", sqliteColumnNames[idx])
-							sqliteData[idx] = strings.TrimSpace(string(string(byteArray)))
+							sqliteData[idx] = strings.TrimSpace(string(byteArray))
 						}
 					}
 					timeValue, ok := sqliteRowValues[idx].(time.Time)
@@ -625,9 +619,8 @@ func main() {
 						)
 
 						return
-					} else {
-						log.Debugf("Successful data match for %s", what)
 					}
+					log.Debugf("Successful data match for %s", what)
 				}
 			}
 

@@ -21,6 +21,7 @@ const (
 	// be used in user-facing output.
 	MyAppURL string = "https://github.com/atc0005/" + MyAppName
 
+	// MyAppDescription is used when displaying help text.
 	MyAppDescription string = "Generate SQLite database from specified MySQL database tables"
 )
 

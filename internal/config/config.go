@@ -124,18 +124,20 @@ func NewConfig() (*Config, error) {
 
 	log.Debug("Validating configuration ...")
 	if err := config.Validate(); err != nil {
-		//flag.Usage()
-		// Let app handle this directly
 		return nil, err
 	}
 	log.Debug("Configuration validated")
 
-	//log.Debugf("Config object: %v", config.String())
+	// log.Debugf("Config object: %v", config.String())
 
 	return &config, nil
 
 }
 
+// Load attempts to first load the user-specified config file, then falls back
+// to checking for a config file in the directory alongside the executable,
+// then finally a config file from the user's configuration path. An error is
+// returned if the configuration file cannot be loaded.
 func (c *Config) Load() error {
 
 	configFiles := make([]string, 0, 3)

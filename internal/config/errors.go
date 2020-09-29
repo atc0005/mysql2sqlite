@@ -13,8 +13,10 @@ import (
 
 // see `constants.go` for other related values
 
+// ErrCfgFileNotFound is a fatal error; this error indicates that the
+// user-specified config file could not be found, nor one of the paths
+// automatically checked by this application.
 var ErrCfgFileNotFound = errors.New(
-	"failed to load config file from known locations. Please " +
-		"specify a path to a config file or ensure that one is present " +
-		"in a known location. See the README file for additional details.",
+	"failed to load config file from known locations; " +
+		"see the README file for additional details",
 )

@@ -17,9 +17,13 @@ import (
 	"github.com/atc0005/mysql2sqlite/internal/caller"
 )
 
-//var ErrStmtClose error = errors.New("failed to close statement")
-//var ErrTableCount error = errors.New("failed to retrieve row count for table")
+// var ErrStmtClose error = errors.New("failed to close statement")
+// var ErrTableCount error = errors.New("failed to retrieve row count for table")
 
+// VerifyDBConn is used to verify connectivity to a specified database. If the
+// initial verification fails, a specified number of further attempts are made
+// before an error is returned to signal that a database connection is
+// unavailable.
 func VerifyDBConn(ctx context.Context, db *sql.DB, retries int, retryDelay time.Duration, timeout time.Duration) error {
 
 	myFuncName := caller.GetFuncName()
@@ -49,10 +53,7 @@ func VerifyDBConn(ctx context.Context, db *sql.DB, retries int, retryDelay time.
 			// No further retries needed
 			return nil
 
-		// While the context is passed to mstClient.SendWithContext and it
-		// should ensure that it is respected, we check here explicitly in
-		// order to return early in an effort to prevent undesired message
-		// attempts
+		// Check context explicitly in order to return as soon as possible
 		case ctx.Err() != nil && result != nil:
 
 			errMsg := fmt.Errorf(
@@ -91,6 +92,8 @@ func VerifyDBConn(ctx context.Context, db *sql.DB, retries int, retryDelay time.
 
 }
 
+// RowsCount is a helper function that is used to return the number of rows
+// for a specified table.
 func RowsCount(db *sql.DB, table string) (int, error) {
 	var rowsCount int
 	rcQuery := fmt.Sprintf("SELECT COUNT(*) as count FROM %s", table)
@@ -122,34 +125,3 @@ func RowsCount(db *sql.DB, table string) (int, error) {
 
 	return rowsCount, nil
 }
-
-// RowsCountMatch receives a table name and
-// func RowsCountMatch(table string, dbs ...*sql.DB) (bool, error) {
-// 	if len(dbs) < 2 {
-// 		return false, fmt.Errorf("invalid number of databases to compare; at least two are required")
-// 	}
-
-// 	// all database tables should match, so using the first one for comparison
-// 	// against the others should be valid
-// 	firstDBRowsCount, rowsCountErr := RowsCount(dbs[0], table)
-// 	if rowsCountErr != nil {
-// 		return false, rowsCountErr
-// 	}
-
-// 	for idx := range dbs {
-// 		dbsRowsCount, rowsCountErr := RowsCount(dbs[idx], table)
-// 		if rowsCountErr != nil {
-// 			return false, rowsCountErr
-// 		}
-// 		if firstDBRowsCount != dbsRowsCount {
-// 			return false, fmt.Errorf(
-// 				"mismatched number of rows for %s table; got %d, expected %d",
-// 				table,
-// 				dbsRowsCount,
-// 				firstDBRowsCount,
-// 			)
-// 		}
-// 	}
-
-// 	return true, nil
-// }
