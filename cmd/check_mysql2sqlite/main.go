@@ -326,6 +326,14 @@ func main() {
 			return
 		}
 
+		if mysqlRowsCount == 0 && sqliteRowsCount == 0 {
+			log.Infof(
+				"Zero rows for table %s in both databases; skipping further validation for this table",
+				table,
+			)
+			continue
+		}
+
 		mysqlRows, readQueryErr := mysqlDB.Query(querySet[config.SQLQueriesRead])
 		if readQueryErr != nil {
 			nagiosExitState.LastError = readQueryErr

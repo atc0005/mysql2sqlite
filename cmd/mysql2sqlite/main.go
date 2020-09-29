@@ -220,17 +220,8 @@ func main() {
 		}
 		logConnStats()
 
-		log.Debugf("About to execute query to retrieve %d existing rows", rowsCount)
-		mysqlRows, err := mysqlDB.Query(querySet[config.SQLQueriesRead])
-		if err != nil {
-			rollbackTX(sqliteTX)
-			log.Error(err.Error())
-			return
-		}
-		log.Debug("Rows retrieved from source MySQL database")
-		logConnStats()
-
-		// Recreate SQLite database tables.
+		// Recreate SQLite database tables regardless of whether source
+		// database table has any rows.
 		//
 		// TODO: Research syncing tables instead of recreating each time
 
@@ -304,6 +295,25 @@ func main() {
 
 		log.Debug("SQLite database is ready")
 
+		if rowsCount == 0 {
+			log.Infof(
+				"no entries in table %s for database %s, skipping rows retrieval and SQLite database insert",
+				table,
+				cfg.MySQLDatabase(),
+			)
+			continue
+		}
+
+		log.Debugf("About to execute query to retrieve %d existing rows", rowsCount)
+		mysqlRows, err := mysqlDB.Query(querySet[config.SQLQueriesRead])
+		if err != nil {
+			rollbackTX(sqliteTX)
+			log.Error(err.Error())
+			return
+		}
+		log.Debug("Rows retrieved from source MySQL database")
+		logConnStats()
+
 		columnNames, err := mysqlRows.Columns()
 		if err != nil {
 			rollbackTX(sqliteTX)
@@ -331,119 +341,108 @@ func main() {
 
 		log.Debug("Before mysqlRows.Next()")
 
-		if rowsCount > 0 {
+		log.Debugf(
+			"%d rows to be copied from table %s to SQLite database file %s",
+			rowsCount,
+			table,
+			sqliteDBFile,
+		)
 
-			log.Debugf(
-				"%d rows to be copied from table %s to SQLite database file %s",
-				rowsCount,
-				table,
-				sqliteDBFile,
-			)
+		for mysqlRows.Next() {
+			logConnStats()
 
-			for mysqlRows.Next() {
-				logConnStats()
-
-				// Initialize slice of pointers in order to satisfy the
-				// `(*sql.Rows).Scan` method.
-				for i := range columnNames {
-					valuePtrs[i] = &values[i]
-				}
-
-				if err = mysqlRows.Scan(valuePtrs...); err != nil {
-					rollbackTX(sqliteTX)
-					log.Error(err.Error())
-					return
-				}
-				log.Debug("Completed scanning from MySQL row, before SQLite insert")
-				logConnStats()
-
-				// The db.Exec method requires a slice of interface{}, but in
-				// order to force SQLite to *not* store the MySQL data as
-				// "blob" type we force a conversion to string before storing
-				// in a slice of interface{} for db.Exec to use.
-				//
-				// If the user requested it, we also trim whitespace from the
-				// source MySQL data.
-				sqliteOutput := make([]interface{}, len(values))
-				for idx := range values {
-					byteArray, ok := values[idx].([]byte)
-					if !ok {
-						log.Debugf("Field %q does NOT contain byte slice value", columnNames[idx])
-						log.Debugf("Saving field %q value to sqliteOutput slice as-is", columnNames[idx])
-						sqliteOutput[idx] = values[idx]
-					} else {
-						log.Debugf("Field %q does contain byte slice value", columnNames[idx])
-						log.Debugf("Converting field %q value to sqliteOutput as string value", columnNames[idx])
-						sqliteOutput[idx] = string(byteArray)
-
-						if cfg.TrimWhitespace() {
-							log.Debugf("Trimming whitespace from field %q", columnNames[idx])
-
-							// WARNING: logging field values could potentially
-							// expose sensitive data (e.g., passwords)
-							//
-							// log.Debugf("value is %q before trim", values[idx])
-							sqliteOutput[idx] = strings.TrimSpace(string(byteArray))
-							// log.Debugf("value is %q after trim", values[idx])
-						}
-					}
-
-					// Rely on fmt.Sprintf to handle formatting, potential
-					// conversion of data to string type before storing back
-					// in our []interface{} for use by db.Exec
-					sqliteOutput[idx] = fmt.Sprintf("%v", sqliteOutput[idx])
-
-				}
-
-				// Populate SQLite database with row retrieved from MySQL
-				if _, err = sqliteTX.Exec(querySet[config.SQLQueriesWrite], sqliteOutput...); err != nil {
-					rollbackTX(sqliteTX)
-					log.Error(err.Error())
-					return
-				}
-				log.Debug("No errors encountered from SQLite database insert")
-				logConnStats()
+			// Initialize slice of pointers in order to satisfy the
+			// `(*sql.Rows).Scan` method.
+			for i := range columnNames {
+				valuePtrs[i] = &values[i]
 			}
 
-			// check for potential errors after processing rows
-			if err := mysqlRows.Err(); err != nil {
-				// if there is an error reading from MySQL, rollback SQLite db
-				// changes as there may be some critical data that we're
-				// missing
+			if err = mysqlRows.Scan(valuePtrs...); err != nil {
 				rollbackTX(sqliteTX)
 				log.Error(err.Error())
 				return
 			}
+			log.Debug("Completed scanning from MySQL row, before SQLite insert")
 			logConnStats()
 
-			log.Infof(
-				"Successfully copied %d rows from source database table %s",
-				rowsCount,
-				table,
-			)
+			// The db.Exec method requires a slice of interface{}, but in
+			// order to force SQLite to *not* store the MySQL data as
+			// "blob" type we force a conversion to string before storing
+			// in a slice of interface{} for db.Exec to use.
+			//
+			// If the user requested it, we also trim whitespace from the
+			// source MySQL data.
+			sqliteOutput := make([]interface{}, len(values))
+			for idx := range values {
+				byteArray, ok := values[idx].([]byte)
+				if !ok {
+					log.Debugf("Field %q does NOT contain byte slice value", columnNames[idx])
+					log.Debugf("Saving field %q value to sqliteOutput slice as-is", columnNames[idx])
+					sqliteOutput[idx] = values[idx]
+				} else {
+					log.Debugf("Field %q does contain byte slice value", columnNames[idx])
+					log.Debugf("Converting field %q value to sqliteOutput as string value", columnNames[idx])
+					sqliteOutput[idx] = string(byteArray)
 
-			// explicit close here vs defer since we're in a loop and do not want
-			// to persist the database connection for longer than necessary
-			if err := mysqlRows.Close(); err != nil {
+					if cfg.TrimWhitespace() {
+						log.Debugf("Trimming whitespace from field %q", columnNames[idx])
+
+						// WARNING: logging field values could potentially
+						// expose sensitive data (e.g., passwords)
+						//
+						// log.Debugf("value is %q before trim", values[idx])
+						sqliteOutput[idx] = strings.TrimSpace(string(byteArray))
+						// log.Debugf("value is %q after trim", values[idx])
+					}
+				}
+
+				// Rely on fmt.Sprintf to handle formatting, potential
+				// conversion of data to string type before storing back
+				// in our []interface{} for use by db.Exec
+				sqliteOutput[idx] = fmt.Sprintf("%v", sqliteOutput[idx])
+
+			}
+
+			// Populate SQLite database with row retrieved from MySQL
+			if _, err = sqliteTX.Exec(querySet[config.SQLQueriesWrite], sqliteOutput...); err != nil {
 				rollbackTX(sqliteTX)
-				log.Errorf(
-					"error closing mysqlRows for table %s: %v",
-					table,
-					err,
-				)
+				log.Error(err.Error())
 				return
 			}
-			log.Debug("Successfully closed mysqlRows")
+			log.Debug("No errors encountered from SQLite database insert")
 			logConnStats()
-
-		} else {
-
-			log.Infof(
-				"no entries in table %s for database %s, skipping rows retrieval and SQLite database insert",
-				table,
-				cfg.MySQLDatabase(),
-			)
 		}
+
+		// check for potential errors after processing rows
+		if err := mysqlRows.Err(); err != nil {
+			// if there is an error reading from MySQL, rollback SQLite db
+			// changes as there may be some critical data that we're
+			// missing
+			rollbackTX(sqliteTX)
+			log.Error(err.Error())
+			return
+		}
+		logConnStats()
+
+		log.Infof(
+			"Successfully copied %d rows from source database table %s",
+			rowsCount,
+			table,
+		)
+
+		// explicit close here vs defer since we're in a loop and do not want
+		// to persist the database connection for longer than necessary
+		if err := mysqlRows.Close(); err != nil {
+			rollbackTX(sqliteTX)
+			log.Errorf(
+				"error closing mysqlRows for table %s: %v",
+				table,
+				err,
+			)
+			return
+		}
+		log.Debug("Successfully closed mysqlRows")
+		logConnStats()
 
 	}
 
