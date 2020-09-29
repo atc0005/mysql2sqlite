@@ -34,15 +34,6 @@ const (
 	MySQLEncryptionDisabled   string = "false"
 )
 
-// Queries used to retrieve data from MySQL database and manage local SQLite
-// database
-const (
-	SQLQueriesRead  string = "read"
-	SQLQueriesNew   string = "new"
-	SQLQueriesWrite string = "write"
-	SQLQueriesIndex string = "index"
-)
-
 // Default flag settings if not overridden by user input.
 const (
 	// defaultTrimWhitespace controls whether leading and trailing whitespace

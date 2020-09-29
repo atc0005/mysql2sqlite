@@ -15,6 +15,7 @@ import (
 
 	"github.com/apex/log"
 	"github.com/atc0005/mysql2sqlite/internal/caller"
+	"github.com/atc0005/mysql2sqlite/internal/dbqs"
 )
 
 // TCP port ranges
@@ -227,13 +228,13 @@ func (c Config) Validate() error {
 			// each of these query types should be defined within the
 			// configuration file with `index` being optional
 			expectedQuerySet := []string{
-				SQLQueriesRead,
-				SQLQueriesNew,
-				SQLQueriesWrite,
+				dbqs.SQLQueriesRead,
+				dbqs.SQLQueriesNew,
+				dbqs.SQLQueriesWrite,
 			}
 
 			if c.SQLiteCreateIndexes() {
-				expectedQuerySet = append(expectedQuerySet, SQLQueriesIndex)
+				expectedQuerySet = append(expectedQuerySet, dbqs.SQLQueriesIndex)
 			}
 
 			for _, expectedQuery := range expectedQuerySet {

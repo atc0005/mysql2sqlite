@@ -220,80 +220,17 @@ func main() {
 		}
 		logConnStats()
 
-		// Recreate SQLite database tables regardless of whether source
-		// database table has any rows.
-		//
-		// TODO: Research syncing tables instead of recreating each time
-
-		// FIXME: What is a better way to drop the table programatically?
-		dropTableStmt := fmt.Sprintf("DROP TABLE IF EXISTS %s", table)
-		if _, err := sqliteTX.Exec(dropTableStmt); err != nil {
+		// Prepare SQLite database, regardless of whether we have any rows
+		// to copy from source database table.
+		if err := dbqs.PrepareSQLiteDB(
+			sqliteTX,
+			querySet,
+			table,
+			cfg.SQLiteCreateIndexes(),
+		); err != nil {
 			rollbackTX(sqliteTX)
-			log.Errorf(
-				"failed to run query to drop (potentially) preexisting table %s: %v",
-				table,
-				err,
-			)
-			return
+			log.Error(err.Error())
 		}
-		log.Debugf("Successfully ran DROP TABLE query for table %s", table)
-		logConnStats()
-
-		dropIndexStmt := fmt.Sprintf("DROP INDEX IF EXISTS %s", table)
-		if _, err := sqliteTX.Exec(dropIndexStmt); err != nil {
-			rollbackTX(sqliteTX)
-			log.Errorf(
-				"failed to run query to drop (potentially) preexisting index for table %s: %v",
-				table,
-				err,
-			)
-			return
-		}
-		log.Debugf("Successfully ran DROP INDEX query for table %s", table)
-		logConnStats()
-
-		if _, err := sqliteTX.Exec(querySet[config.SQLQueriesNew]); err != nil {
-			rollbackTX(sqliteTX)
-			log.Errorf(
-				"failed to run query to create table %s: %v",
-				table,
-				err,
-			)
-			return
-		}
-		log.Debugf("Created table %s in SQLite database", table)
-		logConnStats()
-
-		// Q: does this cause an error?
-		// A: no, attempting to retrieve a key *not* in a map returns a zero
-		// value, in this case an empty string value. Executing an empty
-		// string/query appears to be "valid", which gives unexpected results.
-		// Our validation method will have to catch problems like this one.
-		//
-		// if _, err := sqliteDB.Exec(""); err != nil {
-		// 	log.Errorf(
-		// 		"failed to run empty exec query for table %s",
-		// 		table,
-		// 		err,
-		// 	)
-		//	return
-		// }
-
-		if cfg.SQLiteCreateIndexes() {
-			if _, err := sqliteTX.Exec(querySet[config.SQLQueriesIndex]); err != nil {
-				rollbackTX(sqliteTX)
-				log.Errorf(
-					"failed to run query to create index for table %s: %v",
-					table,
-					err,
-				)
-				return
-			}
-			log.Debugf("Created index for table %s in SQLite database", table)
-			logConnStats()
-		}
-
-		log.Debug("SQLite database is ready")
 
 		if rowsCount == 0 {
 			log.Infof(
@@ -305,7 +242,7 @@ func main() {
 		}
 
 		log.Debugf("About to execute query to retrieve %d existing rows", rowsCount)
-		mysqlRows, err := mysqlDB.Query(querySet[config.SQLQueriesRead])
+		mysqlRows, err := mysqlDB.Query(querySet[dbqs.SQLQueriesRead])
 		if err != nil {
 			rollbackTX(sqliteTX)
 			log.Error(err.Error())
@@ -404,7 +341,7 @@ func main() {
 			}
 
 			// Populate SQLite database with row retrieved from MySQL
-			if _, err = sqliteTX.Exec(querySet[config.SQLQueriesWrite], sqliteOutput...); err != nil {
+			if _, err = sqliteTX.Exec(querySet[dbqs.SQLQueriesWrite], sqliteOutput...); err != nil {
 				rollbackTX(sqliteTX)
 				log.Error(err.Error())
 				return

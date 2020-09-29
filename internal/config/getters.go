@@ -9,6 +9,8 @@ package config
 
 import (
 	"time"
+
+	"github.com/atc0005/mysql2sqlite/internal/dbqs"
 )
 
 // ConfigFile returns the user-provided path to the config file for this
@@ -297,7 +299,7 @@ func (c Config) ConnectionTimeout() time.Duration {
 // DBQueries returns the user-provided collection of tables and the queries
 // used to read from a source database and write to a SQLite database. If not
 // provided, nil is returned in order to force validation to fail.
-func (c Config) DBQueries() SQLQueries {
+func (c Config) DBQueries() dbqs.SQLQueries {
 	switch {
 	case c.configFileSettings.Queries != nil:
 		return c.configFileSettings.Queries
