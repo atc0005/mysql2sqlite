@@ -97,27 +97,10 @@ func VerifyDBConn(ctx context.Context, db *sql.DB, retries int, retryDelay time.
 func RowsCount(db *sql.DB, table string) (int, error) {
 	var rowsCount int
 	rcQuery := fmt.Sprintf("SELECT COUNT(*) as count FROM %s", table)
-	log.Debugf("About to prepare query to fetch row count for %s", table)
-	rcStmt, err := db.Prepare(rcQuery)
-	if err != nil {
-		return -1, fmt.Errorf(
-			"failed to prepare row count statement for table %s: %w",
-			table,
-			err,
-		)
-	}
 	log.Debugf("About to fetch row count for %s", table)
-	if err := rcStmt.QueryRow().Scan(&rowsCount); err != nil {
+	if err := db.QueryRow(rcQuery).Scan(&rowsCount); err != nil {
 		return -1, fmt.Errorf(
 			"failed to retrieve row count for table %s: %w",
-			table,
-			err,
-		)
-	}
-	log.Debugf("About to close prepared statement for fetching row count for %s", table)
-	if err := rcStmt.Close(); err != nil {
-		return -1, fmt.Errorf(
-			"failed to close rcStmt after retrieving row count for table %s: %w",
 			table,
 			err,
 		)
