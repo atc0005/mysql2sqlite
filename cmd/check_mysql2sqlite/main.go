@@ -139,7 +139,12 @@ func main() {
 	// Disabled for now in order to support Go 1.14. See GH-28 for details.
 	// mysqlDB.SetConnMaxIdleTime(cfg.MySQLConnMaxIdleTime()) // Go 1.15+
 
-	// test MySQL database connection before proceeding further
+	// Test MySQL database connection before proceeding further
+	//
+	// NOTE: We intentionally don't use the retry functionality provided by
+	// the dbqs package here as we don't want to mask or workaround any
+	// connectivity issues; it is important to surface to Nagios any problems
+	// encountered during the execution of this plugin.
 	if err = mysqlDB.Ping(); err != nil {
 		nagiosExitState.LastError = err
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
@@ -242,7 +247,12 @@ func main() {
 		}
 	}
 
-	// test SQLite database connection before proceeding further
+	// Test SQLite database connection before proceeding further
+	//
+	// NOTE: We intentionally don't use the retry functionality provided by
+	// the dbqs package here as we don't want to mask or workaround any
+	// connectivity issues; it is important to surface to Nagios any problems
+	// encountered during the execution of this plugin.
 	if err = sqliteDB.Ping(); err != nil {
 		nagiosExitState.LastError = err
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
