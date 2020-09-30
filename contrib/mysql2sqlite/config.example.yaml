@@ -15,10 +15,10 @@ general:
   trim_leading_trailing_whitespace: false
 
   # The number of times a connection should be retried before giving up and
-  # returning an error
+  # returning an error.
   connection_retries: 5
 
-  # The number of seconds a connection retry attempt should be made.
+  # The number of seconds between connection retry attempts.
   connection_retry_delay: 2
 
   # The number of seconds a connection should be tried before giving up and
