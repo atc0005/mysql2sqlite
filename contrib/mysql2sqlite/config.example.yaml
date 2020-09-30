@@ -79,7 +79,13 @@ mysql_config:
   # connections may be closed lazily before reuse.
   #
   # Specified in seconds.
-  max_idle_connection_time: 10
+  #
+  # Disabled for now in order to support Go 1.14. Re-enable when Go 1.16 is
+  # released (at which point Go 1.15 becomes the oldest Go version still
+  # supported) or we opt to drop Go 1.14 support. See GH-28 and GH-37 for
+  # details.
+  #
+  # max_idle_connection_time: 10
 
 sqlite_config:
   # The "short" name of the SQLite database file. Do not specify the directory
