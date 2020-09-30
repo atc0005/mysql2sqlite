@@ -45,5 +45,14 @@ mirror and validate source MySQL database tables to a local SQLite database.
   - output "target" (`stdout`, `stderr`)
   - format
 
+- Binary release
+  - Built using Go 1.15.2
+  - Windows
+    - x86
+    - x64
+  - Linux
+    - x86
+    - x64
+
 [Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.0...HEAD
 [v0.1.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.0
