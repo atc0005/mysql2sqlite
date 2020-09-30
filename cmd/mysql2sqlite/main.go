@@ -33,6 +33,8 @@ func main() {
 
 	log.Info(config.Branding())
 
+	log.Infof("Successfully loaded configuration file %s", cfg.ConfigFileUsed())
+
 	// Create context that can be used to cancel background jobs.
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

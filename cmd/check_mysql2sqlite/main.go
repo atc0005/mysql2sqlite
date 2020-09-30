@@ -77,6 +77,8 @@ func main() {
 
 	log.Info(config.Branding())
 
+	log.Infof("Successfully loaded configuration file %s", cfg.ConfigFileUsed())
+
 	// Only issue warning if stderr was not chosen as output target
 	if cfg.LogOutput() != config.LogOutputStderr {
 		log.Warn("Reminder: Use `--log-output stderr` flag to prevent interleaving log output with Nagios status information")

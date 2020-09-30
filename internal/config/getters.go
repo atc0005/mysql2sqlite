@@ -75,6 +75,21 @@ func (c Config) LogDBStats() bool {
 	}
 }
 
+// ConfigFileUsed returns the configuration file that was located and loaded
+// for application use. This may match the user-specified file or it may
+// instead be an alternate file automatically located if the user-specified
+// file could not be located. This method relies upon the configuration
+// validation checks applied at startup to ensure that a valid configuration
+// file is returned.
+func (c Config) ConfigFileUsed() string {
+	switch {
+	case c.configFileUsed != "":
+		return c.configFileUsed
+	default:
+		return ""
+	}
+}
+
 // DBServerReadTimeout returns the user-provided choice of what timeout value to use for
 // attempts to query the remote database server. If not set, returns the
 // default value for our application.
