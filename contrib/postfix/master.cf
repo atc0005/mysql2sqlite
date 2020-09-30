@@ -1,0 +1,86 @@
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+#
+# WARNING: This is NOT a complete Postfix configuration file. It mostly
+# functions as a reference for some specific Postfix `main.cf` config file
+# settings, and indirectly the `mailserver` database referenced in
+# documentation provided by this project. This config file omits  important
+# settings necessary for running a Postfix mail server. Please consult the
+# official documentation at http://www.postfix.org/ or the (fantastic)
+# https://workaround.org/ispmail guide for further information.
+#
+
+# See README.md for deployment path, etc.
+
+#
+# Postfix master process configuration file.  For details on the format
+# of the file, see the master(5) manual page (command: "man 5 master").
+#
+# http://www.postfix.org/master.5.html
+#
+# Do not forget to execute "postfix reload" after editing this file.
+#
+# ==========================================================================
+# service type  private unpriv  chroot  wakeup  maxproc command + args
+#               (yes)   (yes)   (yes)   (never) (100)
+# ==========================================================================
+smtp      inet  n       -       -       -       -       smtpd
+
+# Open dedicated port for haproxy to use for proxying client connections
+#
+# Notes:
+#
+#   * Custom syslog prefixes throw off pflogsumm report values, so do not use.
+#
+#     Make sure to set smtpd_upstream_proxy_timeout to a value greater than
+#     the related timeout values in HAProxy to help prevent Postfix from
+#     killing sightly longer than usual health check sessions. The default
+#     value for the 'smtpd_upstream_proxy_timeout' setting is 5s.
+#
+#     By using a longer value here than in HAProxy, the idea is to allow
+#     HAProxy greater control over the decision of when to kill an overly
+#     long-running connection (health check or otherwise).
+#
+2525      inet  n       -       -       -       -       smtpd
+  -o smtpd_upstream_proxy_protocol=haproxy
+  -o smtpd_upstream_proxy_timeout=30s
+
+
+# Setup service entry for outgoing mail that should not have strict delay
+# settings applied to it. We reference this service name within the main.cf
+# configuration file to override the intentional global delays configured
+# there in an attempt to help flag abuse attempts.
+#
+# Note: Custom syslog prefixes throw off pflogsumm report values, so do not use.
+nodelay-smtp unix  -       -       n       -       -       smtp
+
+
+pickup    fifo  n       -       -       60      1       pickup
+cleanup   unix  n       -       -       -       0       cleanup
+qmgr      fifo  n       -       n       300     1       qmgr
+#qmgr     fifo  n       -       n       300     1       oqmgr
+tlsmgr    unix  -       -       -       1000?   1       tlsmgr
+rewrite   unix  -       -       -       -       -       trivial-rewrite
+bounce    unix  -       -       -       -       0       bounce
+defer     unix  -       -       -       -       0       bounce
+trace     unix  -       -       -       -       0       bounce
+verify    unix  -       -       -       -       1       verify
+flush     unix  n       -       -       1000?   0       flush
+proxymap  unix  -       -       n       -       7       proxymap
+proxywrite unix -       -       n       -       1       proxymap
+smtp      unix  -       -       -       -       -       smtp
+relay     unix  -       -       -       -       -       smtp
+showq     unix  n       -       -       -       -       showq
+error     unix  -       -       -       -       -       error
+retry     unix  -       -       -       -       -       error
+discard   unix  -       -       -       -       -       discard
+local     unix  -       n       n       -       -       local
+virtual   unix  -       n       n       -       -       virtual
+lmtp      unix  -       -       -       -       -       lmtp
+anvil     unix  -       -       -       -       1       anvil
+scache    unix  -       -       -       -       1       scache

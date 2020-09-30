@@ -1,0 +1,28 @@
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+# See README.md for deployment path, etc.
+
+# References:
+#
+#  https://workaround.org/ispmail/wheezy/connecting-postfix-to-the-database
+#  http://www.postfix.org/DATABASE_README.html
+#  http://www.postfix.org/sqlite_table.5.html
+#  https://github.com/atc0005/mysql2sqlite
+
+# NOTE: This file should be accessible by only root and postfix users
+#
+#   sudo chown -v root:postfix /etc/postfix/lookup_tables/sqlite/*.cf
+#   sudo chmod -v u=rw,g=r,o= /etc/postfix/lookup_tables/sqlite/*.cf
+
+dbpath = /var/cache/mysql2sqlite/mailserver.db
+
+query =
+    SELECT bcc_recipient
+    FROM sender_bcc_maps
+    WHERE sender ='%s'
+    AND enabled = 1;

@@ -1,0 +1,36 @@
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+# See README.md for deployment path, etc.
+
+# Purpose: Whitelist or blacklist recipients
+
+############################################################################
+# Search the specified access(5) database for the resolved RCPT TO address,
+# domain, parent domains, or localpart@, and execute the corresponding action.
+############################################################################
+
+# References:
+#
+#  http://www.postfix.org/postconf.5.html#check_recipient_access
+#  http://www.postfix.org/access.5.html
+#  http://www.postfix.org/DATABASE_README.html
+#  http://www.postfix.org/sqlite_table.5.html
+#  https://github.com/atc0005/mysql2sqlite
+
+# NOTE: This file should be accessible by only root and postfix users
+#
+#   sudo chown -v root:postfix /etc/postfix/lookup_tables/sqlite/*.cf
+#   sudo chmod -v u=rw,g=r,o= /etc/postfix/lookup_tables/sqlite/*.cf
+
+dbpath = /var/cache/mysql2sqlite/mailserver.db
+
+query =
+    SELECT action
+    FROM access_check_recipients
+    WHERE recipient = '%s'
+    AND enabled = '1';

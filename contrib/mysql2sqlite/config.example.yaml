@@ -5,6 +5,8 @@
 # Licensed under the MIT License. See LICENSE file in the project root for
 # full license information.
 
+# See README.md for deployment path, etc.
+
 ---
 general:
   # If enabled, this setting trims all leading and trailing whitespace from
@@ -85,14 +87,14 @@ sqlite_config:
   db_filename: mailserver.db
 
   # The directory that will hold the SQLite database file. The user running
-  # this script should have write access to this location. Make that
+  # this script should have write access to this location. Make sure that
   # applicable daemons (e.g., Postfix, Dovecot, etc) have read access to the
   # file.
   base_dir: /var/cache/mysql2sqlite
 
   # Whether an "index" query will be required for each table query set defined
   # within this file. If enabled, this application will use the "index" query
-  # when generating the SQLite database file.
+  # to generate indexes when creating tables in the SQLite database file.
   create_indexes: false
 
 logging:
@@ -116,7 +118,8 @@ logging:
   # Assumptions:
   #######################################################################
   #
-  #  * The table names in the SQLite database match those in the source database.
+  #  * The table names in the SQLite database match those in the source
+  #    database.
   #
   #  * The column types match as closely as possible the source table. The
   #    notable EXCEPTION is the lack of an auto-increment attribute for target

@@ -1,0 +1,24 @@
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+# See README.md for deployment path, etc.
+
+# References:
+#
+# http://www.sudo.ws/man.html
+# http://unix.stackexchange.com/questions/18877/what-is-the-proper-sudoers-syntax-to-add-a-user
+# http://askubuntu.com/questions/482932/sudo-unable-to-stat-etc-sudoers-d-readme-no-such-file-or-directory
+# http://blog.gnucom.cc/2009/configuring-nagios-to-run-privileged-or-root-commands-with-nrpe/
+# http://ubuntuforums.org/showthread.php?t=2239196
+
+# NOTE: This file should have permissions set to 0440 (octal) and have no file
+# extension, otherwise it will be ignored.
+
+# Allow cron wrapper script called by the mysql2sqlite service account
+# permission to stop, start and if needed restart the Postfix daemon. This is
+# done to safely update/replace the SQLite database used by this application.
+mysql2sqlite ALL=(ALL) NOPASSWD: /bin/systemctl stop postfix, /bin/systemctl start postfix, /bin/systemctl restart postfix
