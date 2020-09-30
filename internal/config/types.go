@@ -7,12 +7,10 @@
 
 package config
 
-import "github.com/alexflint/go-arg"
-
-// SQLQueries is a map of maps representing a collection of tables and the
-// queries used to read from a source database and write to a SQLite database.
-// Example: queries["virtual_domains"]["read"] = "SELECT * FROM virtual_domains"
-type SQLQueries map[string]map[string]string
+import (
+	"github.com/alexflint/go-arg"
+	"github.com/atc0005/mysql2sqlite/internal/dbqs"
+)
 
 type generalSettings struct {
 	TrimWhitespace       *bool `yaml:"trim_leading_trailing_whitespace"`
@@ -52,7 +50,7 @@ type configFileSettings struct {
 	MySQLConfig  mysqlConfig     `yaml:"mysql_config"`
 	SQLiteConfig sqliteConfig    `yaml:"sqlite_config"`
 	Logging      loggingConfig   `yaml:"logging"`
-	Queries      SQLQueries      `yaml:"queries"`
+	Queries      dbqs.SQLQueries `yaml:"queries"`
 }
 
 type flagSettings struct {

@@ -344,7 +344,7 @@ func main() {
 			continue
 		}
 
-		mysqlRows, readQueryErr := mysqlDB.Query(querySet[config.SQLQueriesRead])
+		mysqlRows, readQueryErr := mysqlDB.Query(querySet[dbqs.SQLQueriesRead])
 		if readQueryErr != nil {
 			nagiosExitState.LastError = readQueryErr
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
@@ -353,7 +353,7 @@ func main() {
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
 				"%s: %s query for table %s in MySQL database failed: %v",
 				nagios.StateCRITICALLabel,
-				config.SQLQueriesRead,
+				dbqs.SQLQueriesRead,
 				table,
 				readQueryErr,
 			)
@@ -373,7 +373,7 @@ func main() {
 		)
 		logConnStats()
 
-		sqliteRows, readQueryErr := sqliteDB.Query(querySet[config.SQLQueriesRead])
+		sqliteRows, readQueryErr := sqliteDB.Query(querySet[dbqs.SQLQueriesRead])
 		if readQueryErr != nil {
 			nagiosExitState.LastError = readQueryErr
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
@@ -382,7 +382,7 @@ func main() {
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
 				"%s: %s query for table %s in SQLite database failed: %v",
 				nagios.StateCRITICALLabel,
-				config.SQLQueriesRead,
+				dbqs.SQLQueriesRead,
 				table,
 				readQueryErr,
 			)
