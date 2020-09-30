@@ -1,7 +1,7 @@
 /*
 
 This repo contains various tools used to mirror MySQL database tables to
-a local SQLite and validate the results.
+a local SQLite database and validate the results.
 
 
 PROJECT HOME

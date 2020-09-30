@@ -30,25 +30,26 @@ mysql_config:
   # If specific columns are sensitive and you do not wish to mirror the field
   # values to the SQLite database, provide a placeholder value in the defined
   # SELECT statements in this file (e.g., 'NULL').
-  username: mysql2sqlite
+  username: ""
 
   # Password for the MySQL database account. Read-only access is sufficient.
-  password: qwerty
+  password: ""
 
   # MySQL database host. If you use a stunnel or other forwarded connection
   # you will likely wish to set this to 127.0.0.1 and override the default
   # port setting.
-  host: 127.0.0.1
+  host: ""
 
-  # If this script runs on the same box as the MySQL/MariaDB server then you
-  # probably want to enter 3306 here, otherwise if using stunnel or another
-  # port forwarding setup you will likely need to enter an alternate port.
+  # If the applications from this project run on the same box as the
+  # MySQL/MariaDB server then you probably want to enter 3306 here, otherwise
+  # if using stunnel or another port forwarding setup you will likely need to
+  # enter an alternate port.
   port: 3306
 
-  # The database whose contents you wish to mirror to a local SQLite database
+  # The database whose contents you wish to mirror to a local SQLite database.
   # Note: make sure to update the queries in this file to reflect the schema
   # for this database.
-  database: mailserver
+  database: ""
 
   # Driver-specific TLS connection settings.
   # https://github.com/go-sql-driver/mysql#tls
@@ -69,9 +70,11 @@ mysql_config:
   # Specified in minutes.
   max_connection_lifetime: 3
 
-  # Maximum number of connections to the MySQL allowed for this application.
+  # Maximum number of connections allowed to the source MySQL database for
+  # this application.
   max_open_connections: 10
 
+  # Maximum number of idle connections allowed to the source MySQL database.
   # Recommended to be set the same (or greater than) max_open_connections.
   max_idle_connections: 10
 

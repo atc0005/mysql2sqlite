@@ -192,6 +192,7 @@ func main() {
 		// https://github.com/mattn/go-sqlite3/issues/209
 		//
 		// TODO: (GH-10) Add config file setting for specifying the journal mode.
+		// TODO: (GH-35) Add config file setting for specifying busy timeout
 		//
 		"%s?_journal_mode=%s&_busy_timeout=1000",
 		sqliteDBFile,
