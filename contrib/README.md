@@ -69,3 +69,6 @@ before deployment.
 - logrotate
   - <https://github.com/logrotate/logrotate>
   - <http://manpages.ubuntu.com/manpages/man8/logrotate.8.html>
+
+- Nagios
+  - <https://nagios-plugins.org/doc/guidelines.html>
