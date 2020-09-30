@@ -64,7 +64,7 @@ type flagSettings struct {
 	LogFormat *string `arg:"--log-format,env:MYSQL2SQLITE_LOG_FORMAT" help:"Log messages are written in this format."`
 
 	// LogOutput is one of the standard application outputs, stdout or stderr
-	LogOutput *string `toml:"output" arg:"--log-output,env:MYSQL2SQLITE_LOG_OUTPUT" help:"Log messages are written to this output target."`
+	LogOutput *string `arg:"--log-output,env:MYSQL2SQLITE_LOG_OUTPUT" help:"Log messages are written to this output target."`
 
 	// ConfigFile represents the fully-qualified path to a configuration file
 	// consulted for settings not provided via CLI flags
