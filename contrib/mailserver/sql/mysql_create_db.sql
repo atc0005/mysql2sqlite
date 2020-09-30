@@ -6,19 +6,11 @@
    Licensed under the MIT License. See LICENSE file in the project root for
    full license information.
 
+   See README.md for deployment path, etc.
 
    Purpose: Create a database used by mailserver setup: Postfix/Dovecot/MySQL
 
    WARNING: Requires MySQL >= 5.5.3 due to length of table/field comments
-
-   WARNING: This file (and supporting scripts, tools) will likely be moved
-            to a separate, dedicated repo. If that occurs, this copy will
-            be removed and a reference entry added to the README file.
-
-   References:
-
-    See docs/references.md for details.
-
 
    Notes:
 
@@ -43,19 +35,15 @@
 */
 
 
--- Disabled by default. Remove the comment prefix for the  `DROP DATABASE`
--- below if you wish to use this in a test environment where retaining the
--- database content does not matter.
+-- Disabled by default. Remove the comment prefix for the `DROP DATABASE`
+-- statement below if you wish to use this in a test environment where
+-- retaining the database content does not matter.
 --
 -- DROP DATABASE IF EXISTS mailserver;
 
 -- https://dev.mysql.com/doc/refman/8.0/en/charset-unicode-utf8mb4.html
 CREATE DATABASE mailserver CHARACTER SET utf8mb4;
 
--- We have to either fully qualify the tables or select the mailserver database
--- as our default database when creating views. We're selecting the new database
--- as our default after creating it so we can more easily add additional views
--- later on.
 USE mailserver;
 
 

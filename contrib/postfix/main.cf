@@ -1,0 +1,411 @@
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+#
+# WARNING: This is NOT a complete Postfix configuration file. It mostly
+# contains examples of how to use the `mailserver` database referenced in
+# documentation provided by this project, but omits other important settings
+# necessary for running a Postfix mail server. Please consult the official
+# documentation at http://www.postfix.org/ or the (fantastic)
+# https://workaround.org/ispmail guide for further information.
+#
+
+# See README.md for deployment path, etc.
+
+###############################################################
+# http://www.postfix.org/postconf.5.html#soft_bounce
+#
+# Safety net to keep mail queued that would otherwise be returned to the
+# sender. This parameter disables locally-generated bounces, changes the
+# handling of negative responses from remote servers, content filters or
+# plugins, and prevents the Postfix SMTP server from rejecting mail
+# permanently by changing 5xx reply codes into 4xx. However, soft_bounce
+# is no cure for address rewriting mistakes or mail routing mistakes.
+#
+# Note: "soft_bounce = yes" is in some cases implemented by modifying
+# server responses. Therefore, the response that Postfix logs may differ
+# from the response that Postfix actually sends or receives.
+###############################################################
+
+soft_bounce = yes
+
+
+# http://www.postfix.org/postconf.5.html#alias_maps
+# alias_maps when commented, uses the default settings:
+# alias_maps = hash:/etc/aliases, nis:mail.aliases
+#
+# This allows postfix to work even without explicit alias_maps settings.
+# However the default also encumbers it with checking nis. Setting alias_maps
+# explicitly eliminates the problem:
+alias_maps =
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/local_aliases.cf,
+
+# http://www.postfix.org/postconf.5.html#alias_database
+# The alias databases for local(8) delivery that are updated with
+# "newaliases" or with "sendmail -bi".
+#
+# This is a separate configuration parameter because not all the tables
+# specified with $alias_maps have to be local files.
+#
+# NOTE:
+#   This is done to satisfy Ubuntu's post-install run of 'newaliases'.
+#   Without this, Postfix package updates fail to complete and leaves the
+#   system in a state that blocks further updates
+alias_database = hash:/etc/aliases
+
+
+
+#############################################################
+# Perform address cleanup for the null-client configuration
+# that our systems use when relaying mail through this server
+#############################################################
+
+
+# http://www.postfix.org/ADDRESS_REWRITING_README.html#canonical
+# http://www.postfix.org/postconf.5.html#permit_inet_interfaces
+# http://www.postfix.org/smtpd.8.html
+# http://www.postfix.org/postconf.5.html#inet_interfaces
+# http://www.postfix.org/canonical.5.html
+#
+# Rewrite message header addresses in mail from these clients and
+# update incomplete addresses with the domain name in $myorigin or
+# $mydomain; either don't rewrite message headers from other
+# clients at all, or rewrite message headers and update incomplete
+# addresses with the domain specified in the
+# remote_header_rewrite_domain parameter.
+#
+# The default value is 'permit_inet_interfaces', which permits the
+# request when the client IP address matches $inet_interfaces. Here we specify
+# 'permit_mynetworks' to explicitly allow rewriting for this system and we use
+# the 'check_address_map' to apply rewriting for mail that this box relays.
+local_header_rewrite_clients =
+
+    permit_inet_interfaces,
+    permit_mynetworks,
+
+    # Append the domain name in $myorigin or $mydomain when the client IP
+    # address matches the specified lookup table. The lookup result is ignored,
+    # and no subnet lookup is done.
+    check_address_map proxy:sqlite:/etc/postfix/lookup_tables/sqlite/relay_access.cf
+
+
+# Optional BCC (blind carbon-copy) address lookup tables, indexed by sender
+# address. The BCC address (multiple results are not supported) is added when
+# mail enters from outside of Postfix.
+sender_bcc_maps = proxy:sqlite:/etc/postfix/lookup_tables/sqlite/sender_bcc_maps.cf
+
+
+# The same as with the sender_bcc_maps, but for recipient addresses instead
+# of sender addresses.
+recipient_bcc_maps = proxy:sqlite:/etc/postfix/lookup_tables/sqlite/recipient_bcc_maps.cf
+
+
+
+# http://www.postfix.org/postconf.5.html#sender_dependent_default_transport_maps
+# sender_dependent_default_transport_maps (default: empty)
+#
+# A sender-dependent override for the global default_transport parameter
+# setting. The tables are searched by the envelope sender address and
+# @domain. A lookup result of DUNNO terminates the search without overriding
+# the global default_transport parameter setting. This information is
+# overruled with the transport(5) table.
+#
+# Note: These users are mapped to the 'nodelay-smtp' service configured within
+# master.cf
+sender_dependent_default_transport_maps =
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/sender_dependent_default_transport_maps.cf
+
+
+
+#########################################################################
+# MESSAGE DELIVERY THROTTLING: Go slow by default, override as needed
+#########################################################################
+
+
+# http://www.postfix.org/postconf.5.html#default_transport_rate_delay
+#
+# default_transport_rate_delay (default: 0s)
+#
+# The default amount of delay that is inserted between individual deliveries
+# over the same message delivery transport, regardless of destination. If
+# non-zero, all deliveries over the same message delivery transport will
+# happen one at a time.
+#
+# Use TRANSPORT_transport_rate_delay to specify a transport-specific override,
+# where the initial TRANSPORT is the master.cf name of the message delivery
+# transport.
+#
+# Example: throttle outbound SMTP mail to at most 3 deliveries per minute.
+#
+#
+# /etc/postfix/main.cf:
+#    smtp_transport_rate_delay = 20s
+#
+# To enable the delay, specify a non-zero time value (an integral value plus
+# an optional one-letter suffix that specifies the time unit).
+#
+# Time units: s (seconds), m (minutes), h (hours), d (days), w (weeks).
+# The default time unit is s (seconds).
+#
+# NOTE: the delay is enforced by the queue manager.
+#
+# This feature is available in Postfix 3.1 and later (Ubuntu 16.04+)
+default_transport_rate_delay = 5s
+nodelay-smtp_transport_rate_delay = 0s
+
+# No delay for local transport items (e.g., haproxy-smtp-check emails
+# that are sent to /dev/null)
+local_transport_rate_delay = 0s
+
+
+# Clients that are excluded from smtpd_client_*_count/rate_limit restrictions.
+#
+# http://www.postfix.org/TUNING_README.html#conn_limit
+# http://www.postfix.org/postconf.5.html#smtpd_client_event_limit_exceptions
+# (default: $mynetworks)
+smtpd_client_event_limit_exceptions =
+    $mynetworks,
+
+    # HAProxy load balancer
+    192.168.2.15
+
+
+
+##########################################################
+#
+# proxymap - Postfix lookup table proxy server
+#
+# http://www.postfix.org/proxymap.8.html
+#
+##########################################################
+#
+# The  proxymap(8) server provides read-only or read-write table lookup
+# service to Postfix processes. These services are implemented with
+# distinct service names: proxymap and proxywrite, respectively. One of the
+# puproses of these services is:
+#
+#   To consolidate the number of open lookup tables by sharing one
+#   open table among multiple processes. For example, making mysql
+#   connections from every Postfix daemon process results in "too
+#   many connections" errors. The solution:
+#
+#   virtual_alias_maps =
+#       proxy:sqlite:/etc/postfix/virtual_alias.cf
+#
+#   The total number of connections is limited by the number of
+#   proxymap server processes.
+#
+proxy_read_maps =
+
+    # Values of postconf -d proxy_read_maps - need to find a way to keep in sync
+    # with Postfix version upgrades
+    #
+    # postconf -d proxy_read_maps | sed 's/ /,\n    /g' | grep '\$'
+    #
+    $local_recipient_maps,
+    $mydestination,
+    $virtual_alias_maps,
+    $virtual_alias_domains,
+    $virtual_mailbox_maps,
+    $virtual_mailbox_domains,
+    $relay_recipient_maps,
+    $relay_domains,
+    $canonical_maps,
+    $sender_canonical_maps,
+    $recipient_canonical_maps,
+    $relocated_maps,
+    $transport_maps,
+    $mynetworks,
+    $smtpd_sender_login_maps,
+    $sender_bcc_maps,
+    $recipient_bcc_maps,
+    $smtp_generic_maps,
+    $lmtp_generic_maps,
+    $alias_maps,
+    $smtpd_client_restrictions,
+    $smtpd_helo_restrictions,
+    $smtpd_sender_restrictions,
+    $smtpd_relay_restrictions,
+    $smtpd_recipient_restrictions,
+    $address_verify_sender_dependent_default_transport_maps,
+    $address_verify_sender_dependent_relayhost_maps,
+    $address_verify_transport_maps,
+    $fallback_transport_maps,
+    $lmtp_discard_lhlo_keyword_address_maps,
+    $lmtp_pix_workaround_maps,
+    $lmtp_sasl_password_maps,
+    $lmtp_tls_policy_maps,
+    $mailbox_command_maps,
+    $mailbox_transport_maps,
+    $postscreen_discard_ehlo_keyword_address_maps,
+    $rbl_reply_maps,
+    $sender_dependent_default_transport_maps,
+    $sender_dependent_relayhost_maps,
+    $smtp_discard_ehlo_keyword_address_maps,
+    $smtp_pix_workaround_maps,
+    $smtp_sasl_password_maps,
+    $smtp_tls_policy_maps,
+    $smtpd_discard_ehlo_keyword_address_maps,
+    $smtpd_milter_maps,
+    $virtual_gid_maps,
+    $virtual_uid_maps,
+
+    # Custom entries
+    #
+    # TODO: Make sure to maintain this so that it includes ALL MySQL, SQLite,
+    # etc lookup tables
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/local_aliases.cf,
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/recipient_access.cf,
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/sender_access.cf,
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/client_access.cf,
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/relay_access.cf,
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/sender_bcc_maps.cf,
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/recipient_bcc_maps.cf,
+    proxy:sqlite:/etc/postfix/lookup_tables/sqlite/sender_dependent_default_transport_maps.cf
+
+
+##########################################################
+# RESTRICTION LISTS & RELATED OPTIONS
+# http://www.postfix.org/SMTPD_ACCESS_README.html
+##########################################################
+
+# http://www.postfix.org/postconf.5.html#smtpd_delay_reject
+smtpd_delay_reject = yes
+
+# Log all "permit" actions. This will contain the name of the lookup table
+# configuration files which reference our SQLite database.
+smtpd_log_access_permit_actions = static:all
+
+
+
+
+# http://www.postfix.org/postconf.5.html#smtpd_relay_restrictions
+#
+# Access restrictions for mail relay control that the Postfix SMTP server
+# applies in the context of the RCPT TO command, before
+# smtpd_recipient_restrictions. See SMTPD_ACCESS_README, section
+# "Delayed evaluation of SMTP access restriction lists" for a discussion of
+# evaluation context and time.
+#
+# With Postfix versions before 2.10, the rules for relay permission and spam
+# blocking were combined under smtpd_recipient_restrictions, resulting in
+# error-prone configuration. As of Postfix 2.10, relay permission rules are
+# preferably implemented with smtpd_relay_restrictions, so that a permissive
+# spam blocking policy under smtpd_recipient_restrictions will no longer
+# result in a permissive mail relay policy.
+#
+smtpd_relay_restrictions =
+
+    # Permit the request when the client IP address matches any network or
+    # network address listed in $mynetworks.
+    permit_mynetworks,
+
+    # Explicitly rejecting, holding or permitting emails for specific addresses
+    # http://www.postfix.org/postconf.5.html#check_recipient_access
+    #
+    # Note: This is used here in addition to the 'smtpd_recipient_restrictions'
+    # section below in order to explicitly override the default
+    # soft rejection that we apply by way of the 'soft_bounce = yes' setting.
+    check_recipient_access proxy:sqlite:/etc/postfix/lookup_tables/sqlite/recipient_access.cf,
+
+    # Reject the request when the MAIL FROM address is in a format that
+    # is not in fully-qualified domain form as required by the RFC.
+    #
+    # This setting is enabled in an effort to prevent users generating
+    # email via web applications running on our servers that is missing
+    # a valid FROM address. The goal is to soft reject those email attempts
+    # so that they queue up on the sending node. Nagios should alert us
+    # to the queued mail and we can focus our troubleshooting efforts
+    # directly on the sending node responsible for generating the email.
+    reject_non_fqdn_sender,
+
+    #############################################################
+    # MAIL RELAY WHITELIST
+    #############################################################
+
+    # Permit the request when the client IP address matches any network or
+    # network address listed in the mail_relay_whitelist database table.
+    check_client_access proxy:sqlite:/etc/postfix/lookup_tables/sqlite/relay_access.cf,
+
+    # Reject the request unless one of the following is true:
+    #
+    #  * POSTFIX IS MAIL FORWARDER
+    #
+    #      The resolved RCPT TO domain matches $relay_domains or a subdomain
+    #      thereof, and contains no sender-specified
+    #      routing (user@elsewhere@domain)
+    #
+    #  * POSTFIX IS THE FINAL DESTINATION
+    #
+    #      The resolved RCPT TO domain matches:
+    #         * $mydestination
+    #         * $inet_interfaces
+    #         * $proxy_interfaces
+    #         * $virtual_alias_domains
+    #         * $virtual_mailbox_domains
+    #
+    #      and contains no sender-specified routing (user@elsewhere@domain).
+    #
+    # The relay_domains_reject_code parameter specifies the response code for
+    # rejected requests (default: 554).
+    reject_unauth_destination,
+
+#######WARNING#######WARNING#######WARNING#######WARNING########
+# The rules are evaulated IN ORDER with the first match ending #
+# evaulation (unless 'warn_if_reject' is used)                 #
+##############WARNING#######WARNING#######WARNING#######WARNING#
+
+smtpd_recipient_restrictions =
+
+    # See 'smtpd_relay_restrictions' for relay restrictions which were normally
+    # applied here in versions of Postfix prior to v2.10.
+
+
+    #######WARNING#######WARNING#######WARNING#######WARNING########
+    # The rules are evaulated IN ORDER with the first match ending #
+    # evaulation (unless 'warn_if_reject' is used)                 #
+    ##############WARNING#######WARNING#######WARNING#######WARNING#
+
+
+    # Permit the request when the client IP address matches any network or
+    # network address listed in $mynetworks.
+    permit_mynetworks,
+
+
+    #########################################
+    #   Whitelist/Blacklist rules
+    #########################################
+
+    # Explicitly rejecting, holding or permitting emails for specific addresses
+    # http://www.postfix.org/postconf.5.html#check_recipient_access
+    check_recipient_access proxy:sqlite:/etc/postfix/lookup_tables/sqlite/recipient_access.cf,
+
+    # Explicitly reject or allow senders (workaround bad mail server setups, etc)
+    # http://www.postfix.org/postconf.5.html#check_sender_access
+    check_sender_access
+
+        # Other checks/actions
+        proxy:sqlite:/etc/postfix/lookup_tables/sqlite/sender_access.cf,
+
+    # Explicitly reject or allow clients (which includes other mail servers)
+    # http://www.postfix.org/postconf.5.html#check_client_access
+    check_client_access proxy:sqlite:/etc/postfix/lookup_tables/sqlite/client_access.cf
+
+
+
+# Default list (postconf -d smtpd_data_restrictions)
+smtpd_data_restrictions =
+
+
+# Default list (postconf -d smtpd_end_of_data_restrictions)
+smtpd_end_of_data_restrictions =
+
+# Default list is empty (postconf -d smtpd_end_of_data_restrictions)
+#
+# http://www.postfix.org/ETRN_README.html#dirty_secret
+# http://www.postfix.org/postconf.5.html#smtpd_etrn_restrictions
+smtpd_etrn_restrictions = permit_mynetworks, reject

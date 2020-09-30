@@ -7,13 +7,15 @@
    Licensed under the MIT License. See LICENSE file in the project root for
    full license information.
 
+   See README.md for deployment path, etc.
+
 */
 
 -- Notes:
 --
 --  * Skipping insertion for columns with 'default' values
 --  * Intentionally inserting table entries with leading
---    and trailing spaces to force script(s) to deal with
+--    and trailing spaces to force applications to deal with
 --    problematic data.
 
 INSERT INTO `mailserver`.`virtual_domains`

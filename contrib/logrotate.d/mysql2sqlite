@@ -1,0 +1,44 @@
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+# See README.md for deployment path, etc.
+
+# NOTE: We create the log file as the `mysql2sqlite` user account because that
+# is the account that the cron job runs under. We explicitly define that here
+# to help communicate that requirement. The log directory is owned by user
+# `mysql2sqlite` and group `mysql2sqlite`, permissions 0750.
+/var/log/mysql2sqlite/cron.log
+{
+    daily
+    dateext
+    compress
+
+    # As of this writing rsyslog is not ingesting the file, but we may opt to
+    # do so in the future. At that point we can add the syslog user to this
+    # group, or consider using ACLs.
+    create 0640 mysql2sqlite mysql2sqlite
+}
+
+# The Nagios check_mysql2sqlite check definition runs as the `nagios` user
+# account. This account needs access to enter the directory and write access
+# to the log file. That user account is currently in the `mysql2sqlite` group
+# and access is granted by way of membership in that group.
+/var/log/mysql2sqlite/nagios.log
+{
+    daily
+    dateext
+    compress
+
+    # As of this writing rsyslog is not ingesting the file, but we may opt to
+    # do so in the future. At that point we can add the syslog user to this
+    # group, or consider using ACLs. The NRPE daemon runs as the `nagios` user
+    # account. The `nagios` user account is a member of the `mysql2sqlite`
+    # group. That group needs write access to the log file in order to update
+    # it with plugin output. We explicitly set group and group permissions on
+    # the log file to permit that access.
+    create 0660 mysql2sqlite mysql2sqlite
+}

@@ -1,0 +1,51 @@
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+# See README.md for deployment path, etc.
+
+# Purpose: Whitelist or blacklist senders based on the MAIL FROM address
+
+##############################################################################
+# Search the specified access(5) database for the MAIL FROM address, domain,
+# parent domains, or localpart@, and execute the corresponding action.
+##############################################################################
+
+# MAIL FROM address is the:
+#
+# *  envelope sender address
+#
+# *  where bounces will be sent
+#
+# *  the value for Return-Path field once it arrives at the destination. In
+#    other words, it is not part of the message header during SMTP
+#    transport, but it is added by the MDA (mail delivery agent) during
+#    delivery.
+#
+# *  the address that will receive bounces to messages from the MTA, if
+#    the To: address doesn't exist.
+
+# References:
+
+#  http://www.postfix.org/access.5.html
+#  http://www.postfix.org/postconf.5.html#check_sender_access
+#  http://www.packtpub.com/linux-email/book
+#  http://www.postfix.org/DATABASE_README.html
+#  http://www.postfix.org/sqlite_table.5.html
+#  https://github.com/atc0005/mysql2sqlite
+
+# NOTE: This file should be accessible by only root and postfix users
+#
+#   sudo chown -v root:postfix /etc/postfix/lookup_tables/sqlite/*.cf
+#   sudo chmod -v u=rw,g=r,o= /etc/postfix/lookup_tables/sqlite/*.cf
+
+dbpath = /var/cache/mysql2sqlite/mailserver.db
+
+query =
+    SELECT action
+    FROM access_check_senders
+    WHERE sender = '%s'
+    AND enabled = '1';

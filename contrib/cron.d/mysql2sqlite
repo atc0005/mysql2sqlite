@@ -1,0 +1,36 @@
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+# See README.md for deployment path, etc.
+
+# ------------------------------------------------------------------------------------------
+# minute    hour    dom     month   dow   user      command
+# ------------------------------------------------------------------------------------------
+
+# Generate fresh copy of the /var/cache/mysql2sqlite/mailserver.db file every
+# 15 minutes. See doc comments in the wrapper script for expected directory,
+# file owner, group and permissions.
+*/15          *       *       *       *     mysql2sqlite      /usr/local/sbin/mysql2sqlite_wrapper.sh
+
+
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+
+# http://manpages.ubuntu.com/manpages/precise/man5/crontab.5.html
+#
+# cron requires that each entry in a crontab end in a newline character.
+# If the last entry in a crontab is missing a newline (ie, terminated  by
+# EOF), cron will consider the crontab (at least partially) broken. A
+# warning will be written to syslog. In other words, make sure to leave the
+# trailing newline at the end of this file.
