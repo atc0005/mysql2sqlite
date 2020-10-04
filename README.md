@@ -95,12 +95,19 @@ been tested.
 
 ### Building source code
 
+These requirements are specific to Debian/Ubuntu-based distros. Packages will
+likely be named differently for other distributions.
+
 - Go 1.14+
 - `CGO_ENABLED=1` environment variable (if not set by default)
   - requirement of SQLite database driver used
 - `GCC`
+- `GCC multilib`
+- `GCC for Windows` (`mingw-w64`)
 - `make`
   - if using the provided `Makefile`
+
+See the [build](docs/build.md) instructions for more information.
 
 ### Running
 

@@ -80,7 +80,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2.3.3
 
-      - name: Build using vendored dependencies
+      - name: Build using vendored dependencies and explicitly enabled CGO
         run: |
-          go build -v -mod=vendor ./cmd/mysql2sqlite
-          go build -v -mod=vendor ./cmd/check_mysql2sqlite
+          CGO_ENABLED=1 go build -v -mod=vendor ./cmd/mysql2sqlite
+          CGO_ENABLED=1 go build -v -mod=vendor ./cmd/check_mysql2sqlite
