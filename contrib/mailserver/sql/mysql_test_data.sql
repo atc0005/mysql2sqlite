@@ -19,10 +19,10 @@
 --    problematic data.
 
 INSERT INTO `mailserver`.`virtual_domains`
-  (`id` ,`name`)
+  (`id`, `name`, `ticket_number`)
 VALUES
-  ('1', 'example.com'),
-  ('2', 'example.net')
+  ('1', 'example.com', 12345),
+  ('2', 'example.net', 12345)
 ;
 
 
