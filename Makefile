@@ -64,6 +64,11 @@ VERSION 				:= $(shell git describe --always --long --dirty)
 #	Use pure Go implementation of user and group id/name resolution.
 #	Use pure Go implementation of DNS resolver.
 #
+# -trimpath
+#	https://golang.org/cmd/go/
+#   removes all file system paths from the compiled executable, to improve
+#   build reproducibility.
+#
 # -extldflags '-static'
 #	Pass 'static' flag to external linker.
 #
@@ -81,7 +86,7 @@ VERSION 				:= $(shell git describe --always --long --dirty)
 #   explicitly to use CGO for multiple architectures.
 BUILD_LDFLAGS_COMMON	:= -s -w -X $(VERSION_VAR_PKG).Version=$(VERSION)
 BUILD_LDFLAGS_STATIC	:= -linkmode=external -extldflags '-static'
-BUILDCMD_COMMON			:= CGO_ENABLED=1 go build -mod=vendor -a
+BUILDCMD_COMMON			:= CGO_ENABLED=1 go build -mod=vendor -a -trimpath
 BUILDCMD_STATIC			:= $(BUILDCMD_COMMON) -tags 'osusergo,netgo,sqlite_omit_load_extension' -ldflags "$(BUILD_LDFLAGS_STATIC) $(BUILD_LDFLAGS_COMMON)"
 BUILDCMD_DYNAMIC		:= $(BUILDCMD_COMMON) -ldflags "$(BUILD_LDFLAGS_COMMON)"
 
