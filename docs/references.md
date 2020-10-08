@@ -46,6 +46,10 @@ absolutely essential) while developing this application.
   - <http://mingw-w64.org/>
   - <https://www.msys2.org/>
 
+- Docker
+  - <https://hub.docker.com/_/golang>
+    - provides base images that the `atc0005/go-ci` images build upon
+
 - Libraries/packages
   - Configuration
     - <https://github.com/alexflint/go-arg>
@@ -55,6 +59,16 @@ absolutely essential) while developing this application.
   - Go database drivers (see also `go.mod`)
     - <https://github.com/go-sql-driver/mysql>
     - <https://github.com/mattn/go-sqlite3>
+
+- cgo
+  - <https://golang.org/cmd/cgo/>
+  - <https://blog.golang.org/cgo>
+  - <https://github.com/golang/go/wiki/cgo>
+  - <https://dave.cheney.net/2016/01/18/cgo-is-not-go>
+
+- Go / Static compilation
+  - <https://github.com/golang/go/issues/26492>
+  - <https://github.com/golang/go/issues/18773#issuecomment-274975226>
 
 ### Instruction / Examples
 
@@ -85,3 +99,5 @@ absolutely essential) while developing this application.
 ### Related projects
 
 - <https://github.com/atc0005/go-nagios>
+- <https://github.com/atc0005/go-ci>
+  - provides Docker images used for musl libc static builds via `Makefile`

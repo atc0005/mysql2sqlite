@@ -1,0 +1,33 @@
+---
+# Copyright 2020 Adam Chalkley
+#
+# https://github.com/atc0005/mysql2sqlite
+#
+# Licensed under the MIT License. See LICENSE file in the project root for
+# full license information.
+
+# Purpose: Batch build static binaries from this project's source code.
+
+# Usage:
+#
+# Copy this file to the root of the repo and run it via `docker-compose up`.
+# This will kick off two parallel builds and thoroughly thrash the build
+# system. The upside is that this *may* better utilize multiple cores vs
+# spinning up one container at a time.
+
+version: "2"
+
+services:
+  mysql2sqlite-x86:
+    image: atc0005/go-ci:go-ci-stable-alpine-buildx86
+    volumes:
+      - "./:/src"
+    working_dir: "/src"
+    entrypoint: ["make", "windows-x86-static", "linux-x86-static"]
+
+  mysql2sqlite-x64:
+    image: atc0005/go-ci:go-ci-stable-alpine-buildx64
+    volumes:
+      - "./:/src"
+    working_dir: "/src"
+    entrypoint: ["make", "windows-x64-static", "linux-x64-static"]
