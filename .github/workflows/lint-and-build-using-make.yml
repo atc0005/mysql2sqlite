@@ -127,8 +127,12 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - name: Print go version
-        run: go version
+      # This doesn't apply here; were we to execute this, it would show us the
+      # Go version provided by the GitHub Actions environment (VM) and not our
+      # Docker images.
+      #
+      # - name: Print go version
+      #   run: go version
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2.3.3
