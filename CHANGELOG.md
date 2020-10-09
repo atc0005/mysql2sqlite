@@ -26,6 +26,64 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.1] - 2020-10-09
+
+### Added
+
+- New Makefile recipes
+  - `all-static`
+  - `linux`
+  - `linux-static`
+  - `linux-x86`
+  - `linux-x86-static`
+  - `linux-x64`
+  - `linux-x64-static`
+  - `windows`
+  - `windows-x86`
+  - `windows-x86-static`
+  - `windows-x64`
+  - `windows-x64-static`
+  - `docker`
+  - NOTE: If `static` suffix isn't present, the recipe produces dynamic
+    executables
+
+- Static builds
+  - created via `docker` Makefile recipe
+  - available via various other `-static` suffixed Makefile recipes
+  - linked to musl libc
+    - Aline package version `1.1.24-r9`
+      - bundled within `atc0005/go-ci` project containers
+        - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.2.7-0-gcbb8139`
+        - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.2.7-0-gcbb8139`
+      - provided indirectly by `golang:1.15.2-alpine3.12` and
+        `i386/golang:1.15.2-alpine3.12` base containers
+
+### Changed
+
+- GitHub Actions Workflows
+  - `Lint and Build using Makefile`
+    - `Build dynamically linked binaries using Makefile`
+    - `Build statically linked binaries using Makefile`
+      - glibc based, tossed after build
+    - `Build static binaries using Docker images`
+      - musl libc based, tossed after build
+  - `Validate Codebase`
+    - `Build codebase`
+      - explicit `CGO_ENABLED=1` environment variable set for build commands
+- Add `-trimpath` build flag
+- Dependencies
+  - `mattn/go-sqlite3`
+    - `1.14.3` to `1.14.4`
+  - `actions/setup-node`
+    - `v2.1.1` to `v2.1.2`
+
+### Fixed
+
+- Windows builds are broken
+  - cgo was not enabled
+- Fix insert statement for MySQL test data
+  - worked with MariaDB 10.0.x, failed with MariaDB 10.1.x
+
 ## [v0.1.0] - 2020-09-30
 
 Initial release!
@@ -54,5 +112,6 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.1...HEAD
+[v0.1.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.1
 [v0.1.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.0
