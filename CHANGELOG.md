@@ -83,6 +83,9 @@ The following types of changes will be recorded in this file:
   - cgo was not enabled
 - Fix insert statement for MySQL test data
   - worked with MariaDB 10.0.x, failed with MariaDB 10.1.x
+- Go version provided by GitHub Actions virtual environment printed
+  - this inferred that the version of Go used for the `Build static binaries
+    using Docker images` job was older than it actually is
 
 ## [v0.1.0] - 2020-09-30
 
