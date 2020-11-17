@@ -26,6 +26,36 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.2] - 2020-11-17
+
+### Changed
+
+- Dependencies
+  - built using Go 1.15.5
+    - **Statically linked**
+    - created via `docker` Makefile recipe
+    - linked to musl libc
+      - Alpine package version `1.1.24-r9`
+        - bundled within `atc0005/go-ci` project containers
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.2.14-0-ge9c045f`
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.2.14-0-ge9c045f`
+    - Windows
+      - x86
+      - x64
+    - Linux
+      - x86
+      - x64
+  - `mattn/go-sqlite3`
+    - `1.14.4` to `1.14.5`
+  - `atc0005/go-nagios`
+    - `v0.5.1` to `v0.5.2`
+  - `actions/checkout`
+    - `v2.3.3` to `v2.3.4`
+
+### Fixed
+
+- Typo in prior CHANGELOG entry
+
 ## [v0.1.1] - 2020-10-09
 
 ### Added
@@ -51,7 +81,7 @@ The following types of changes will be recorded in this file:
   - created via `docker` Makefile recipe
   - available via various other `-static` suffixed Makefile recipes
   - linked to musl libc
-    - Aline package version `1.1.24-r9`
+    - Alpine package version `1.1.24-r9`
       - bundled within `atc0005/go-ci` project containers
         - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.2.7-0-gcbb8139`
         - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.2.7-0-gcbb8139`
@@ -115,6 +145,7 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.2...HEAD
+[v0.1.2]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.2
 [v0.1.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.1
 [v0.1.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.0
