@@ -26,6 +26,42 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.3] - 2021-01-21
+
+### Changed
+
+- Builds
+  - Force latest container image to be used for builds
+
+- Dependencies
+  - built using Go 1.15.7
+    - **Statically linked**
+    - created via `docker` Makefile recipe
+    - linked to musl libc
+      - Alpine package version `1.1.24-r10`
+        - bundled within `atc0005/go-ci` project containers
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.3.7-0-g6d59440`
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.3.7-0-g6d59440`
+    - Windows
+      - x86
+      - x64
+    - Linux
+      - x86
+      - x64
+  - `mattn/go-sqlite3`
+    - `1.14.5` to `1.14.6`
+  - `atc0005/go-nagios`
+    - `v0.5.2` to `v0.6.0`
+  - `actions/setup-node`
+    - `v2.1.2` to `v2.1.4`
+  - `gopkg.in/yaml.v2`
+    - `v2.3.0` to `v2.4.0`
+
+### Fixed
+
+- Invalid `err` variable reference
+- Inconsistent use of `err` variable, custom named error variables
+
 ## [v0.1.2] - 2020-11-17
 
 ### Changed
@@ -145,7 +181,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.3...HEAD
+[v0.1.3]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.3
 [v0.1.2]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.2
 [v0.1.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.1
 [v0.1.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.0
