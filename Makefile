@@ -305,14 +305,17 @@ linux-x64-static: linux-x64
 .PHONY: docker
 ## docker: generates assets for Linux distros and Windows using Docker
 docker: clean
-	@docker run \
+	docker version
+	@docker image pull $(DOCKER_BUILD_IMG_X86)
+	@docker container run \
 		--rm \
 		-i \
 		-v $$PWD:$$PWD \
 		-w $$PWD \
 		$(DOCKER_BUILD_IMG_X86) \
 		make windows-x86-static linux-x86-static
-	@docker run \
+	@docker image pull $(DOCKER_BUILD_IMG_X64)
+	@docker container run \
 		--rm \
 		-i \
 		-v $$PWD:$$PWD \
