@@ -284,15 +284,15 @@ func main() {
 
 		mysqlRowsCount, rowsCountErr := dbqs.RowsCount(mysqlDB, table)
 		if rowsCountErr != nil {
-			nagiosExitState.LastError = err
+			nagiosExitState.LastError = rowsCountErr
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
-			log.Error(err.Error())
+			log.Error(rowsCountErr.Error())
 
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to retrieve rows count for table %s in MySQL database: %v",
 				nagios.StateCRITICALLabel,
 				table,
-				err,
+				rowsCountErr,
 			)
 
 			return
@@ -301,15 +301,15 @@ func main() {
 
 		sqliteRowsCount, rowsCountErr := dbqs.RowsCount(sqliteDB, table)
 		if rowsCountErr != nil {
-			nagiosExitState.LastError = err
+			nagiosExitState.LastError = rowsCountErr
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
-			log.Error(err.Error())
+			log.Error(rowsCountErr.Error())
 
 			nagiosExitState.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to retrieve rows count for table %s in SQLite database: %v",
 				nagios.StateCRITICALLabel,
 				table,
-				err,
+				rowsCountErr,
 			)
 
 			return
