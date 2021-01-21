@@ -28,6 +28,7 @@ Mirror MySQL database tables to local SQLite database.
   - [Build applications](#build-applications)
   - [Deploy applications](#deploy-applications)
   - [Configure applications](#configure-applications)
+  - [Wrap-up](#wrap-up)
 - [License](#license)
 - [References](#references)
 
@@ -143,6 +144,10 @@ See the [deployment](docs/deploy.md) documentation for details.
 ### Configure applications
 
 See the [configure](docs/configure.md) doc for details.
+
+### Wrap-up
+
+See the [wrap-up](docs/wrap-up.md) doc for remaining steps.
 
 ## License
 

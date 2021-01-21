@@ -23,6 +23,10 @@
   - [Deploy logrotate config fragment](#deploy-logrotate-config-fragment)
   - [Deploy cron config fragment](#deploy-cron-config-fragment)
   - [Deploy Nagios "client" configuration file](#deploy-nagios-client-configuration-file)
+  - [Postfix](#postfix)
+    - [Install Support packages](#install-support-packages)
+    - [Deploy lookup table config fragments](#deploy-lookup-table-config-fragments)
+    - [Restart Postfix to apply changes](#restart-postfix-to-apply-changes)
 
 ## Overview
 
@@ -226,3 +230,33 @@ will be executed.
 1. Restart the `nrpe` daemon
    - Debian-based: `sudo service nagios-nrpe-server restart`
    - RedHat-based: `sudo service nrpe restart`
+
+### Postfix
+
+#### Install Support packages
+
+These directions assume that an existing Postfix installation is present,
+likely with MySQL support packages already installed. At this point the next
+step is to install the support packages necessary for Postfix to query SQLite
+databases for lookup table information.
+
+1. `sudo apt-get update`
+1. `sudo apt-get install postfix-mysql`
+   - on the chance that the package is not already present
+1. `sudo apt-get install postfix-sqlite`
+
+#### Deploy lookup table config fragments
+
+Once the Postfix SQLite support package is installed, we need to deploy the
+lookup table config fragments which instruct Postfix how to find the database
+and what queries to use to obtain lookup table information. As is the case for
+the rest of these directions, the exact steps needed for your environment will
+vary.
+
+1. `sudo mkdir -vp /etc/postfix/lookup_tables/sqlite`
+1. Deploy all `postfix/lookup_tables/sqlite/*.cf` files to
+   `/etc/postfix/lookup_tables/sqlite/`
+
+#### Restart Postfix to apply changes
+
+1. `sudo systemctl restart postfix`
