@@ -33,7 +33,7 @@ jobs:
           rm -vf .golangci.yml
 
       - name: Run golangci-lint using container-provided config file settings
-        run: golangci-lint run -v
+        run: golangci-lint run -v --timeout 2m
 
       - name: Run all tests
         run: go test -mod=vendor -v ./...

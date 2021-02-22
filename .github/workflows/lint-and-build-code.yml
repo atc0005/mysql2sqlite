@@ -35,7 +35,7 @@ jobs:
           rm -vf .golangci.yml
 
       - name: Run golangci-lint using container-provided config file settings
-        run: golangci-lint run -v
+        run: golangci-lint run -v --timeout 2m
 
       # This is the very latest stable version of staticcheck provided by the
       # atc0005/go-ci container. The version included with golangci-lint often
