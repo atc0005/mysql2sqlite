@@ -38,6 +38,7 @@ func (c *Config) loadConfigFile(configFile string) (bool, error) {
 			if !errors.Is(err, os.ErrClosed) {
 				log.Errorf(
 					"loadConfigFile: failed to close file %q: %s",
+					configFile,
 					err.Error(),
 				)
 			}
