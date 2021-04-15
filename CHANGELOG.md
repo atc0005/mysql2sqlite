@@ -26,6 +26,42 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.4] - 2021-04-15
+
+### Overview
+
+- Bug fixes
+- Dependency updates
+- built using Go 1.16.3
+
+### Changed
+
+- Replace godoc.org badge with pkg.go.dev badge
+
+- Dependencies
+  - built using Go 1.16.3
+    - **Statically linked**
+    - created via `docker` Makefile recipe
+    - linked to musl libc
+      - Alpine package version `1.1.24-r10`
+        - bundled within `atc0005/go-ci` project containers
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.3.20-0-ge80ea25`
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.3.20-0-ge80ea25`
+    - Windows (x86, x64)
+    - Linux (x86, x64)
+  - `go-sql-driver/mysql`
+    - `v1.5.0` to `v1.6.0`
+  - `mattn/go-sqlite3`
+    - `1.14.6` to `1.14.7`
+  - `actions/setup-node`
+    - `v2.1.4` to `v2.1.5`
+
+### Fixed
+
+- Add doc coverage for manual first run requirement
+- Increase golangci-lint timeout from 1m default
+- Add missing log.Errorf() parameter
+
 ## [v0.1.3] - 2021-01-21
 
 ### Changed
@@ -181,7 +217,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.4...HEAD
+[v0.1.4]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.4
 [v0.1.3]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.3
 [v0.1.2]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.2
 [v0.1.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.1
