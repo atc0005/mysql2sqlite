@@ -30,15 +30,15 @@ mysql_config:
   # If specific columns are sensitive and you do not wish to mirror the field
   # values to the SQLite database, provide a placeholder value in the defined
   # SELECT statements in this file (e.g., 'NULL').
-  username: ""
+  username: "PLACEHOLDER"
 
   # Password for the MySQL database account. Read-only access is sufficient.
-  password: ""
+  password: "PLACEHOLDER"
 
   # MySQL database host. If you use a stunnel or other forwarded connection
   # you will likely wish to set this to 127.0.0.1 and override the default
   # port setting.
-  host: ""
+  host: "PLACEHOLDER"
 
   # If the applications from this project run on the same box as the
   # MySQL/MariaDB server then you probably want to enter 3306 here, otherwise
