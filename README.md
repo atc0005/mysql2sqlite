@@ -186,8 +186,4 @@ Various references used when developing this project can be found in our
 
 [repo-url]: <https://github.com/atc0005/mysql2sqlite>  "This project's GitHub repo"
 
-[go-docs-download]: <https://golang.org/dl>  "Download Go"
-
-[go-docs-install]: <https://golang.org/doc/install>  "Install Go"
-
 <!-- []: PLACEHOLDER "DESCRIPTION_HERE" -->
