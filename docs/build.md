@@ -82,3 +82,7 @@ periodically provides binaries as part of new releases. If binaries for your
 platform are not provided, please [file an
 issue](https://github.com/atc0005/mysql2sqlite/issues/new) so that we may
 evaluate the requirements for providing those binaries with future releases.
+
+[go-docs-download]: <https://golang.org/dl>  "Download Go"
+
+[go-docs-install]: <https://golang.org/doc/install>  "Install Go"
