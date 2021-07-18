@@ -26,6 +26,49 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.5] - 2021-07-18
+
+### Overview
+
+- Add tests
+- Bug fixes
+- Dependency updates
+- built using Go 1.16.6
+
+### Added
+
+- Add "canary" Dockerfile to track stable Go releases, serve as a reminder to
+  generate fresh binaries
+- Add tests to assert presence of custom flags
+
+### Changed
+
+- Dependencies
+  - built using Go 1.16.6
+    - **Statically linked**
+    - created via `docker` Makefile recipe
+    - linked to musl libc
+      - Alpine package version `1.2.2-r3`
+        - bundled within `atc0005/go-ci` project containers
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.3.28-0-g665e0b9`
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.3.28-0-g665e0b9`
+    - Windows (x86, x64)
+    - Linux (x86, x64)
+  - `mattn/go-sqlite3`
+    - `1.14.7` to `1.14.8`
+  - `alexflint/go-arg`
+    - `v1.3.0` to `v1.4.2`
+  - `atc0005/go-nagios`
+    - `v0.6.0` to `v0.6.1`
+  - `actions/setup-node`
+    - `v2.1.5` to `v2.2.0`
+    - update `node-version` value to always use latest LTS version instead of
+      hard-coded version
+
+### Fixed
+
+- Build docs have broken reference-style links
+
 ## [v0.1.4] - 2021-04-15
 
 ### Overview
@@ -217,7 +260,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.5...HEAD
+[v0.1.5]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.5
 [v0.1.4]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.4
 [v0.1.3]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.3
 [v0.1.2]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.2
