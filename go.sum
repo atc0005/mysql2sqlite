@@ -7,8 +7,8 @@ github.com/apex/log v1.9.0/go.mod h1:m82fZlWIuiWzWP04XCTXmnX0xRkYYbCdYn8jbJeLBEA
 github.com/apex/logs v1.0.0/go.mod h1:XzxuLZ5myVHDy9SAmYpamKKRNApGj54PfYLcFrXqDwo=
 github.com/aphistic/golf v0.0.0-20180712155816-02c07f170c5a/go.mod h1:3NqKYiepwy8kCu4PNA+aP7WUV72eXWJeP9/r3/K9aLE=
 github.com/aphistic/sweet v0.2.0/go.mod h1:fWDlIh/isSE9n6EPsRmC0det+whmX6dJid3stzu0Xys=
-github.com/atc0005/go-nagios v0.6.1 h1:3bo7Jj0N69hik2D8GykrFlbHg0wC716v2Pw7M1tykZ0=
-github.com/atc0005/go-nagios v0.6.1/go.mod h1:VhzDr2I9+vn/6aDrZ5f7OyfNOFU8MdT7gLzmSSy8be0=
+github.com/atc0005/go-nagios v0.7.0 h1:8tDN5ftrMKagAsFDz6M1TWDC7HD5Z1MFWgtkZGlp6r4=
+github.com/atc0005/go-nagios v0.7.0/go.mod h1:VhzDr2I9+vn/6aDrZ5f7OyfNOFU8MdT7gLzmSSy8be0=
 github.com/aws/aws-sdk-go v1.20.6/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
 github.com/aybabtme/rgbterm v0.0.0-20170906152045-cc83f3b3ce59/go.mod h1:q/89r3U2H7sSsE2t6Kca0lfwTK8JdoNGS/yzM/4iH5I=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
