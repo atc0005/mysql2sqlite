@@ -26,6 +26,46 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.1.8] - 2021-11-09
+
+### Overview
+
+- Dependency updates
+- built using Go 1.16.10
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.16.8` to `1.16.10`
+    - **Statically linked**
+    - created via `docker` Makefile recipe
+    - linked to musl libc
+      - Alpine package version `1.2.2-r3`
+        - bundled within `atc0005/go-ci` [project
+          containers](https://hub.docker.com/r/atc0005/go-ci/tags?page=1&ordering=last_updated&name=alpine)
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.3.37-0-gca2d5e9`
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.3.37-0-gca2d5e9`
+    - Windows (x86, x64)
+    - Linux (x86, x64)
+  - `mattn/go-sqlite3`
+    - `v1.14.8` to `v1.14.9`
+  - `atc0005/go-nagios`
+    - `v0.7.0` to `v0.8.1`
+  - `actions/checkout`
+    - `v2.3.4` to `v2.4.0`
+  - `actions/setup-node`
+    - `v2.4.0` to `v2.4.1`
+
+### Fixed
+
+- (GH-119) README | Add missing footnote for Go install guide
+- (GH-123) False positive `G307: Deferring unsafe method "Close" on type
+  "*os.File" (gosec)` linting error
+
 ## [v0.1.7] - 2021-09-25
 
 ### Overview
@@ -315,7 +355,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.7...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.8...HEAD
+[v0.1.8]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.8
 [v0.1.7]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.7
 [v0.1.6]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.6
 [v0.1.5]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.5
