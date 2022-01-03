@@ -11,7 +11,7 @@ github.com/apex/log/handlers/discard
 github.com/apex/log/handlers/json
 github.com/apex/log/handlers/logfmt
 github.com/apex/log/handlers/text
-# github.com/atc0005/go-nagios v0.8.1
+# github.com/atc0005/go-nagios v0.8.2
 ## explicit
 github.com/atc0005/go-nagios
 # github.com/fatih/color v1.7.0
