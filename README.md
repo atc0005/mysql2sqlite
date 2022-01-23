@@ -34,9 +34,8 @@ Mirror MySQL database tables to local SQLite database.
 
 ## Project home
 
-See [our GitHub repo](https://github.com/atc0005/mysql2sqlite) for the latest
-code, to file an issue or submit improvements for review and potential
-inclusion into the project.
+See [our GitHub repo][repo-url] for the latest code, to file an issue or
+submit improvements for review and potential inclusion into the project.
 
 ## Overview
 
@@ -99,7 +98,12 @@ been tested.
 These requirements are specific to Debian/Ubuntu-based distros. Packages will
 likely be named differently for other distributions.
 
-- Go 1.14+
+- Go
+  - see this project's `go.mod` file for *preferred* version
+  - this project tests against [officially supported Go
+    releases][go-supported-releases]
+    - the most recent stable release (aka, "stable")
+    - the prior, but still supported release (aka, "oldstable")
 - `CGO_ENABLED=1` environment variable (if not set by default)
   - requirement of SQLite database driver used
 - `GCC`
@@ -112,9 +116,8 @@ See the [build](docs/build.md) instructions for more information.
 
 ### Running
 
-- Windows 7, Server 2008R2 or later
 - Windows 10
-- Ubuntu Linux 16.04+
+- Ubuntu Linux 18.04+
 
 See official [Go install notes][go-docs-install] for specific operating
 systems supported.
@@ -186,6 +189,10 @@ Various references used when developing this project can be found in our
 
 [repo-url]: <https://github.com/atc0005/mysql2sqlite>  "This project's GitHub repo"
 
+[go-docs-download]: <https://golang.org/dl>  "Download Go"
+
 [go-docs-install]: <https://golang.org/doc/install>  "Install Go"
+
+[go-supported-releases]: <https://go.dev/doc/devel/release#policy> "Go Release Policy"
 
 <!-- []: PLACEHOLDER "DESCRIPTION_HERE" -->

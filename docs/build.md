@@ -31,7 +31,8 @@
          tool-chain already installed along with the necessary packages to
          allow cross-compilation. If using the official `golang` Docker image,
          you will need to install the same packages listed previously for
-         Ubuntu. Alternatively, you may also use the Alpine-based Docker images created for statically linked, cgo-enabled cross-compilation.
+         Ubuntu. Alternatively, you may also use the Alpine-based Docker
+         images created for statically linked, cgo-enabled cross-compilation.
          - `atc0005/go-ci:go-ci-stable-alpine-buildx86`
          - `atc0005/go-ci:go-ci-stable-alpine-buildx64`
        - If already familiar with LXD, create an Ubuntu  container and follow
