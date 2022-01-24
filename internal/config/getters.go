@@ -276,6 +276,18 @@ func (c Config) SQLiteBusyTimeout() int {
 	}
 }
 
+// SQLiteJournalMode returns the user-provided choice of journal mode for the
+// database associated with the database connection to the SQLite database
+// file or the default value if not provided.
+func (c Config) SQLiteJournalMode() string {
+	switch {
+	case c.configFileSettings.SQLiteConfig.JournalMode != nil:
+		return *c.configFileSettings.SQLiteConfig.JournalMode
+	default:
+		return defaultSQLiteJournalMode
+	}
+}
+
 // TrimWhitespace returns the user-provided choice regarding whether data
 // retrieved from MySQL should have leading and trailing whitespace removed
 // before inserting into the SQLite database or the default value if not

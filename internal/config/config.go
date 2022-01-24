@@ -28,7 +28,7 @@ func (c Config) String() string {
 		"UnifiedConfig: { LogLevel: %s, LogFormat: %s, LogOutput: %s, "+
 			"ConfigFile: %q, LogDBStats: %v, "+
 			"SQLiteDBPath: %q, SQLiteDBFile: %q, CreateIndexes: %v, "+
-			"BusyTimeout: %v, TrimWhitespace: %v, "+
+			"SQLiteBusyTimeout: %v, SQLiteJournalMode: %v, TrimWhitespace: %v, "+
 			"MySQLEncryption: %v, MySQLDatabase: %v, MySQLPort: %v, "+
 			"MySQLHost: %v, MySQLUsername: %v, MySQLPassword: %v, "+
 			"MySQLConnMaxLifetime: %v, MySQLMaxOpenConns: %v, "+
@@ -42,6 +42,7 @@ func (c Config) String() string {
 		c.SQLiteDBFile(),
 		c.SQLiteCreateIndexes(),
 		c.SQLiteBusyTimeout(),
+		c.SQLiteJournalMode(),
 		c.TrimWhitespace(),
 		c.MySQLEncryption(),
 		c.MySQLDatabase(),

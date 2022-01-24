@@ -106,6 +106,11 @@ sqlite_config:
   # SQLITE_BUSY is returned.
   busy_timeout: 1000
 
+  # Sets the journal mode for the database associated with the database
+  # connection. The default is DELETE.
+  # See also https://www.sqlite.org/pragma.html#pragma_journal_mode
+  journal_mode: DELETE
+
 logging:
   # https://github.com/apex/log
   # supported settings for this app: debug, info, warn, error, fatal

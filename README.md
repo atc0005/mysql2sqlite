@@ -78,6 +78,7 @@ more detailed information for use in email and Teams notifications
   - max idle connection time
 - Configurable SQLite settings
   - busy timeout
+  - journal mode
 - Configurable logging settings
   - level
   - output "target" (`stdout`, `stderr`)
