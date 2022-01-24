@@ -137,12 +137,7 @@ func main() {
 	mysqlDB.SetConnMaxLifetime(cfg.MySQLConnMaxLifetime())
 	mysqlDB.SetMaxOpenConns(cfg.MySQLMaxOpenConns())
 	mysqlDB.SetMaxIdleConns(cfg.MySQLMaxIdleConns())
-
-	// Disabled for now in order to support Go 1.14. Re-enable when Go 1.16 is
-	// released (at which point Go 1.15 becomes the oldest Go version still
-	// supported) or we opt to drop Go 1.14 support. See GH-28 and GH-37 for
-	// details.
-	// mysqlDB.SetConnMaxIdleTime(cfg.MySQLConnMaxIdleTime()) // Go 1.15+
+	mysqlDB.SetConnMaxIdleTime(cfg.MySQLConnMaxIdleTime()) // Go 1.15+
 
 	// Test MySQL database connection before proceeding further
 	//

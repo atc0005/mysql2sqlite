@@ -71,6 +71,11 @@ more detailed information for use in email and Teams notifications
   source
 - Configurable source database, destination database settings
 - Configurable connection retry, retry delay behavior
+- Configurable MySQL settings
+  - max open connections
+  - max idle connections
+  - max connection lifetime
+  - max idle connection time
 - Configurable logging settings
   - level
   - output "target" (`stdout`, `stderr`)
