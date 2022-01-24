@@ -36,6 +36,7 @@ type sqliteConfig struct {
 	Filename      *string `yaml:"db_filename"`
 	Path          *string `yaml:"base_dir"`
 	CreateIndexes *bool   `yaml:"create_indexes"`
+	BusyTimeout   *int    `yaml:"busy_timeout"`
 }
 
 type loggingConfig struct {
