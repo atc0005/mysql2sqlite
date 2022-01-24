@@ -135,6 +135,10 @@ const (
 	// used when generating the SQLite database file.
 	defaultSQLiteCreateIndexes bool = false
 
+	// defaultSQLiteBusyTimeout specifies the sleep time used when a table is
+	// locked.
+	defaultSQLiteBusyTimeout int = 1000
+
 	// not possible to set this? Returning nil from our getter function,
 	// relying on validation step to prevent actually returning nil
 	// SQLQueries map/type in production run.

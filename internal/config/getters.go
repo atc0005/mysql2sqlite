@@ -264,6 +264,18 @@ func (c Config) SQLiteCreateIndexes() bool {
 	}
 }
 
+// SQLiteBusyTimeout returns the user-provided choice regarding busy timeout
+// behavior for the connection to the SQLite database file or the default
+// value if not provided.
+func (c Config) SQLiteBusyTimeout() int {
+	switch {
+	case c.configFileSettings.SQLiteConfig.BusyTimeout != nil:
+		return *c.configFileSettings.SQLiteConfig.BusyTimeout
+	default:
+		return defaultSQLiteBusyTimeout
+	}
+}
+
 // TrimWhitespace returns the user-provided choice regarding whether data
 // retrieved from MySQL should have leading and trailing whitespace removed
 // before inserting into the SQLite database or the default value if not

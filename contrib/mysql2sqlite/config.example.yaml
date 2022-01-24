@@ -100,6 +100,12 @@ sqlite_config:
   # to generate indexes when creating tables in the SQLite database file.
   create_indexes: false
 
+  # Sleep time used when a table is locked. If not zero, multiple sleep
+  # attempts are made until at least the specified value of milliseconds of
+  # sleeping have accumulated. After the specified value of milliseconds,
+  # SQLITE_BUSY is returned.
+  busy_timeout: 1000
+
 logging:
   # https://github.com/apex/log
   # supported settings for this app: debug, info, warn, error, fatal

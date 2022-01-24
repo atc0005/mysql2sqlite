@@ -121,11 +121,11 @@ func main() {
 		// https://github.com/mattn/go-sqlite3/issues/209
 		//
 		// TODO: (GH-10) Add config file setting for specifying the journal mode.
-		// TODO: (GH-35) Add config file setting for specifying busy timeout
 		//
-		"%s?_journal_mode=%s&_busy_timeout=1000",
+		"%s?_journal_mode=%s&_busy_timeout=%d",
 		sqliteDBFile,
 		"DELETE",
+		cfg.SQLiteBusyTimeout(),
 	)
 	sqliteDB, err := sql.Open("sqlite3", sqliteDSN)
 	if err != nil {
