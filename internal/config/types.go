@@ -35,8 +35,9 @@ type mysqlConfig struct {
 type sqliteConfig struct {
 	Filename      *string `yaml:"db_filename"`
 	Path          *string `yaml:"base_dir"`
-	CreateIndexes *bool   `yaml:"create_indexes"`
+	JournalMode   *string `yaml:"journal_mode"`
 	BusyTimeout   *int    `yaml:"busy_timeout"`
+	CreateIndexes *bool   `yaml:"create_indexes"`
 }
 
 type loggingConfig struct {

@@ -167,30 +167,9 @@ func main() {
 	sqliteDBFile := path.Join(cfg.SQLiteDBPath(), cfg.SQLiteDBFile())
 
 	sqliteDSN := fmt.Sprintf(
-		// Enable Write-Ahead Logging (WAL) in an effort to avoid EXCLUSIVE
-		// locks on the database which block Postfix from reading the database
-		// while this application does its work. Based on light reading, this
-		// *also* appears to boost the performance of read-only operations, so
-		// we use it for that purpose as well.
-		//
-		// The DELETE journaling mode is the normal behavior. In the DELETE
-		// mode, the rollback journal is deleted at the conclusion of each
-		// transaction. Indeed, the delete operation is the action that causes
-		// the transaction to commit.
-		//
-		// https://dba.stackexchange.com/questions/45368/how-do-i-prevent-sqlite-database-locks
-		// https://manski.net/2012/10/sqlite-performance/
-		// https://www.sqlite.org/wal.html
-		// https://www.sqlite.org/pragma.html#pragma_journal_mode
-		// https://www.sqlite.org/pragma.html#pragma_busy_timeout
-		// https://github.com/mattn/go-sqlite3/pull/827
-		// https://github.com/mattn/go-sqlite3/issues/209
-		//
-		// TODO: (GH-10) Add config file setting for specifying the journal mode.
-		//
 		"%s?_journal_mode=%s&_busy_timeout=%d",
 		sqliteDBFile,
-		"DELETE",
+		cfg.SQLiteJournalMode(),
 		cfg.SQLiteBusyTimeout(),
 	)
 

@@ -135,6 +135,10 @@ const (
 	// used when generating the SQLite database file.
 	defaultSQLiteCreateIndexes bool = false
 
+	// defaultSQLiteBusyTimeout sets the journal mode for the database
+	// associated with the database connection.
+	defaultSQLiteJournalMode string = "DELETE"
+
 	// defaultSQLiteBusyTimeout specifies the sleep time used when a table is
 	// locked.
 	defaultSQLiteBusyTimeout int = 1000
