@@ -26,7 +26,7 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
-## [v0.2.0] - 2021-01-25
+## [v0.2.0] - 2022-01-25
 
 ### Overview
 
