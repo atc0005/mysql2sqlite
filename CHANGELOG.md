@@ -26,6 +26,44 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.2.0] - 2021-01-25
+
+### Overview
+
+- Added additional MySQL, SQLite settings
+- Dependency updates
+- built using Go 1.17.6
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Added
+
+- (GH-10) Add config file option for setting SQLite journal mode
+- (GH-35) Add config file setting for specifying SQLite busy_timeout
+- (GH-37) Re-enable support for setting max idle connection time when Go 1.16
+  releases
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.16.12` to `1.17.6`
+    - **Statically linked**
+    - created via `docker` Makefile recipe
+    - linked to musl libc
+      - Alpine package version `1.2.2-r3`
+        - bundled within `atc0005/go-ci` [project
+          containers](https://hub.docker.com/r/atc0005/go-ci/tags?page=1&ordering=last_updated&name=alpine)
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.3.42-0-g44e0ca5`
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.3.42-0-g44e0ca5`
+    - Windows (x86, x64)
+    - Linux (x86, x64)
+  - `atc0005/go-nagios`
+    - `v0.8.1` to `v0.8.2`
+  - `mattn/go-sqlite3`
+    - `v1.14.9` to `v1.14.10`
+
 ## [v0.1.9] - 2021-12-29
 
 ### Overview
@@ -383,7 +421,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.1.9...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.2.0...HEAD
+[v0.2.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.0
 [v0.1.9]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.9
 [v0.1.8]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.8
 [v0.1.7]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.7
