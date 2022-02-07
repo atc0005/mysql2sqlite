@@ -101,8 +101,8 @@ BUILDTYPE				:= $(BUILD_TYPE_DYNAMIC)
 WINCOMPILERX86 			:= 	CC=i686-w64-mingw32-gcc
 WINCOMPILERX64 			:= 	CC=x86_64-w64-mingw32-gcc
 
-DOCKER_BUILD_IMG_X86	:= atc0005/go-ci:go-ci-stable-alpine-buildx86
-DOCKER_BUILD_IMG_X64	:= atc0005/go-ci:go-ci-stable-alpine-buildx64
+DOCKER_BUILD_IMG_X86	:= ghcr.io/atc0005/go-ci:go-ci-stable-alpine-buildx86
+DOCKER_BUILD_IMG_X64	:= ghcr.io/atc0005/go-ci:go-ci-stable-alpine-buildx64
 
 GOCLEANCMD				:=	go clean -mod=vendor ./...
 GITCLEANCMD				:= 	git clean -xfd
