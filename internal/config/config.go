@@ -21,7 +21,7 @@ import (
 
 // Version reflects the application version. This is overridden via Makefile
 // for release builds.
-var Version string = "dev build"
+var Version = "dev build"
 
 func (c Config) String() string {
 	return fmt.Sprintf(
