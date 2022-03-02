@@ -26,6 +26,49 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.2.1] - 2022-03-02
+
+### Overview
+
+- Dependency updates
+- CI / linting improvements
+- built using Go 1.17.7
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.17.6` to `1.17.7`
+    - **Statically linked**
+    - created via `docker` Makefile recipe
+    - linked to musl libc
+      - Alpine package version `1.2.2-r3`
+        - bundled within `atc0005/go-ci` [project
+          containers](https://github.com/atc0005/go-ci/pkgs/container/go-ci)
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.6.2-0-g90db923`
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.6.2-0-g90db923`
+    - Windows (x86, x64)
+    - Linux (x86, x64)
+  - `alexflint/go-arg`
+    - `v1.4.2` to `v1.4.3`
+  - `actions/checkout`
+    - `v2.4.0` to `v3`
+  - `actions/setup-node`
+    - `v2.5.1` to `v3`
+
+- (GH-145) Expand linting GitHub Actions Workflow to include `oldstable`,
+  `unstable` container images
+- (GH-146) Switch Docker image source from Docker Hub to GitHub Container
+  Registry (GHCR)
+
+### Fixed
+
+- (GH-144) Fix year in changelog entry
+- (GH-148) gosec, revive linting errors
+
 ## [v0.2.0] - 2022-01-25
 
 ### Overview
@@ -421,7 +464,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.2.1...HEAD
+[v0.2.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.0
 [v0.1.9]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.9
 [v0.1.8]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.1.8
