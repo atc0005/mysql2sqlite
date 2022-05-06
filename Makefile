@@ -308,6 +308,7 @@ docker: clean
 	docker version
 	@docker image pull $(DOCKER_BUILD_IMG_X86)
 	@docker container run \
+		--platform linux/386 \
 		--user $${UID:-1000} \
 		--rm \
 		-i \
@@ -317,6 +318,7 @@ docker: clean
 		env GOCACHE=/tmp/ make windows-x86-static linux-x86-static
 	@docker image pull $(DOCKER_BUILD_IMG_X64)
 	@docker container run \
+		--platform linux/amd64 \
 		--user $${UID:-1000} \
 		--rm \
 		-i \
