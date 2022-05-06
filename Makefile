@@ -308,18 +308,20 @@ docker: clean
 	docker version
 	@docker image pull $(DOCKER_BUILD_IMG_X86)
 	@docker container run \
+		--user $${UID:-1000} \
 		--rm \
 		-i \
 		-v $$PWD:$$PWD \
 		-w $$PWD \
 		$(DOCKER_BUILD_IMG_X86) \
-		make windows-x86-static linux-x86-static
+		env GOCACHE=/tmp/ make windows-x86-static linux-x86-static
 	@docker image pull $(DOCKER_BUILD_IMG_X64)
 	@docker container run \
+		--user $${UID:-1000} \
 		--rm \
 		-i \
 		-v $$PWD:$$PWD \
 		-w $$PWD \
 		$(DOCKER_BUILD_IMG_X64) \
-		make windows-x64-static linux-x64-static
+		env GOCACHE=/tmp/ make windows-x64-static linux-x64-static
 	@echo "Completed all cross-platform builds via Docker containers ..."
