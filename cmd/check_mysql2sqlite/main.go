@@ -43,7 +43,7 @@ func main() {
 
 	cfg, err := config.NewConfig()
 	if err != nil {
-		nagiosExitState.LastError = err
+		nagiosExitState.AddError(err)
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
@@ -99,7 +99,7 @@ func main() {
 
 	mysqlDB, err := sql.Open("mysql", mysqlDSN)
 	if err != nil {
-		nagiosExitState.LastError = err
+		nagiosExitState.AddError(err)
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
@@ -146,7 +146,7 @@ func main() {
 	// connectivity issues; it is important to surface to Nagios any problems
 	// encountered during the execution of this plugin.
 	if err = mysqlDB.Ping(); err != nil {
-		nagiosExitState.LastError = err
+		nagiosExitState.AddError(err)
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
@@ -186,7 +186,7 @@ func main() {
 	//
 	sqliteDB, err := sql.Open("sqlite3", sqliteDSN)
 	if err != nil {
-		nagiosExitState.LastError = err
+		nagiosExitState.AddError(err)
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
@@ -234,7 +234,7 @@ func main() {
 	// connectivity issues; it is important to surface to Nagios any problems
 	// encountered during the execution of this plugin.
 	if err = sqliteDB.Ping(); err != nil {
-		nagiosExitState.LastError = err
+		nagiosExitState.AddError(err)
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
@@ -258,7 +258,7 @@ func main() {
 
 		mysqlRowsCount, err := dbqs.RowsCount(mysqlDB, table)
 		if err != nil {
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
@@ -275,7 +275,7 @@ func main() {
 
 		sqliteRowsCount, err := dbqs.RowsCount(sqliteDB, table)
 		if err != nil {
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
@@ -299,7 +299,7 @@ func main() {
 				sqliteRowsCount,
 			)
 
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			// NOTE: The assumption here is that a mismatch is temporary until
 			// the next scheduled execution of the application, at which point
 			// the local SQLite database should be in sync with the source
@@ -326,7 +326,7 @@ func main() {
 
 		mysqlRows, err := mysqlDB.Query(querySet[dbqs.SQLQueriesRead])
 		if err != nil {
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
@@ -355,7 +355,7 @@ func main() {
 
 		sqliteRows, err := sqliteDB.Query(querySet[dbqs.SQLQueriesRead])
 		if err != nil {
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
@@ -383,7 +383,7 @@ func main() {
 
 		mysqlColumnNames, err := mysqlRows.Columns()
 		if err != nil {
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
@@ -399,7 +399,7 @@ func main() {
 
 		sqliteColumnNames, err := sqliteRows.Columns()
 		if err != nil {
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
@@ -425,7 +425,7 @@ func main() {
 				sqliteColCount,
 			)
 
-			nagiosExitState.LastError = err
+			nagiosExitState.AddError(err)
 			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
@@ -478,7 +478,7 @@ func main() {
 				}
 
 				if err = mysqlRows.Scan(mysqlRowValuePtrs...); err != nil {
-					nagiosExitState.LastError = err
+					nagiosExitState.AddError(err)
 					nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 					log.Error(err.Error())
 
@@ -495,7 +495,7 @@ func main() {
 				logConnStats()
 
 				if err = sqliteRows.Scan(sqliteRowValuePtrs...); err != nil {
-					nagiosExitState.LastError = err
+					nagiosExitState.AddError(err)
 					nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 					log.Error(err.Error())
 
@@ -595,7 +595,7 @@ func main() {
 					if mysqlData[idx] != sqliteData[idx] {
 						err := fmt.Errorf("FAILED data match for %s", what)
 
-						nagiosExitState.LastError = err
+						nagiosExitState.AddError(err)
 						// NOTE: The assumption here is that a mismatch is
 						// temporary until the next scheduled execution of the
 						// application, at which point the local SQLite
@@ -624,7 +624,7 @@ func main() {
 
 			// check for potential errors after processing rows
 			if err := mysqlRows.Err(); err != nil {
-				nagiosExitState.LastError = err
+				nagiosExitState.AddError(err)
 				nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 				log.Error(err.Error())
 
@@ -645,7 +645,7 @@ func main() {
 
 			// check for potential errors after processing rows
 			if err := sqliteRows.Err(); err != nil {
-				nagiosExitState.LastError = err
+				nagiosExitState.AddError(err)
 				nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 				log.Error(err.Error())
 
@@ -672,7 +672,7 @@ func main() {
 					table,
 					err,
 				)
-				nagiosExitState.LastError = err
+				nagiosExitState.AddError(err)
 				nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 				log.Error(err.Error())
 
@@ -693,7 +693,7 @@ func main() {
 					table,
 					err,
 				)
-				nagiosExitState.LastError = err
+				nagiosExitState.AddError(err)
 				nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 				log.Error(err.Error())
 
@@ -727,7 +727,6 @@ func main() {
 
 	log.Info(successMsg)
 
-	nagiosExitState.LastError = nil
 	nagiosExitState.ExitStatusCode = nagios.StateOKExitCode
 	nagiosExitState.ServiceOutput = successMsg
 
