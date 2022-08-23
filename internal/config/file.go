@@ -11,7 +11,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -115,7 +114,7 @@ func (c Config) userConfigFile() (string, error) {
 func (c *Config) ImportConfigFile(fh io.Reader) (bool, error) {
 
 	log.Debug("Attempting to read contents of file handle ...")
-	configFile, err := ioutil.ReadAll(fh)
+	configFile, err := io.ReadAll(fh)
 	if err != nil {
 		return false, err
 	}
