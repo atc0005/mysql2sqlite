@@ -217,7 +217,7 @@ func (c Config) MySQLMaxIdleConns() int {
 
 // MySQLConnMaxIdleTime returns the user-provided maximum time in seconds that
 // a database connection can remain idle or the default value if not provided.
-//  See also https://github.com/go-sql-driver/mysql#important-settings
+// See also https://github.com/go-sql-driver/mysql#important-settings
 func (c Config) MySQLConnMaxIdleTime() time.Duration {
 	switch {
 	case c.configFileSettings.MySQLConfig.ConnMaxIdleTime != nil:
