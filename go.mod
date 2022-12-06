@@ -12,12 +12,11 @@ require (
 )
 
 require (
-	github.com/alexflint/go-scalar v1.1.0 // indirect
-	github.com/fatih/color v1.7.0 // indirect
-	github.com/go-logfmt/logfmt v0.4.0 // indirect
-	github.com/kr/logfmt v0.0.0-20140226030751-b84e30acd515 // indirect
-	github.com/mattn/go-colorable v0.1.2 // indirect
-	github.com/mattn/go-isatty v0.0.8 // indirect
-	github.com/pkg/errors v0.8.1 // indirect
-	golang.org/x/sys v0.0.0-20190412213103-97732733099d // indirect
+	github.com/alexflint/go-scalar v1.2.0 // indirect
+	github.com/fatih/color v1.13.0 // indirect
+	github.com/go-logfmt/logfmt v0.5.1 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.16 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	golang.org/x/sys v0.3.0 // indirect
 )
