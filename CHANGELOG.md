@@ -26,6 +26,63 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.2.7] - 2022-12-09
+
+### Overview
+
+- Bug fixes
+- Dependency updates
+- GitHub Actions Workflows updates
+- built using Go 1.19.4
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.19.1` to `1.19.4`
+    - **Statically linked**
+    - created via `docker` Makefile recipe
+    - linked to musl libc
+      - Alpine package version `1.2.3-r2`
+        - bundled within `atc0005/go-ci` [project
+          containers](https://github.com/atc0005/go-ci/pkgs/container/go-ci)
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.7.2-0-g433353d`
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.7.2-0-g433353d`
+    - Windows (x86, x64)
+    - Linux (x86, x64)
+  - `github.com/go-sql-driver/mysql`
+    - `v1.6.0` to `v1.7.0`
+  - `github.com/mattn/go-sqlite3`
+    - `v1.14.15` to `v1.14.16`
+  - `atc0005/go-nagios`
+    - `v0.10.0` to `v0.10.2`
+  - `github.com/mattn/go-colorable`
+    - `v0.1.2` to `v0.1.13`
+  - `github.com/mattn/go-isatty`
+    - `v0.0.8` to `v0.0.16`
+  - `golang.org/x/sys`
+    - `v0.0.0-20190412213103-97732733099d` to `v0.3.0`
+  - `github.com/alexflint/go-scalar`
+    - `v1.1.0` to `v1.2.0`
+  - `github.com/fatih/color`
+    - `v1.7.0` to `v1.13.0`
+  - `github.com/go-logfmt/logfmt`
+    - `v0.4.0` to `v0.5.1`
+  - `github.com/pkg/errors`
+    - `v0.8.1` to `v0.9.1`
+  - `github.com/kr/logfmt`
+    - `v0.0.0-20140226030751-b84e30acd515` to
+      `v0.0.0-20210122060352-19f9bcb100e6`
+- (GH-189) Refactor GitHub Actions workflows to import logic
+
+### Fixed
+
+- (GH-192) Broken links in README
+- (GH-198) Fix Makefile Go module base path detection
+
 ## [v0.2.6] - 2022-09-22
 
 ### Overview
@@ -629,7 +686,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.2.6...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.2.7...HEAD
+[v0.2.7]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.7
 [v0.2.6]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.6
 [v0.2.5]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.5
 [v0.2.4]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.4
