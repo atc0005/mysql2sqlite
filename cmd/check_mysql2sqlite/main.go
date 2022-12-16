@@ -435,7 +435,7 @@ func main() {
 		}
 		logConnStats()
 
-		// The `valuePrts` slice is used to satisfy the `(*sql.Rows).Scan`
+		// The `valuePtrs` slice is used to satisfy the `(*sql.Rows).Scan`
 		// method requiring that arguments be specified as pointers to a
 		// value.
 		//
