@@ -27,27 +27,23 @@ import (
 
 func main() {
 
-	// Set initial "state" as valid, adjust as we go.
-	var nagiosExitState = nagios.ExitState{
-		LastError:      nil,
-		ExitStatusCode: nagios.StateOKExitCode,
-	}
+	plugin := nagios.NewPlugin()
 
 	// defer this from the start so it is the last deferred function to run
-	defer nagiosExitState.ReturnCheckResults()
+	defer plugin.ReturnCheckResults()
 
-	nagiosExitState.WarningThreshold =
+	plugin.WarningThreshold =
 		"Recoverable error, potentially resolved with the next database sync job"
-	nagiosExitState.CriticalThreshold =
+	plugin.CriticalThreshold =
 		"Non-recoverable error, requires sysadmin intervention"
 
 	cfg, err := config.NewConfig()
 	if err != nil {
-		nagiosExitState.AddError(err)
-		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+		plugin.AddError(err)
+		plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
-		nagiosExitState.ServiceOutput = fmt.Sprintf(
+		plugin.ServiceOutput = fmt.Sprintf(
 			"%s: Failed to load configuration: %v",
 			nagios.StateCRITICALLabel,
 			err,
@@ -58,9 +54,9 @@ func main() {
 		return
 	}
 
-	// Flesh out nagiosExitState with some additional common details now that
+	// Flesh out plugin with some additional common details now that
 	// the flags and config file settings have been parsed
-	nagiosExitState.LongServiceOutput = fmt.Sprintf(
+	plugin.LongServiceOutput = fmt.Sprintf(
 		"* SQLite database: %q%s"+
 			"* MySQL database: %q%s"+
 			"* MySQL host: %q%s"+
@@ -99,11 +95,11 @@ func main() {
 
 	mysqlDB, err := sql.Open("mysql", mysqlDSN)
 	if err != nil {
-		nagiosExitState.AddError(err)
-		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+		plugin.AddError(err)
+		plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
-		nagiosExitState.ServiceOutput = fmt.Sprintf(
+		plugin.ServiceOutput = fmt.Sprintf(
 			"%s: Failed to open MySQL database: %v",
 			nagios.StateCRITICALLabel,
 			err,
@@ -146,11 +142,11 @@ func main() {
 	// connectivity issues; it is important to surface to Nagios any problems
 	// encountered during the execution of this plugin.
 	if err = mysqlDB.Ping(); err != nil {
-		nagiosExitState.AddError(err)
-		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+		plugin.AddError(err)
+		plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
-		nagiosExitState.ServiceOutput = fmt.Sprintf(
+		plugin.ServiceOutput = fmt.Sprintf(
 			"%s: Failed to establish connection to MySQL database: %v",
 			nagios.StateCRITICALLabel,
 			err,
@@ -186,11 +182,11 @@ func main() {
 	//
 	sqliteDB, err := sql.Open("sqlite3", sqliteDSN)
 	if err != nil {
-		nagiosExitState.AddError(err)
-		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+		plugin.AddError(err)
+		plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
-		nagiosExitState.ServiceOutput = fmt.Sprintf(
+		plugin.ServiceOutput = fmt.Sprintf(
 			"%s: Failed to open SQLite database: %v",
 			nagios.StateCRITICALLabel,
 			err,
@@ -234,11 +230,11 @@ func main() {
 	// connectivity issues; it is important to surface to Nagios any problems
 	// encountered during the execution of this plugin.
 	if err = sqliteDB.Ping(); err != nil {
-		nagiosExitState.AddError(err)
-		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+		plugin.AddError(err)
+		plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 		log.Error(err.Error())
 
-		nagiosExitState.ServiceOutput = fmt.Sprintf(
+		plugin.ServiceOutput = fmt.Sprintf(
 			"%s: Failed to establish connection to SQLite database: %v",
 			nagios.StateCRITICALLabel,
 			err,
@@ -258,11 +254,11 @@ func main() {
 
 		mysqlRowsCount, err := dbqs.RowsCount(mysqlDB, table)
 		if err != nil {
-			nagiosExitState.AddError(err)
-			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+			plugin.AddError(err)
+			plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
-			nagiosExitState.ServiceOutput = fmt.Sprintf(
+			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to retrieve rows count for table %s in MySQL database: %v",
 				nagios.StateCRITICALLabel,
 				table,
@@ -275,11 +271,11 @@ func main() {
 
 		sqliteRowsCount, err := dbqs.RowsCount(sqliteDB, table)
 		if err != nil {
-			nagiosExitState.AddError(err)
-			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+			plugin.AddError(err)
+			plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
-			nagiosExitState.ServiceOutput = fmt.Sprintf(
+			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to retrieve rows count for table %s in SQLite database: %v",
 				nagios.StateCRITICALLabel,
 				table,
@@ -299,15 +295,15 @@ func main() {
 				sqliteRowsCount,
 			)
 
-			nagiosExitState.AddError(err)
+			plugin.AddError(err)
 			// NOTE: The assumption here is that a mismatch is temporary until
 			// the next scheduled execution of the application, at which point
 			// the local SQLite database should be in sync with the source
 			// database.
-			nagiosExitState.ExitStatusCode = nagios.StateWARNINGExitCode
+			plugin.ExitStatusCode = nagios.StateWARNINGExitCode
 			log.Error(err.Error())
 
-			nagiosExitState.ServiceOutput = fmt.Sprintf(
+			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: Validation failure: %v",
 				nagios.StateWARNINGLabel,
 				err,
@@ -326,11 +322,11 @@ func main() {
 
 		mysqlRows, err := mysqlDB.Query(querySet[dbqs.SQLQueriesRead])
 		if err != nil {
-			nagiosExitState.AddError(err)
-			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+			plugin.AddError(err)
+			plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
-			nagiosExitState.ServiceOutput = fmt.Sprintf(
+			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: %s query for table %s in MySQL database failed: %v",
 				nagios.StateCRITICALLabel,
 				dbqs.SQLQueriesRead,
@@ -355,11 +351,11 @@ func main() {
 
 		sqliteRows, err := sqliteDB.Query(querySet[dbqs.SQLQueriesRead])
 		if err != nil {
-			nagiosExitState.AddError(err)
-			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+			plugin.AddError(err)
+			plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
-			nagiosExitState.ServiceOutput = fmt.Sprintf(
+			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: %s query for table %s in SQLite database failed: %v",
 				nagios.StateCRITICALLabel,
 				dbqs.SQLQueriesRead,
@@ -383,11 +379,11 @@ func main() {
 
 		mysqlColumnNames, err := mysqlRows.Columns()
 		if err != nil {
-			nagiosExitState.AddError(err)
-			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+			plugin.AddError(err)
+			plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
-			nagiosExitState.ServiceOutput = fmt.Sprintf(
+			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to retrieve column names for table %s in MySQL database: %v",
 				nagios.StateCRITICALLabel,
 				table,
@@ -399,11 +395,11 @@ func main() {
 
 		sqliteColumnNames, err := sqliteRows.Columns()
 		if err != nil {
-			nagiosExitState.AddError(err)
-			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+			plugin.AddError(err)
+			plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
-			nagiosExitState.ServiceOutput = fmt.Sprintf(
+			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: Failed to retrieve column names for table %s in SQLite database: %v",
 				nagios.StateCRITICALLabel,
 				table,
@@ -425,11 +421,11 @@ func main() {
 				sqliteColCount,
 			)
 
-			nagiosExitState.AddError(err)
-			nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+			plugin.AddError(err)
+			plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 			log.Error(err.Error())
 
-			nagiosExitState.ServiceOutput = fmt.Sprintf(
+			plugin.ServiceOutput = fmt.Sprintf(
 				"%s: Validation failure: %v",
 				nagios.StateWARNINGLabel,
 				err,
@@ -478,11 +474,11 @@ func main() {
 				}
 
 				if err = mysqlRows.Scan(mysqlRowValuePtrs...); err != nil {
-					nagiosExitState.AddError(err)
-					nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+					plugin.AddError(err)
+					plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 					log.Error(err.Error())
 
-					nagiosExitState.ServiceOutput = fmt.Sprintf(
+					plugin.ServiceOutput = fmt.Sprintf(
 						"%s: Failed to retrieve data for table %s in MySQL database: %v",
 						nagios.StateCRITICALLabel,
 						table,
@@ -495,11 +491,11 @@ func main() {
 				logConnStats()
 
 				if err = sqliteRows.Scan(sqliteRowValuePtrs...); err != nil {
-					nagiosExitState.AddError(err)
-					nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+					plugin.AddError(err)
+					plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 					log.Error(err.Error())
 
-					nagiosExitState.ServiceOutput = fmt.Sprintf(
+					plugin.ServiceOutput = fmt.Sprintf(
 						"%s: Failed to retrieve data for table %s in SQLite database: %v",
 						nagios.StateCRITICALLabel,
 						table,
@@ -595,13 +591,13 @@ func main() {
 					if mysqlData[idx] != sqliteData[idx] {
 						err := fmt.Errorf("FAILED data match for %s", what)
 
-						nagiosExitState.AddError(err)
+						plugin.AddError(err)
 						// NOTE: The assumption here is that a mismatch is
 						// temporary until the next scheduled execution of the
 						// application, at which point the local SQLite
 						// database should be in sync with the source
 						// database.
-						nagiosExitState.ExitStatusCode = nagios.StateWARNINGExitCode
+						plugin.ExitStatusCode = nagios.StateWARNINGExitCode
 						log.Error(err.Error())
 
 						// NOTE: Intentionally use an abbreviated version of
@@ -609,7 +605,7 @@ func main() {
 						// restrictions; i.e., the ServiceOutput value is used
 						// for Teams, email and other notification Subject
 						// lines.
-						nagiosExitState.ServiceOutput = fmt.Sprintf(
+						plugin.ServiceOutput = fmt.Sprintf(
 							"%s: Validation failure for field %s in table %s",
 							nagios.StateCRITICALLabel,
 							mysqlColumnNames[idx],
@@ -624,11 +620,11 @@ func main() {
 
 			// check for potential errors after processing rows
 			if err := mysqlRows.Err(); err != nil {
-				nagiosExitState.AddError(err)
-				nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+				plugin.AddError(err)
+				plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 				log.Error(err.Error())
 
-				nagiosExitState.ServiceOutput = fmt.Sprintf(
+				plugin.ServiceOutput = fmt.Sprintf(
 					"%s: Errors occurred performing MySQL database queries: %v",
 					nagios.StateCRITICALLabel,
 					err,
@@ -645,11 +641,11 @@ func main() {
 
 			// check for potential errors after processing rows
 			if err := sqliteRows.Err(); err != nil {
-				nagiosExitState.AddError(err)
-				nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+				plugin.AddError(err)
+				plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 				log.Error(err.Error())
 
-				nagiosExitState.ServiceOutput = fmt.Sprintf(
+				plugin.ServiceOutput = fmt.Sprintf(
 					"%s: Errors occurred performing SQLite database queries: %v",
 					nagios.StateCRITICALLabel,
 					err,
@@ -672,11 +668,11 @@ func main() {
 					table,
 					err,
 				)
-				nagiosExitState.AddError(err)
-				nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+				plugin.AddError(err)
+				plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 				log.Error(err.Error())
 
-				nagiosExitState.ServiceOutput = fmt.Sprintf(
+				plugin.ServiceOutput = fmt.Sprintf(
 					"%s: Failed to close mysqlRows object: %v",
 					nagios.StateCRITICALLabel,
 					err,
@@ -693,11 +689,11 @@ func main() {
 					table,
 					err,
 				)
-				nagiosExitState.AddError(err)
-				nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
+				plugin.AddError(err)
+				plugin.ExitStatusCode = nagios.StateCRITICALExitCode
 				log.Error(err.Error())
 
-				nagiosExitState.ServiceOutput = fmt.Sprintf(
+				plugin.ServiceOutput = fmt.Sprintf(
 					"%s: Failed to close sqliteRows object: %v",
 					nagios.StateCRITICALLabel,
 					err,
@@ -727,8 +723,8 @@ func main() {
 
 	log.Info(successMsg)
 
-	nagiosExitState.ExitStatusCode = nagios.StateOKExitCode
-	nagiosExitState.ServiceOutput = successMsg
+	plugin.ExitStatusCode = nagios.StateOKExitCode
+	plugin.ServiceOutput = successMsg
 
 	// the next step after this is the execution of the deferred db handle
 	// closures, then ultimately the deferred Nagios check results.
