@@ -31,6 +31,17 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
 
+      # Mark the current working directory as a safe directory in git to
+      # resolve "dubious ownership" complaints.
+      #
+      # https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+      # https://confluence.atlassian.com/bbkb/git-command-returns-fatal-error-about-the-repository-being-owned-by-someone-else-1167744132.html
+      # https://github.com/actions/runner-images/issues/6775
+      # https://github.com/actions/checkout/issues/766
+      - name: Mark the current working directory as a safe directory in git
+        # run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        run: git config --global --add safe.directory "${PWD}"
+
       # bsdmainutils provides "column" which is used by the Makefile
       # other packages are needed for cross-compilation
       - name: Install Ubuntu packages needed for cross-compilation
@@ -63,6 +74,17 @@ jobs:
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
+
+      # Mark the current working directory as a safe directory in git to
+      # resolve "dubious ownership" complaints.
+      #
+      # https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+      # https://confluence.atlassian.com/bbkb/git-command-returns-fatal-error-about-the-repository-being-owned-by-someone-else-1167744132.html
+      # https://github.com/actions/runner-images/issues/6775
+      # https://github.com/actions/checkout/issues/766
+      - name: Mark the current working directory as a safe directory in git
+        # run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        run: git config --global --add safe.directory "${PWD}"
 
       # bsdmainutils provides "column" which is used by the Makefile
       # other packages are needed for cross-compilation
@@ -99,6 +121,17 @@ jobs:
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
+
+      # Mark the current working directory as a safe directory in git to
+      # resolve "dubious ownership" complaints.
+      #
+      # https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+      # https://confluence.atlassian.com/bbkb/git-command-returns-fatal-error-about-the-repository-being-owned-by-someone-else-1167744132.html
+      # https://github.com/actions/runner-images/issues/6775
+      # https://github.com/actions/checkout/issues/766
+      - name: Mark the current working directory as a safe directory in git
+        # run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        run: git config --global --add safe.directory "${PWD}"
 
       # bsdmainutils provides "column" which is used by the Makefile
       - name: Install Ubuntu packages
