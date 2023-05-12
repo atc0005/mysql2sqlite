@@ -21,8 +21,9 @@ jobs:
     # Default: 360 minutes
     timeout-minutes: 20
     container:
-      # Use (lightly touched) mirror of current "vanilla" upstream golang image
-      image: "ghcr.io/atc0005/go-ci:go-ci-stable-mirror-build"
+      # Use image which supports cross-platform, static cgo-enabled builds for
+      # Windows and Linux.
+      image: "ghcr.io/atc0005/go-ci:go-ci-stable-cgo-mingw-w64-build"
 
     steps:
       - name: Print go version
@@ -41,18 +42,6 @@ jobs:
       - name: Mark the current working directory as a safe directory in git
         # run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
         run: git config --global --add safe.directory "${PWD}"
-
-      # bsdmainutils provides "column" which is used by the Makefile
-      # other packages are needed for cross-compilation
-      - name: Install Ubuntu packages needed for cross-compilation
-        run: |
-          apt-get update && \
-            apt-get install -y --no-install-recommends \
-            make \
-            bsdmainutils \
-            gcc \
-            gcc-multilib \
-            gcc-mingw-w64
 
       - name: Build using project Makefile
         run: make all
@@ -65,8 +54,9 @@ jobs:
     # Default: 360 minutes
     timeout-minutes: 20
     container:
-      # Use (lightly touched) mirror of current "vanilla" upstream golang image
-      image: "ghcr.io/atc0005/go-ci:go-ci-stable-mirror-build"
+      # Use image which supports cross-platform, static cgo-enabled builds for
+      # Windows and Linux.
+      image: "ghcr.io/atc0005/go-ci:go-ci-stable-cgo-mingw-w64-build"
 
     steps:
       - name: Print go version
@@ -85,18 +75,6 @@ jobs:
       - name: Mark the current working directory as a safe directory in git
         # run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
         run: git config --global --add safe.directory "${PWD}"
-
-      # bsdmainutils provides "column" which is used by the Makefile
-      # other packages are needed for cross-compilation
-      - name: Install Ubuntu packages needed for cross-compilation
-        run: |
-          apt-get update && \
-            apt-get install -y --no-install-recommends \
-            make \
-            bsdmainutils \
-            gcc \
-            gcc-multilib \
-            gcc-mingw-w64
 
       - name: Build using project Makefile
         run: make all-static
