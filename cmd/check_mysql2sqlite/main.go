@@ -300,6 +300,12 @@ func main() {
 			// the next scheduled execution of the application, at which point
 			// the local SQLite database should be in sync with the source
 			// database.
+			//
+			// NOTE:
+			//
+			// The provided "contrib/mysql2sqlite/mysql2sqlite_wrapper.sh"
+			// wrapper script relies upon a WARNING exit state to indicate
+			// that the SQLite database file should be regenerated.
 			plugin.ExitStatusCode = nagios.StateWARNINGExitCode
 			log.Error(err.Error())
 
@@ -597,6 +603,14 @@ func main() {
 						// application, at which point the local SQLite
 						// database should be in sync with the source
 						// database.
+						//
+						// NOTE:
+						//
+						// The provided
+						// "contrib/mysql2sqlite/mysql2sqlite_wrapper.sh"
+						// wrapper script relies upon a WARNING exit state to
+						// indicate that the SQLite database file should be
+						// regenerated.
 						plugin.ExitStatusCode = nagios.StateWARNINGExitCode
 						log.Error(err.Error())
 
