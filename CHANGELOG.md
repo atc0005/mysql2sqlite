@@ -26,6 +26,61 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.2.8] - 2023-05-17
+
+### Overview
+
+- Bug fixes
+- Dependency updates
+- GitHub Actions workflow updates
+- built using Go 1.19.9
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.19.4` to `1.19.9`
+    - **Statically linked**
+    - created via `docker` Makefile recipe
+    - linked to musl libc
+      - Alpine package version `1.2.3-r2`
+        - bundled within `atc0005/go-ci` [project
+          containers](https://github.com/atc0005/go-ci/pkgs/container/go-ci)
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx86-v0.10.5`
+          - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.10.5`
+    - Windows (x86, x64)
+    - Linux (x86, x64)
+  - `go-sql-driver/mysql`
+    - `v1.7.0` to `v1.7.1`
+  - `atc0005/go-nagios`
+    - `v0.10.2` to `v0.14.0`
+  - `fatih/color`
+    - `v1.13.0` to `v1.15.0`
+  - `mattn/go-isatty`
+    - `v0.0.16` to `v0.0.18`
+  - `go-logfmt/logfmt`
+    - `v0.5.1` to `v0.6.0`
+  - `golang.org/x/sys`
+    - `v0.3.0` to `v0.8.0`
+- (GH-205) Update nagios library usage, add time perfdata
+- (GH-210) Add Go Module Validation, Dependency Updates jobs
+- (GH-217) Update `Build using Makefile Docker recipes` CI workflow jobs to
+  use `go-ci-stable-debian-build` image
+- (GH-220) Drop `Push Validation` workflow
+- (GH-221) Rework workflow scheduling
+- (GH-223) Remove `Push Validation` workflow status badge
+
+### Fixed
+
+- (GH-206) Fix doc comment typo
+- (GH-218) Explicitly mark CWD as trusted by Git
+- (GH-224) Add missing os deps list to monthly workflow call
+- (GH-229) Update vuln analysis GHAW to use on.push hook
+- (GH-243) Use UNKNOWN state for invalid command-line args
+
 ## [v0.2.7] - 2022-12-09
 
 ### Overview
@@ -686,7 +741,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.2.7...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.2.8...HEAD
+[v0.2.8]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.8
 [v0.2.7]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.7
 [v0.2.6]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.6
 [v0.2.5]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.5
