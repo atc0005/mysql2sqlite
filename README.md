@@ -16,7 +16,7 @@ Mirror MySQL database tables to local SQLite database.
 
 - [Project home](#project-home)
 - [Overview](#overview)
-  - [`mysql2sqlite`](#mysql2sqlite)
+  - [`mysql2sqlite`](#mysql2sqlite-1)
   - [`check_mysql2sqlite`](#check_mysql2sqlite)
 - [Features](#features)
 - [Changelog](#changelog)
@@ -119,6 +119,14 @@ likely be named differently for other distributions.
 - `GCC for Windows` (`mingw-w64`)
 - `make`
   - if using the provided `Makefile`
+- Docker *or* Podman
+  - Docker if using the `docker-*` container-specific recipes
+  - Podman if using the `podman-*` container-specific recipes
+
+Build-specific tools are included in the build image used by the `docker-*` or
+`podman-*` Makefile recipes. They can also be used locally after first
+installing Go and `make` and then installing the tools by running `make
+depsinstall`.
 
 See the [build](docs/build.md) instructions for more information.
 

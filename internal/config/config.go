@@ -19,9 +19,14 @@ import (
 
 // see `constants.go` for other related values
 
-// Version reflects the application version. This is overridden via Makefile
+// version reflects the application version. This is overridden via Makefile
 // for release builds.
-var Version = "dev build"
+var version = "dev build"
+
+// Version emits application version string.
+func Version() string {
+	return version
+}
 
 func (c Config) String() string {
 	return fmt.Sprintf(
@@ -62,7 +67,7 @@ func Branding() string {
 	return fmt.Sprintf(
 		"%s %s (%s)",
 		MyAppName,
-		Version,
+		version,
 		MyAppURL,
 	)
 }
@@ -72,7 +77,7 @@ func Branding() string {
 // displaying this information.
 func (c flagSettings) Version() string {
 	return fmt.Sprintf("\n%s %s\n%s\n",
-		MyAppName, Version, MyAppURL)
+		MyAppName, version, MyAppURL)
 }
 
 // Description emits branding information whenever the user specifies the `-h`

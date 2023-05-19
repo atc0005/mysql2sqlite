@@ -56,8 +56,15 @@
    - statically linked
      - for all supported platforms
        - `make all-static`
-       - `make docker`
-         - requires that you have a working Docker installation first
+       - `make docker-release-build`
+         - uses a dedicated build image with all required tools
+         - **NOTE**: Requires working Docker installation
+         - links against `musl libc` (smaller) instead of `glibc` (more
+           common, default option for dynamic linkage)
+       - `make podman-release-build`
+         - build using `podman` instead of the `docker` command
+         - uses a dedicated build image with all required tools
+         - **NOTE**: Requires working Podman installation
          - links against `musl libc` (smaller) instead of `glibc` (more
            common, default option for dynamic linkage)
      - for just windows
@@ -72,6 +79,11 @@
      - look in `/tmp/mysql2sqlite/release_assets/mysql2sqlite/`
    - if using `go build` (with options provided earlier)
      - look in `/tmp/mysql2sqlite/`
+
+**NOTE**: Depending on which `Makefile` recipe you use the generated binary
+may be compressed and have an `xz` extension. If so, you should decompress the
+binary first before deploying it (e.g., `xz -d
+check_mysql2sqlite-linux-amd64.xz`).
 
 See the [deploy](deploy.md) doc for instructions for how to deploy the newly
 generated binaries.

@@ -22,5 +22,5 @@ jobs:
   lint_and_build_using_makefile:
     name: Makefile
     with:
-      os-dependencies: "make bsdmainutils gcc gcc-multilib gcc-mingw-w64"
+      os-dependencies: "make bsdmainutils gcc gcc-multilib gcc-mingw-w64 xz-utils"
     uses: atc0005/shared-project-resources/.github/workflows/lint-and-build-using-make.yml@master
