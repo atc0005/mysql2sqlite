@@ -33,7 +33,7 @@ The following types of changes will be recorded in this file:
 - Bug fixes
 - Dependency updates
 - GitHub Actions workflow updates
-- built using Go 1.19.9
+- built using Go 1.20.4
   - Statically linked
   - Windows (x86, x64)
   - Linux (x86, x64)
@@ -42,7 +42,7 @@ The following types of changes will be recorded in this file:
 
 - Dependencies
   - `Go`
-    - `1.19.4` to `1.19.9`
+    - `1.19.4` to `1.20.4`
     - **Statically linked**
     - created via `docker` Makefile recipe
     - linked to musl libc
