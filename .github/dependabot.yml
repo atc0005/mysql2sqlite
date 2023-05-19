@@ -79,7 +79,6 @@ updates:
     ignore:
       - dependency-name: "golang"
         versions:
-          # Ignore updates from series associated with the latest "stable"
-          # Go release and no longer supported Go versions.
-          - ">= 1.20"
-          - "< 1.19"
+          # Track updates to latest stable release series.
+          - ">= 1.21"
+          - "< 1.20"
