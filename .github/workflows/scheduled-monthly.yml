@@ -16,8 +16,15 @@ on:
     - cron: "30 4 1 * *"
 
 jobs:
+
+  # Shared "monthly" tasks executed for all projects importing this workflow.
   monthly:
     name: Monthly Tasks
     with:
       os-dependencies: "make bsdmainutils gcc gcc-multilib gcc-mingw-w64 xz-utils"
     uses: atc0005/shared-project-resources/.github/workflows/scheduled-monthly.yml@master
+
+  # CI jobs specific to this project.
+  container_builds:
+    name: Container builds
+    uses: atc0005/mysql2sqlite/.github/workflows/build-using-make-docker-recipes.yml@master

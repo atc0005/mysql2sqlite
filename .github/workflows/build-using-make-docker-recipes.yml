@@ -7,10 +7,9 @@
 
 name: Build using Makefile container recipes
 
-# Run builds for Pull Requests (new, updated)
+# Run container-based builds as directed by calling workflow(s).
 on:
-  pull_request:
-    types: [opened, synchronize]
+  workflow_call:
 
 jobs:
   # This is run from *within* a container that is itself within the GitHub
