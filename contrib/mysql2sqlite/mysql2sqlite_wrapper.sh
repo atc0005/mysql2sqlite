@@ -88,6 +88,10 @@ case ${dbRegenCheckResult} in
         sleep ${our_delay_in_seconds}
 
         echo "Regenerating SQLite database file." >> "${our_log_file}"
+
+        #
+        # TODO: Replace /usr/local/sbin/ with /usr/sbin/ if using packages.
+        #
         /usr/local/sbin/mysql2sqlite \
             --config-file "${our_config_file}" \
             --log-format "${our_log_file_format}" 2>&1 >> "${our_log_file}"

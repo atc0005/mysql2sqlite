@@ -19,5 +19,5 @@ jobs:
   monthly:
     name: Monthly Tasks
     with:
-      os-dependencies: "make bsdmainutils gcc gcc-multilib gcc-mingw-w64"
+      os-dependencies: "make bsdmainutils gcc gcc-multilib gcc-mingw-w64 xz-utils"
     uses: atc0005/shared-project-resources/.github/workflows/scheduled-monthly.yml@master

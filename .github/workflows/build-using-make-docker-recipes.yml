@@ -5,7 +5,7 @@
 # Licensed under the MIT License. See LICENSE file in the project root for
 # full license information.
 
-name: Build using Makefile Docker recipes
+name: Build using Makefile container recipes
 
 # Run builds for Pull Requests (new, updated)
 on:
@@ -15,8 +15,8 @@ on:
 jobs:
   # This is run from *within* a container that is itself within the GitHub
   # Actions environment. All of these commands are run within our container.
-  build_dynamic_binaries_with_makefile:
-    name: Build dynamically linked binaries using Makefile
+  build_dynamic_binaries_using_mingw_image:
+    name: Build dynamically linked binaries using mingw-w64 image
     runs-on: ubuntu-latest
     # Default: 360 minutes
     timeout-minutes: 20
@@ -29,8 +29,12 @@ jobs:
       - name: Print go version
         run: go version
 
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+      - name: Check out code (full history)
+        uses: actions/checkout@v3.5.2
+        with:
+          # Full history is needed to allow listing tags via build tooling
+          # (e.g., go-winres, git-describe-semver)
+          fetch-depth: 0
 
       # Mark the current working directory as a safe directory in git to
       # resolve "dubious ownership" complaints.
@@ -48,8 +52,8 @@ jobs:
 
   # This is run from *within* a container that is itself within the GitHub
   # Actions environment. All of these commands are run within our container.
-  build_static_binaries_with_makefile:
-    name: Build statically linked binaries using Makefile
+  build_static_binaries_using_mingw_image:
+    name: Build statically linked binaries using mingw-w64 image
     runs-on: ubuntu-latest
     # Default: 360 minutes
     timeout-minutes: 20
@@ -62,8 +66,12 @@ jobs:
       - name: Print go version
         run: go version
 
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+      - name: Check out code (full history)
+        uses: actions/checkout@v3.5.2
+        with:
+          # Full history is needed to allow listing tags via build tooling
+          # (e.g., go-winres, git-describe-semver)
+          fetch-depth: 0
 
       # Mark the current working directory as a safe directory in git to
       # resolve "dubious ownership" complaints.
@@ -83,8 +91,8 @@ jobs:
   # `docker` command to perform specific build tasks within Docker containers.
   # Prep steps are run within the GitHub Actions environment and not within
   # the containers.
-  build_static_binaries_with_makefile_docker_recipe:
-    name: Build static binaries using Docker images
+  build_static_binaries_using_alpine_images:
+    name: Build static binaries using Alpine images
     runs-on: ubuntu-latest
     # Default: 360 minutes
     timeout-minutes: 20
@@ -97,8 +105,12 @@ jobs:
       # - name: Print go version
       #   run: go version
 
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+      - name: Check out code (full history)
+        uses: actions/checkout@v3.5.2
+        with:
+          # Full history is needed to allow listing tags via build tooling
+          # (e.g., go-winres, git-describe-semver)
+          fetch-depth: 0
 
       # Mark the current working directory as a safe directory in git to
       # resolve "dubious ownership" complaints.
@@ -119,5 +131,28 @@ jobs:
             bsdmainutils \
             make
 
-      - name: Build using project Makefile Docker recipe
-        run: make docker
+      # Use podman recipe to perform release builds. The docker-release-build
+      # recipe (which executes non-root user build containers) is currently
+      # unsupported on GitHub hosted runners.
+      #
+      # From the docs:
+      #
+      # Actions that run in Docker containers have static directories under
+      # the /github path. However, we strongly recommend using the default
+      # environment variables to construct file paths in Docker containers.
+      #
+      # GitHub reserves the /github path prefix and creates three directories
+      # for actions.
+      #
+      # /github/home
+      #
+      # /github/workspace - Note: GitHub Actions must be run by the default
+      # Docker user (root). Ensure your Dockerfile does not set the USER
+      # instruction, otherwise you will not be able to access
+      # GITHUB_WORKSPACE.
+      #
+      # /github/workflow
+      #
+      # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#docker-container-filesystem
+      - name: Build using project Makefile container recipe
+        run: make podman-release-build

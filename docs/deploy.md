@@ -148,6 +148,8 @@ Continuing where the [build](build.md) instructions left off, follow the steps
 below to deploy the generated `check_mysql2sqlite` and `mysql2sqlite` binaries
 to locations on a system that will run them.
 
+1. Decompress both binaries (if compressed)
+   - e.g., `xz -d check_mysql2sqlite-linux-amd64.xz`
 1. Deploy `check_mysql2sqlite`
    - as `/usr/lib/nagios/plugins/check_mysql2sqlite` on Debian-based systems
    - as `/usr/lib64/nagios/plugins/check_mysql2sqlite` on RedHat-based systems
@@ -157,8 +159,17 @@ to locations on a system that will run them.
 1. Set execute bit on `mysql2sqlite` binary
    1. `sudo chmod -v +x /usr/local/sbin/mysql2sqlite`
 1. Set execute bit on `check_mysql2sqlite` binary
-   - `sudo chmod -v +x /usr/lib/nagios/plugins/check_mysql2sqlite`
-   - `sudo chmod -v +x /usr/lib64/nagios/plugins/check_mysql2sqlite`
+   - `sudo chmod -v +x /usr/lib/nagios/plugins/check_mysql2sqlite` on
+     Debian-based systems
+   - `sudo chmod -v +x /usr/lib64/nagios/plugins/check_mysql2sqlite` on
+     RedHat-based systems
+
+**NOTE**:
+
+DEB and RPM packages are provided as an alternative to manually deploying
+binaries. If using packages the `mysql2sqlite` binary will be found in the
+`/usr/sbin/mysql2sqlite` path instead of `/usr/local/sbin/mysql2sqlite`. The
+`check_mysql2sqlite` plugin will be found in the applicable path noted above.
 
 ### Deploy configuration file
 
