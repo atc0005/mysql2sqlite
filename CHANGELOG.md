@@ -26,6 +26,46 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.0] - 2023-05-26
+
+### Overview
+
+- Add support for generating DEB, RPM packages
+- Build improvements
+- Generated binary changes
+  - filename patterns
+  - compression (~ 66% smaller)
+  - executable metadata
+- Bug fixes
+- built using Go 1.20.4
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Added
+
+- (GH-233) Generate RPM/DEB packages using nFPM
+- (GH-236) Add version details to Windows executables
+
+### Changed
+
+- Dependencies
+  - `mattn/go-isatty`
+    - `v0.0.18` to `v0.0.19`
+- (GH-237) Switch to semantic versioning (semver) compatible versioning
+  pattern
+- (GH-238) Makefile: Compress binaries & use fixed filenames
+- (GH-235) Makefile: Refresh recipes to add "standard" set, new
+  package-related options
+- (GH-234) Build dev/stable releases using go-ci Docker image
+- (GH-251) Move `Build using Makefile container recipes` jobs to monthly
+  schedule instead of for every PR
+
+### Fixes
+
+- (GH-247) Update project Go version to use stable release
+- (GH-248) Fix CHANGELOG: note correct Go version for v0.2.8
+
 ## [v0.2.8] - 2023-05-17
 
 ### Overview
@@ -741,7 +781,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.2.8...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.0...HEAD
+[v0.3.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.0
 [v0.2.8]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.8
 [v0.2.7]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.7
 [v0.2.6]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.6
