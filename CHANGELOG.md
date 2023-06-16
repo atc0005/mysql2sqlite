@@ -26,6 +26,45 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.1] - 2023-06-16
+
+### Overview
+
+- Bug fixes
+- Dependency updates
+- GitHub Actions workflow updates
+- built using Go 1.20.5
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.20.4` to `1.20.5`
+  - `atc0005/go-ci`
+    - `go-ci-stable-alpine-buildx64-v0.10.5` to
+      `go-ci-stable-alpine-buildx64-v0.11.0`
+    - `go-ci-stable-alpine-buildx86-v0.10.5` to
+      `go-ci-stable-alpine-buildx86-v0.11.0`
+  - `atc0005/go-nagios`
+    - `v0.14.0` to `v0.15.0`
+  - `mattn/go-sqlite3`
+    - `v1.14.16` to `v1.14.17`
+  - `mattn/go-isatty`
+    - `v0.0.18` to `v0.0.19`
+  - `golang.org/x/sys`
+    - `v0.8.0` to `v0.9.0`
+  - `actions/checkout`
+    - `v3.5.2` to `v3.5.3`
+- (GH-263) Update vuln analysis GHAW to remove on.push hook
+
+### Fixes
+
+- (GH-259) Disable depguard linter
+- (GH-266) Restore local CodeQL workflow
+
 ## [v0.3.0] - 2023-05-26
 
 ### Overview
@@ -781,7 +820,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.1...HEAD
+[v0.3.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.1
 [v0.3.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.0
 [v0.2.8]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.8
 [v0.2.7]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.7
