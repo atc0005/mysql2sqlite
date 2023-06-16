@@ -60,7 +60,7 @@ The following types of changes will be recorded in this file:
     - `v3.5.2` to `v3.5.3`
 - (GH-263) Update vuln analysis GHAW to remove on.push hook
 
-### Fixes
+### Fixed
 
 - (GH-259) Disable depguard linter
 - (GH-266) Restore local CodeQL workflow
@@ -100,7 +100,7 @@ The following types of changes will be recorded in this file:
 - (GH-251) Move `Build using Makefile container recipes` jobs to monthly
   schedule instead of for every PR
 
-### Fixes
+### Fixed
 
 - (GH-247) Update project Go version to use stable release
 - (GH-248) Fix CHANGELOG: note correct Go version for v0.2.8
@@ -187,27 +187,27 @@ The following types of changes will be recorded in this file:
           - `atc0005/go-ci:go-ci-stable-alpine-buildx64-v0.7.2-0-g433353d`
     - Windows (x86, x64)
     - Linux (x86, x64)
-  - `github.com/go-sql-driver/mysql`
+  - `go-sql-driver/mysql`
     - `v1.6.0` to `v1.7.0`
-  - `github.com/mattn/go-sqlite3`
+  - `mattn/go-sqlite3`
     - `v1.14.15` to `v1.14.16`
   - `atc0005/go-nagios`
     - `v0.10.0` to `v0.10.2`
-  - `github.com/mattn/go-colorable`
+  - `mattn/go-colorable`
     - `v0.1.2` to `v0.1.13`
-  - `github.com/mattn/go-isatty`
+  - `mattn/go-isatty`
     - `v0.0.8` to `v0.0.16`
   - `golang.org/x/sys`
     - `v0.0.0-20190412213103-97732733099d` to `v0.3.0`
-  - `github.com/alexflint/go-scalar`
+  - `alexflint/go-scalar`
     - `v1.1.0` to `v1.2.0`
-  - `github.com/fatih/color`
+  - `fatih/color`
     - `v1.7.0` to `v1.13.0`
-  - `github.com/go-logfmt/logfmt`
+  - `go-logfmt/logfmt`
     - `v0.4.0` to `v0.5.1`
-  - `github.com/pkg/errors`
+  - `pkg/errors`
     - `v0.8.1` to `v0.9.1`
-  - `github.com/kr/logfmt`
+  - `kr/logfmt`
     - `v0.0.0-20140226030751-b84e30acd515` to
       `v0.0.0-20210122060352-19f9bcb100e6`
 - (GH-189) Refactor GitHub Actions workflows to import logic
