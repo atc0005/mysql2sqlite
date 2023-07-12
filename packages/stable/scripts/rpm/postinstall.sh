@@ -32,12 +32,7 @@ if [ -f "${plugin_path}/${plugin_name}" ]; then
         else
             # SELinux is enabled. Set context.
             echo -e "\nApplying SELinux contexts on ${plugin_path}/${plugin_name} ..."
-            chcon \
-                --verbose \
-                -t nagios_unconfined_plugin_exec_t \
-                -u system_u \
-                -r object_r \
-                ${plugin_path}/${plugin_name}
+            restorecon -v ${plugin_path}/${plugin_name}
 
             if [ $? -eq 0 ]; then
                 echo "Successfully applied SELinux contexts on ${plugin_path}/${plugin_name}"
