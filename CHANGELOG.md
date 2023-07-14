@@ -26,6 +26,38 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.2] - 2023-07-14
+
+### Overview
+
+- RPM package improvements
+- Bug fixes
+- Dependency updates
+- built using Go 1.20.6
+  - Statically linked
+  - Windows (x86, x64)
+  - Linux (x86, x64)
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.20.5` to `1.20.6`
+  - `atc0005/go-ci`
+    - `go-ci-stable-alpine-buildx64-v0.11.0` to
+      `go-ci-stable-alpine-buildx64-v0.11.4`
+    - `go-ci-stable-alpine-buildx86-v0.11.0` to
+      `go-ci-stable-alpine-buildx86-v0.11.4`
+  - `atc0005/go-nagios`
+    - `v0.15.0` to `v0.16.0`
+  - `golang.org/x/sys`
+    - `v0.9.0` to `v0.10.0`
+- (GH-276) Update RPM postinstall scripts to use restorecon
+
+### Fixed
+
+- (GH-270) Misc CHANGELOG fixes
+
 ## [v0.3.1] - 2023-06-16
 
 ### Overview
@@ -820,7 +852,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.2...HEAD
+[v0.3.2]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.2
 [v0.3.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.1
 [v0.3.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.0
 [v0.2.8]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.2.8
