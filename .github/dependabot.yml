@@ -111,7 +111,6 @@ updates:
     ignore:
       - dependency-name: "golang"
         versions:
-          # Track updates to latest stable release series.
           - ">= 1.21"
           - "< 1.20"
 
