@@ -26,6 +26,32 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.3] - 2023-08-17
+
+### Added
+
+- (GH-282) Add initial automated release notes config
+- (GH-285) Add initial automated release build workflow
+
+### Changed
+
+- Dependencies
+  - `Go`
+    - `1.20.6` to `1.20.7`
+  - `atc0005/go-ci`
+    - `go-ci-stable-alpine-buildx64-v0.11.4` to
+      `go-ci-oldstable-alpine-buildx64-v0.13.4`
+    - `go-ci-stable-alpine-buildx86-v0.11.4` to
+      `go-ci-oldstable-alpine-buildx86-v0.13.4`
+  - `golang.org/x/sys`
+    - `v0.10.0` to `v0.11.0`
+- (GH-286) Update Dependabot config to monitor both branches
+- (GH-317) Update project to use oldstable build images
+
+### Fixed
+
+- (GH-288) Add missing key to Dependabot configuration
+
 ## [v0.3.2] - 2023-07-14
 
 ### Overview
@@ -852,7 +878,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.3...HEAD
+[v0.3.3]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.3
 [v0.3.2]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.2
 [v0.3.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.1
 [v0.3.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.0
