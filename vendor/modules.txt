@@ -15,7 +15,7 @@ github.com/apex/log/handlers/text
 # github.com/atc0005/go-nagios v0.16.0
 ## explicit; go 1.19
 github.com/atc0005/go-nagios
-# github.com/fatih/color v1.15.0
+# github.com/fatih/color v1.16.0
 ## explicit; go 1.17
 github.com/fatih/color
 # github.com/go-logfmt/logfmt v0.6.0
