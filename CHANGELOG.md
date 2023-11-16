@@ -26,6 +26,38 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.4] - 2023-11-16
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-385) canary: bump golang from 1.20.10 to 1.20.11 in /dependabot/docker/go
+- (GH-339) canary: bump golang from 1.20.7 to 1.20.8 in /dependabot/docker/go
+- (GH-364) canary: bump golang from 1.20.8 to 1.20.10 in /dependabot/docker/go
+- (GH-389) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.13.12 to go-ci-oldstable-alpine-buildx64-v0.14.1 in /dependabot/docker/builds/alpine/x64
+- (GH-323) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.13.4 to go-ci-oldstable-alpine-buildx64-v0.13.5 in /dependabot/docker/builds/alpine/x64
+- (GH-327) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.13.5 to go-ci-oldstable-alpine-buildx64-v0.13.6 in /dependabot/docker/builds/alpine/x64
+- (GH-331) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.13.6 to go-ci-oldstable-alpine-buildx64-v0.13.7 in /dependabot/docker/builds/alpine/x64
+- (GH-342) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.13.7 to go-ci-oldstable-alpine-buildx64-v0.13.8 in /dependabot/docker/builds/alpine/x64
+- (GH-352) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.13.8 to go-ci-oldstable-alpine-buildx64-v0.13.9 in /dependabot/docker/builds/alpine/x64
+- (GH-371) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.13.9 to go-ci-oldstable-alpine-buildx64-v0.13.12 in /dependabot/docker/builds/alpine/x64
+- (GH-378) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.13.12 to go-ci-oldstable-alpine-buildx86-v0.14.0 in /dependabot/docker/builds/alpine/x86
+- (GH-325) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.13.4 to go-ci-oldstable-alpine-buildx86-v0.13.5 in /dependabot/docker/builds/alpine/x86
+- (GH-328) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.13.5 to go-ci-oldstable-alpine-buildx86-v0.13.6 in /dependabot/docker/builds/alpine/x86
+- (GH-333) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.13.6 to go-ci-oldstable-alpine-buildx86-v0.13.7 in /dependabot/docker/builds/alpine/x86
+- (GH-340) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.13.7 to go-ci-oldstable-alpine-buildx86-v0.13.8 in /dependabot/docker/builds/alpine/x86
+- (GH-350) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.13.8 to go-ci-oldstable-alpine-buildx86-v0.13.9 in /dependabot/docker/builds/alpine/x86
+- (GH-369) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.13.9 to go-ci-oldstable-alpine-buildx86-v0.13.12 in /dependabot/docker/builds/alpine/x86
+- (GH-390) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.14.0 to go-ci-oldstable-alpine-buildx86-v0.14.1 in /dependabot/docker/builds/alpine/x86
+- (GH-337) ghaw: bump actions/checkout from 3 to 4
+- (GH-382) go.mod: bump github.com/fatih/color from 1.15.0 to 1.16.0
+- (GH-373) go.mod: bump github.com/mattn/go-isatty from 0.0.19 to 0.0.20
+- (GH-381) go.mod: bump github.com/mattn/go-sqlite3 from 1.14.17 to 1.14.18
+- (GH-335) go.mod: bump golang.org/x/sys from 0.11.0 to 0.12.0
+- (GH-359) go.mod: bump golang.org/x/sys from 0.12.0 to 0.13.0
+- (GH-383) go.mod: bump golang.org/x/sys from 0.13.0 to 0.14.0
+
 ## [v0.3.3] - 2023-08-17
 
 ### Added
@@ -878,7 +910,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.3...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.4...HEAD
+[v0.3.4]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.4
 [v0.3.3]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.3
 [v0.3.2]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.2
 [v0.3.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.1
