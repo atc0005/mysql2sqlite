@@ -26,6 +26,17 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.5] - 2023-12-09
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-398) canary: bump golang from 1.20.11 to 1.20.12 in /dependabot/docker/go
+- (GH-402) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.14.1 to go-ci-oldstable-alpine-buildx64-v0.14.2 in /dependabot/docker/builds/alpine/x64
+- (GH-400) docker: bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.14.1 to go-ci-oldstable-alpine-buildx86-v0.14.2 in /dependabot/docker/builds/alpine/x86
+- (GH-396) go.mod: bump golang.org/x/sys from 0.14.0 to 0.15.0
+
 ## [v0.3.4] - 2023-11-16
 
 ### Changed
@@ -910,7 +921,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.4...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.5...HEAD
+[v0.3.5]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.5
 [v0.3.4]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.4
 [v0.3.3]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.3
 [v0.3.2]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.2
