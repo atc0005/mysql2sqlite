@@ -1,3 +1,7 @@
+# filippo.io/edwards25519 v1.1.0
+## explicit; go 1.20
+filippo.io/edwards25519
+filippo.io/edwards25519/field
 # github.com/alexflint/go-arg v1.4.3
 ## explicit; go 1.13
 github.com/alexflint/go-arg
@@ -21,8 +25,8 @@ github.com/fatih/color
 # github.com/go-logfmt/logfmt v0.6.0
 ## explicit; go 1.17
 github.com/go-logfmt/logfmt
-# github.com/go-sql-driver/mysql v1.7.1
-## explicit; go 1.13
+# github.com/go-sql-driver/mysql v1.8.0
+## explicit; go 1.18
 github.com/go-sql-driver/mysql
 # github.com/mattn/go-colorable v0.1.13
 ## explicit; go 1.15
