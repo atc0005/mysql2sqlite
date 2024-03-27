@@ -26,6 +26,25 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.9] - 2024-03-27
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-495) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.15.4 to go-ci-oldstable-alpine-buildx64-v0.16.0 in /dependabot/docker/builds/alpine/x64
+- (GH-500) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.16.0 to go-ci-oldstable-alpine-buildx64-v0.16.1 in /dependabot/docker/builds/alpine/x64
+- (GH-503) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.16.1 to go-ci-oldstable-alpine-buildx64-v0.19.0 in /dependabot/docker/builds/alpine/x64
+- (GH-496) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.15.4 to go-ci-oldstable-alpine-buildx86-v0.16.0 in /dependabot/docker/builds/alpine/x86
+- (GH-499) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.16.0 to go-ci-oldstable-alpine-buildx86-v0.16.1 in /dependabot/docker/builds/alpine/x86
+- (GH-504) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.16.1 to go-ci-oldstable-alpine-buildx86-v0.19.0 in /dependabot/docker/builds/alpine/x86
+- (GH-492) Go Dependency: Bump github.com/go-sql-driver/mysql from 1.7.1 to 1.8.0
+- (GH-507) Go Dependency: Bump github.com/go-sql-driver/mysql from 1.8.0 to 1.8.1
+
+### Fixed
+
+- (GH-510) Fix build version insertion
+
 ## [v0.3.8] - 2024-03-08
 
 ### Changed
@@ -981,7 +1000,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.8...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.9...HEAD
+[v0.3.9]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.9
 [v0.3.8]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.8
 [v0.3.7]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.7
 [v0.3.6]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.6
