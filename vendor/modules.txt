@@ -25,7 +25,7 @@ github.com/fatih/color
 # github.com/go-logfmt/logfmt v0.6.0
 ## explicit; go 1.17
 github.com/go-logfmt/logfmt
-# github.com/go-sql-driver/mysql v1.8.0
+# github.com/go-sql-driver/mysql v1.8.1
 ## explicit; go 1.18
 github.com/go-sql-driver/mysql
 # github.com/mattn/go-colorable v0.1.13
