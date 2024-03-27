@@ -143,7 +143,7 @@ export SEMVER  := $(REPO_VERSION)
 # CGO_ENABLED=1
 #   CGO is disabled by default for cross-compilation. You need to enable it
 #   explicitly to use CGO for multiple architectures.
-BUILD_LDFLAGS_COMMON	:= -s -w -X $(VERSION_VAR_PKG).version=$(VERSION)
+BUILD_LDFLAGS_COMMON	:= -s -w -X $(VERSION_VAR_PKG).version=$(REPO_VERSION)
 BUILD_LDFLAGS_STATIC	:= -linkmode=external -extldflags '-static'
 BUILDCMD_COMMON			:= CGO_ENABLED=1 go build -mod=vendor -a -trimpath
 BUILDCMD_STATIC			:= $(BUILDCMD_COMMON) -tags 'osusergo,netgo,sqlite_omit_load_extension' -ldflags "$(BUILD_LDFLAGS_STATIC) $(BUILD_LDFLAGS_COMMON)"
