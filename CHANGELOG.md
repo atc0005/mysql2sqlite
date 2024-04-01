@@ -26,6 +26,19 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.10] - 2024-04-01
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-517) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.19.0 to go-ci-oldstable-alpine-buildx86-v0.20.0 in /dependabot/docker/builds/alpine/x86
+- (GH-514) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.19.0 to go-ci-oldstable-alpine-buildx64-v0.20.0 in /dependabot/docker/builds/alpine/x64
+
+### Fixed
+
+- (GH-520) Generate missing asset links
+
 ## [v0.3.9] - 2024-03-27
 
 ### Changed
@@ -1000,7 +1013,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.9...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.10...HEAD
+[v0.3.10]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.10
 [v0.3.9]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.9
 [v0.3.8]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.8
 [v0.3.7]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.7
