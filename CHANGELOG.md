@@ -26,6 +26,21 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.12] - 2024-05-11
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-538) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.20.1 to go-ci-oldstable-alpine-buildx64-v0.20.2 in /dependabot/docker/builds/alpine/x64
+- (GH-546) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.20.2 to go-ci-oldstable-alpine-buildx64-v0.20.3 in /dependabot/docker/builds/alpine/x64
+- (GH-549) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.20.3 to go-ci-oldstable-alpine-buildx64-v0.20.4 in /dependabot/docker/builds/alpine/x64
+- (GH-536) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.20.1 to go-ci-oldstable-alpine-buildx86-v0.20.2 in /dependabot/docker/builds/alpine/x86
+- (GH-544) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.20.2 to go-ci-oldstable-alpine-buildx86-v0.20.3 in /dependabot/docker/builds/alpine/x86
+- (GH-551) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.20.3 to go-ci-oldstable-alpine-buildx86-v0.20.4 in /dependabot/docker/builds/alpine/x86
+- (GH-539) Go Dependency: Bump golang.org/x/sys from 0.19.0 to 0.20.0
+- (GH-542) Go Runtime: Bump golang from 1.21.9 to 1.21.10 in /dependabot/docker/go
+
 ## [v0.3.11] - 2024-04-11
 
 ### Changed
@@ -1024,7 +1039,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.11...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.12...HEAD
+[v0.3.12]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.12
 [v0.3.11]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.11
 [v0.3.10]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.10
 [v0.3.9]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.9
