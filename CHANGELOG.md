@@ -26,6 +26,27 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.13] - 2024-06-07
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-559) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.20.4 to go-ci-oldstable-alpine-buildx64-v0.20.5 in /dependabot/docker/builds/alpine/x64
+- (GH-563) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.20.5 to go-ci-oldstable-alpine-buildx64-v0.20.6 in /dependabot/docker/builds/alpine/x64
+- (GH-575) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.20.6 to go-ci-oldstable-alpine-buildx64-v0.20.7 in /dependabot/docker/builds/alpine/x64
+- (GH-562) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.20.4 to go-ci-oldstable-alpine-buildx86-v0.20.5 in /dependabot/docker/builds/alpine/x86
+- (GH-564) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.20.5 to go-ci-oldstable-alpine-buildx86-v0.20.6 in /dependabot/docker/builds/alpine/x86
+- (GH-573) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.20.6 to go-ci-oldstable-alpine-buildx86-v0.20.7 in /dependabot/docker/builds/alpine/x86
+- (GH-555) Go Dependency: Bump github.com/alexflint/go-arg from 1.4.3 to 1.5.0
+- (GH-557) Go Dependency: Bump github.com/fatih/color from 1.16.0 to 1.17.0
+- (GH-570) Go Dependency: Bump golang.org/x/sys from 0.20.0 to 0.21.0
+- (GH-569) Go Runtime: Bump golang from 1.21.10 to 1.21.11 in /dependabot/docker/go
+
+### Fixed
+
+- (GH-567) Remove inactive maligned linter
+
 ## [v0.3.12] - 2024-05-11
 
 ### Changed
@@ -1039,7 +1060,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.12...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.13...HEAD
+[v0.3.13]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.13
 [v0.3.12]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.12
 [v0.3.11]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.11
 [v0.3.10]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.10
