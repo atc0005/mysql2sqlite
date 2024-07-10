@@ -26,6 +26,24 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.14] - 2024-07-10
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-579) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.20.7 to go-ci-oldstable-alpine-buildx64-v0.20.8 in /dependabot/docker/builds/alpine/x64
+- (GH-586) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.20.8 to go-ci-oldstable-alpine-buildx64-0.21.2 in /dependabot/docker/builds/alpine/x64
+- (GH-593) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.2 to go-ci-oldstable-alpine-buildx64-v0.21.3 in /dependabot/docker/builds/alpine/x64
+- (GH-599) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.3 to go-ci-oldstable-alpine-buildx64-v0.21.4 in /dependabot/docker/builds/alpine/x64
+- (GH-580) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.20.7 to go-ci-oldstable-alpine-buildx86-v0.20.8 in /dependabot/docker/builds/alpine/x86
+- (GH-588) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.20.8 to go-ci-oldstable-alpine-buildx86-v0.21.2 in /dependabot/docker/builds/alpine/x86
+- (GH-594) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.2 to go-ci-oldstable-alpine-buildx86-v0.21.3 in /dependabot/docker/builds/alpine/x86
+- (GH-602) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.3 to go-ci-oldstable-alpine-buildx86-v0.21.4 in /dependabot/docker/builds/alpine/x86
+- (GH-591) Go Dependency: Bump github.com/alexflint/go-arg from 1.5.0 to 1.5.1
+- (GH-603) Go Dependency: Bump golang.org/x/sys from 0.21.0 to 0.22.0
+- (GH-595) Go Runtime: Bump golang from 1.21.11 to 1.21.12 in /dependabot/docker/go
+
 ## [v0.3.13] - 2024-06-07
 
 ### Changed
@@ -1060,7 +1078,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.13...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.14...HEAD
+[v0.3.14]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.14
 [v0.3.13]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.13
 [v0.3.12]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.12
 [v0.3.11]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.11
