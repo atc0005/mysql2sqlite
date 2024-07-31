@@ -932,6 +932,7 @@ docker-release-build: clean helper-builder-setup
 	@echo
 	@echo "Using Alpine x64 release builder image to generate project release assets"
 	$(CONTAINER_COMMAND) container run \
+		--env REPO_VERSION=$(REPO_VERSION) \
 		--platform linux/amd64 \
 		--user builduser:builduser \
 		--rm \
@@ -943,6 +944,7 @@ docker-release-build: clean helper-builder-setup
 
 	@echo "Using Alpine x86 release builder image to generate project release assets"
 	$(CONTAINER_COMMAND) container run \
+		--env REPO_VERSION=$(REPO_VERSION) \
 		--platform linux/386 \
 		--user builduser:builduser \
 		--rm \
@@ -964,6 +966,7 @@ podman-release-build: clean helper-builder-setup
 	@echo
 	@echo "Using Alpine x64 release builder image to generate project release assets"
 	$(CONTAINER_COMMAND) container run \
+		--env REPO_VERSION=$(REPO_VERSION) \
 		--platform linux/amd64 \
 		--rm \
 		-i \
@@ -974,6 +977,7 @@ podman-release-build: clean helper-builder-setup
 
 	@echo "Using Alpine x86 release builder image to generate project release assets"
 	$(CONTAINER_COMMAND) container run \
+		--env REPO_VERSION=$(REPO_VERSION) \
 		--platform linux/386 \
 		--rm \
 		-i \
@@ -994,6 +998,7 @@ docker-dev-build: clean helper-builder-setup
 	@echo
 	@echo "Using Alpine x64 release builder image to generate project release assets"
 	$(CONTAINER_COMMAND) container run \
+		--env REPO_VERSION=$(REPO_VERSION) \
 		--platform linux/amd64 \
 		--user builduser:builduser \
 		--rm \
@@ -1015,6 +1020,7 @@ podman-dev-build: clean helper-builder-setup
 	@echo
 	@echo "Using Alpine x64 release builder image to generate project release assets"
 	$(CONTAINER_COMMAND) container run \
+		--env REPO_VERSION=$(REPO_VERSION) \
 		--platform linux/amd64 \
 		--rm \
 		-i \
@@ -1037,6 +1043,7 @@ docker-packages: helper-builder-setup
 
 	@echo "Building with $(CONTAINER_COMMAND)"
 	$(CONTAINER_COMMAND) container run \
+		--env REPO_VERSION=$(REPO_VERSION) \
 		--platform linux/amd64 \
 		--user builduser:builduser \
 		--rm \
@@ -1060,6 +1067,7 @@ podman-packages: helper-builder-setup
 
 	@echo "Building with $(CONTAINER_COMMAND)"
 	$(CONTAINER_COMMAND) container run \
+		--env REPO_VERSION=$(REPO_VERSION) \
 		--platform linux/amd64 \
 		--rm \
 		-i \
