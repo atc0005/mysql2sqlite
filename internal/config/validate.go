@@ -10,6 +10,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -137,7 +138,7 @@ func (c Config) Validate() error {
 		)
 		log.Debugf("%s: %v", myFuncName, errMsg)
 
-		return fmt.Errorf(errMsg)
+		return errors.New(errMsg)
 	}
 	log.Debugf("c.MySQLPort() validates: %+v", c.MySQLPort())
 
