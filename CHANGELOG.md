@@ -26,6 +26,35 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.15] - 2024-08-21
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-609) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.4 to go-ci-oldstable-alpine-buildx64-v0.21.5 in /dependabot/docker/builds/alpine/x64
+- (GH-615) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.5 to go-ci-oldstable-alpine-buildx64-v0.21.6 in /dependabot/docker/builds/alpine/x64
+- (GH-622) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.6 to go-ci-oldstable-alpine-buildx64-v0.21.7 in /dependabot/docker/builds/alpine/x64
+- (GH-629) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.7 to go-ci-oldstable-alpine-buildx64-v0.21.8 in /dependabot/docker/builds/alpine/x64
+- (GH-639) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.8 to go-ci-oldstable-alpine-buildx64-v0.21.9 in /dependabot/docker/builds/alpine/x64
+- (GH-612) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.4 to go-ci-oldstable-alpine-buildx86-v0.21.5 in /dependabot/docker/builds/alpine/x86
+- (GH-614) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.5 to go-ci-oldstable-alpine-buildx86-v0.21.6 in /dependabot/docker/builds/alpine/x86
+- (GH-620) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.6 to go-ci-oldstable-alpine-buildx86-v0.21.7 in /dependabot/docker/builds/alpine/x86
+- (GH-630) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.7 to go-ci-oldstable-alpine-buildx86-v0.21.8 in /dependabot/docker/builds/alpine/x86
+- (GH-641) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.8 to go-ci-oldstable-alpine-buildx86-v0.21.9 in /dependabot/docker/builds/alpine/x86
+- (GH-627) Go Dependency: Bump golang.org/x/sys from 0.22.0 to 0.23.0
+- (GH-635) Go Dependency: Bump golang.org/x/sys from 0.23.0 to 0.24.0
+- (GH-643) Go Runtime: Bump golang from 1.21.12 to 1.22.6 in /dependabot/docker/go
+- (GH-642) Update project to Go 1.22 series
+
+#### Other
+
+- (GH-624) Push `REPO_VERSION` var into containers for builds
+
+### Fixed
+
+- (GH-644) Fix govet linting errors raised by updated linter
+
 ## [v0.3.14] - 2024-07-10
 
 ### Changed
@@ -1078,7 +1107,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.14...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.15...HEAD
+[v0.3.15]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.15
 [v0.3.14]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.14
 [v0.3.13]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.13
 [v0.3.12]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.12
