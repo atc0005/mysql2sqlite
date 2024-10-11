@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/alexflint/go-arg v1.5.1
 	github.com/apex/log v1.9.0
-	github.com/atc0005/go-nagios v0.16.1
+	github.com/atc0005/go-nagios v0.16.2
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/mattn/go-sqlite3 v1.14.23
 	gopkg.in/yaml.v2 v2.4.0
