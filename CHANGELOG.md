@@ -26,6 +26,27 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.3.16] - 2024-11-13
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-669) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.12 to go-ci-oldstable-alpine-buildx64-v0.21.13 in /dependabot/docker/builds/alpine/x64
+- (GH-693) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.13 to go-ci-oldstable-alpine-buildx64-v0.21.15 in /dependabot/docker/builds/alpine/x64
+- (GH-664) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.9 to go-ci-oldstable-alpine-buildx64-v0.21.12 in /dependabot/docker/builds/alpine/x64
+- (GH-666) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.12 to go-ci-oldstable-alpine-buildx86-v0.21.13 in /dependabot/docker/builds/alpine/x86
+- (GH-694) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.13 to go-ci-oldstable-alpine-buildx86-v0.21.15 in /dependabot/docker/builds/alpine/x86
+- (GH-663) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.9 to go-ci-oldstable-alpine-buildx86-v0.21.12 in /dependabot/docker/builds/alpine/x86
+- (GH-692) Go Dependency: Bump github.com/atc0005/go-nagios from 0.16.1 to 0.17.1
+- (GH-682) Go Dependency: Bump github.com/fatih/color from 1.17.0 to 1.18.0
+- (GH-658) Go Dependency: Bump github.com/mattn/go-sqlite3 from 1.14.22 to 1.14.23
+- (GH-677) Go Dependency: Bump github.com/mattn/go-sqlite3 from 1.14.23 to 1.14.24
+- (GH-657) Go Dependency: Bump golang.org/x/sys from 0.24.0 to 0.25.0
+- (GH-687) Go Dependency: Bump golang.org/x/sys from 0.25.0 to 0.27.0
+- (GH-661) Go Runtime: Bump golang from 1.22.6 to 1.22.7 in /dependabot/docker/go
+- (GH-684) Go Runtime: Bump golang from 1.22.7 to 1.22.9 in /dependabot/docker/go
+
 ## [v0.3.15] - 2024-08-21
 
 ### Changed
@@ -1107,7 +1128,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.15...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.16...HEAD
+[v0.3.16]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.16
 [v0.3.15]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.15
 [v0.3.14]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.14
 [v0.3.13]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.13
