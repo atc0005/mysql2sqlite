@@ -26,6 +26,52 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.17.1] - 2024-11-08
+
+### Changed
+
+- (GH-296) Unescape encoded Ascii85 payload before decoding
+
+## [v0.17.0] - 2024-11-06
+
+### Added
+
+- (GH-288) Add support for embedded/encoded payloads
+- (GH-289) Add support for (internal) debug logging output
+
+### Changed
+
+- (GH-291) Clarify handling of empty payload input
+- (GH-292) Enable LongServiceOutput header/label for payloads
+
+### Fixed
+
+- (GH-268) Fix `Plugin.SetOutputTarget` method
+- (GH-273) Fix test case validity check
+- (GH-290) Minor refactoring of Range and Thresholds support
+
+## [v0.16.2] - 2024-10-10
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-240) Update Dependabot PR prefixes
+- (GH-241) Update Dependabot PR prefixes (redux)
+- (GH-242) Go Dependency: Bump github.com/stretchr/testify from 1.8.4 to 1.9.0
+
+#### Other
+
+- (GH-245) Add check_cert plugin perfdata success test case
+- (GH-254) Update README reference links
+
+### Fixed
+
+- (GH-247) Remove inactive maligned linter
+- (GH-248) Fix errcheck linting errors
+- (GH-252) Fix `TestEmptyServiceOutputProducesNoOutput` test
+- (GH-257) Fix `predeclared` linter warnings
+
 ## [v0.16.1] - 2024-01-25
 
 ### Added
@@ -521,7 +567,10 @@ Initial package state
 
 - Nagios state map
 
-[Unreleased]: https://github.com/atc0005/go-nagios/compare/v0.16.1...HEAD
+[Unreleased]: https://github.com/atc0005/go-nagios/compare/v0.17.1...HEAD
+[v0.17.1]: https://github.com/atc0005/go-nagios/releases/tag/v0.17.1
+[v0.17.0]: https://github.com/atc0005/go-nagios/releases/tag/v0.17.0
+[v0.16.2]: https://github.com/atc0005/go-nagios/releases/tag/v0.16.2
 [v0.16.1]: https://github.com/atc0005/go-nagios/releases/tag/v0.16.1
 [v0.16.0]: https://github.com/atc0005/go-nagios/releases/tag/v0.16.0
 [v0.15.0]: https://github.com/atc0005/go-nagios/releases/tag/v0.15.0
