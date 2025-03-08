@@ -1,6 +1,6 @@
 module github.com/atc0005/mysql2sqlite
 
-go 1.20
+go 1.23.0
 
 require (
 	github.com/alexflint/go-arg v1.5.1
