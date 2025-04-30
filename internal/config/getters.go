@@ -8,6 +8,10 @@
 package config
 
 import (
+	"fmt"
+	"net"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/atc0005/mysql2sqlite/internal/dbqs"
@@ -129,8 +133,8 @@ func (c Config) MySQLPassword() string {
 	}
 }
 
-// MySQLHost returns the user-provided IP Address or FQDN for the MySQL server
-// used by this application or the default value if not provided.
+// MySQLHost returns the user-provided IP Address, FQDN or UNIX socket for the
+// MySQL server used by this application or the default value if not provided.
 func (c Config) MySQLHost() string {
 	switch {
 	case c.configFileSettings.MySQLConfig.Host != nil:
@@ -148,6 +152,38 @@ func (c Config) MySQLPort() int {
 		return *c.configFileSettings.MySQLConfig.Port
 	default:
 		return defaultMySQLPort
+	}
+}
+
+// MySQLAddress returns the address used by the MySQL driver to connect to the
+// specified database. This is a formatted string containing the user-provided
+// IP Address or FQDN and TCP port or the UNIX socket for the MySQL server
+// used by this application. This value is empty if no user-provided MySQL
+// host or TCP port is provided.
+func (c Config) MySQLAddress() string {
+	host := c.MySQLHost()
+
+	switch {
+	// If a forward or back slash is present we assume a UNIX socket was
+	// specified for connectivity.
+	case strings.ContainsAny(host, `\/`):
+		return fmt.Sprintf(
+			"unix(%s)",
+			host,
+		)
+
+	// If a host value was specified we use a user-specified or default TCP
+	// port for the address string.
+	case host != "":
+		port := strconv.Itoa(c.MySQLPort())
+
+		return fmt.Sprintf(
+			"@tcp(%s)",
+			net.JoinHostPort(host, port),
+		)
+
+	default:
+		return host
 	}
 }
 

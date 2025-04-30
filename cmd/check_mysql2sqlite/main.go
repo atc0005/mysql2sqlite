@@ -62,7 +62,8 @@ func main() {
 		"* SQLite database: %q%s"+
 			"* MySQL database: %q%s"+
 			"* MySQL host: %q%s"+
-			"* MySQL host port: %d%s",
+			"* MySQL host port: %d%s"+
+			"* MySQL address: %s%s",
 		path.Join(cfg.SQLiteDBPath(), cfg.SQLiteDBFile()),
 		nagios.CheckOutputEOL,
 		cfg.MySQLDatabase(),
@@ -70,6 +71,8 @@ func main() {
 		cfg.MySQLHost(),
 		nagios.CheckOutputEOL,
 		cfg.MySQLPort(),
+		nagios.CheckOutputEOL,
+		cfg.MySQLAddress(),
 		nagios.CheckOutputEOL,
 	)
 
@@ -85,12 +88,10 @@ func main() {
 	mysqlDSN := fmt.Sprintf(
 		// Based on testing, automatic date/time parsing appears to be required
 		// TODO: Consider exposing this via config file setting.
-		"%s:%s@tcp(%s:%d)/%s?tls=%s&parseTime=true",
-		// "%s:%s@tcp(%s:%d)/%s?tls=%s",
+		"%s:%s%s/%s?tls=%s&parseTime=true",
 		cfg.MySQLUsername(),
 		cfg.MySQLPassword(),
-		cfg.MySQLHost(),
-		cfg.MySQLPort(),
+		cfg.MySQLAddress(),
 		cfg.MySQLDatabase(),
 		cfg.MySQLEncryption(),
 	)

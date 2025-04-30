@@ -35,15 +35,17 @@ mysql_config:
   # Password for the MySQL database account. Read-only access is sufficient.
   password: "PLACEHOLDER"
 
-  # MySQL database host. If you use a stunnel or other forwarded connection
-  # you will likely wish to set this to 127.0.0.1 and override the default
-  # port setting.
+  # MySQL database host specified as IP Address, FQDN or UNIX socket. If you
+  # use a stunnel or other forwarded connection you will likely wish to set
+  # this to 127.0.0.1 and override the default port setting.
   host: "PLACEHOLDER"
 
   # If the applications from this project run on the same box as the
   # MySQL/MariaDB server then you probably want to enter 3306 here, otherwise
   # if using stunnel or another port forwarding setup you will likely need to
   # enter an alternate port.
+  #
+  # NOTE: This value is ignored if you specify a UNIX socket for the host.
   port: 3306
 
   # The database whose contents you wish to mirror to a local SQLite database.
