@@ -245,7 +245,10 @@ func main() {
 
 		colCount := len(columnNames)
 
-		// The `valuePrts` slice is used to satisfy the `(*sql.Rows).Scan`
+		// Create a slice of interfaces to hold the row values, which are
+		// initially unknown types.
+		//
+		// The `valuePtrs` slice is used to satisfy the `(*sql.Rows).Scan`
 		// method requiring that arguments be specified as pointers to a
 		// value.
 		//
@@ -291,34 +294,37 @@ func main() {
 			// If the user requested it, we also trim whitespace from the
 			// source MySQL data.
 			sqliteOutput := make([]interface{}, len(values))
-			for idx := range values {
-				byteArray, ok := values[idx].([]byte)
-				if !ok {
-					log.Debugf("Field %q does NOT contain byte slice value", columnNames[idx])
-					log.Debugf("Saving field %q value to sqliteOutput slice as-is", columnNames[idx])
-					sqliteOutput[idx] = values[idx]
-				} else {
-					log.Debugf("Field %q does contain byte slice value", columnNames[idx])
-					log.Debugf("Converting field %q value to sqliteOutput as string value", columnNames[idx])
-					sqliteOutput[idx] = string(byteArray)
-
-					if cfg.TrimWhitespace() {
-						log.Debugf("Trimming whitespace from field %q", columnNames[idx])
-
-						// WARNING: logging field values could potentially
-						// expose sensitive data (e.g., passwords)
-						//
-						// log.Debugf("value is %q before trim", values[idx])
-						sqliteOutput[idx] = strings.TrimSpace(string(byteArray))
-						// log.Debugf("value is %q after trim", values[idx])
-					}
+			for idx, v := range values {
+				var strVal string
+				switch val := v.(type) {
+				case nil:
+					strVal = ""
+				case int:
+					strVal = fmt.Sprintf("%d", val)
+				case int64:
+					strVal = fmt.Sprintf("%d", val)
+				case float64:
+					strVal = fmt.Sprintf("%f", val)
+				case float32:
+					strVal = fmt.Sprintf("%f", val)
+				case []byte:
+					strVal = string(val) // Handle blob/text types
+				case string:
+					strVal = val
+				default:
+					strVal = fmt.Sprintf("%v", v) // Fallback for other types
 				}
 
-				// Rely on fmt.Sprintf to handle formatting, potential
-				// conversion of data to string type before storing back
-				// in our []interface{} for use by db.Exec
-				sqliteOutput[idx] = fmt.Sprintf("%v", sqliteOutput[idx])
+				if cfg.TrimWhitespace() {
+					log.Debugf("Trimming whitespace from field %q", columnNames[idx])
 
+					// WARNING: logging field values could potentially
+					// expose sensitive data (e.g., passwords)
+					//
+					// log.Debugf("value is %q before trim", values[idx])
+					sqliteOutput[idx] = strings.TrimSpace(strVal)
+					// log.Debugf("value is %q after trim", values[idx])
+				}
 			}
 
 			// Populate SQLite database with row retrieved from MySQL
