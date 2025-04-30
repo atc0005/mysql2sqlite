@@ -42,11 +42,10 @@ func main() {
 	defer cancel()
 
 	mysqlDSN := fmt.Sprintf(
-		"%s:%s@tcp(%s:%d)/%s?tls=%s",
+		"%s:%s%s/%s?tls=%s",
 		cfg.MySQLUsername(),
 		cfg.MySQLPassword(),
-		cfg.MySQLHost(),
-		cfg.MySQLPort(),
+		cfg.MySQLAddress(),
 		cfg.MySQLDatabase(),
 		cfg.MySQLEncryption(),
 	)
