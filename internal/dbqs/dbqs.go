@@ -86,7 +86,7 @@ func VerifyDBConn(ctx context.Context, db *sql.DB, retries int, retryDelay time.
 			)
 			return errMsg
 
-		case result != nil:
+		default:
 
 			log.Warnf(
 				"%s: attempt %d of %d to verify database connection failed: %v",
