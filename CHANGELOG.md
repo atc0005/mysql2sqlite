@@ -26,6 +26,40 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.4.0] - 2025-05-07
+
+### Added
+
+- (GH-810) Add support for UNIX socket as host value
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-700) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.15 to go-ci-oldstable-alpine-buildx64-v0.21.16 in /dependabot/docker/builds/alpine/x64
+- (GH-710) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.16 to go-ci-oldstable-alpine-buildx64-v0.21.17 in /dependabot/docker/builds/alpine/x64
+- (GH-796) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.21.17 to go-ci-oldstable-alpine-buildx64-v0.22.9 in /dependabot/docker/builds/alpine/x64
+- (GH-703) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.15 to go-ci-oldstable-alpine-buildx86-v0.21.16 in /dependabot/docker/builds/alpine/x86
+- (GH-709) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.16 to go-ci-oldstable-alpine-buildx86-v0.21.17 in /dependabot/docker/builds/alpine/x86
+- (GH-799) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.21.17 to go-ci-oldstable-alpine-buildx86-v0.22.9 in /dependabot/docker/builds/alpine/x86
+- (GH-800) Disable Dependabot automatic PR rebasing
+- (GH-704) Go Dependency: Bump github.com/atc0005/go-nagios from 0.17.1 to 0.18.0
+- (GH-706) Go Dependency: Bump github.com/atc0005/go-nagios from 0.18.0 to 0.18.1
+- (GH-708) Go Dependency: Bump github.com/atc0005/go-nagios from 0.18.1 to 0.19.0
+- (GH-805) Go Dependency: Bump github.com/go-sql-driver/mysql from 1.8.1 to 1.9.2
+- (GH-729) Go Dependency: Bump github.com/mattn/go-colorable from 0.1.13 to 0.1.14
+- (GH-807) Go Dependency: Bump github.com/mattn/go-sqlite3 from 1.14.24 to 1.14.28
+- (GH-802) Go Dependency: Bump golang.org/x/sys from 0.27.0 to 0.32.0
+- (GH-790) Go Runtime: Bump golang from 1.22.10 to 1.23.8 in /dependabot/docker/go
+- (GH-714) Go Runtime: Bump golang from 1.22.9 to 1.22.10 in /dependabot/docker/go
+- (GH-779) go.mod: update minimum Go version to 1.23.0
+- (GH-764) Update project to Go 1.23 series
+
+### Fixed
+
+- (GH-812) Fix `tautological condition` linting error
+- (GH-814) Fix unexpected conversion of `NULL` values
+
 ## [v0.3.16] - 2024-11-13
 
 ### Changed
@@ -1128,7 +1162,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.3.16...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.4.0...HEAD
+[v0.4.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.4.0
 [v0.3.16]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.16
 [v0.3.15]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.15
 [v0.3.14]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.14
