@@ -26,6 +26,18 @@ The following types of changes will be recorded in this file:
 
 - placeholder
 
+## [v0.4.1] - 2025-05-23
+
+### Changed
+
+#### Dependency Updates
+
+- (GH-827) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx64-v0.22.9 to go-ci-oldstable-alpine-buildx64-v0.22.10 in /dependabot/docker/builds/alpine/x64
+- (GH-826) Build Image: Bump atc0005/go-ci from go-ci-oldstable-alpine-buildx86-v0.22.9 to go-ci-oldstable-alpine-buildx86-v0.22.10 in /dependabot/docker/builds/alpine/x86
+- (GH-817) Go Dependency: Bump github.com/atc0005/go-nagios from 0.19.0 to 0.20.0
+- (GH-820) Go Dependency: Bump golang.org/x/sys from 0.32.0 to 0.33.0
+- (GH-821) Go Runtime: Bump golang from 1.23.8 to 1.23.9 in /dependabot/docker/go
+
 ## [v0.4.0] - 2025-05-07
 
 ### Added
@@ -1162,7 +1174,8 @@ mirror and validate source MySQL database tables to a local SQLite database.
     - x86
     - x64
 
-[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/atc0005/mysql2sqlite/compare/v0.4.1...HEAD
+[v0.4.1]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.4.1
 [v0.4.0]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.4.0
 [v0.3.16]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.16
 [v0.3.15]: https://github.com/atc0005/mysql2sqlite/releases/tag/v0.3.15
