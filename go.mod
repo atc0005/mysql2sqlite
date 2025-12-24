@@ -3,7 +3,7 @@ module github.com/atc0005/mysql2sqlite
 go 1.23.0
 
 require (
-	github.com/alexflint/go-arg v1.5.1
+	github.com/alexflint/go-arg v1.6.1
 	github.com/apex/log v1.9.0
 	github.com/atc0005/go-nagios v0.20.0
 	github.com/go-sql-driver/mysql v1.9.2
