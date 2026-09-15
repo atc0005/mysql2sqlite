@@ -1,6 +1,6 @@
 module github.com/atc0005/mysql2sqlite
 
-go 1.23.0
+go 1.24.0
 
 require (
 	github.com/alexflint/go-arg v1.5.1
@@ -12,7 +12,7 @@ require (
 )
 
 require (
-	filippo.io/edwards25519 v1.1.0 // indirect
+	filippo.io/edwards25519 v1.2.0 // indirect
 	github.com/alexflint/go-scalar v1.2.0 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
