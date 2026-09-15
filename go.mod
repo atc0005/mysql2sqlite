@@ -7,7 +7,7 @@ require (
 	github.com/apex/log v1.9.0
 	github.com/atc0005/go-nagios v0.20.0
 	github.com/go-sql-driver/mysql v1.9.2
-	github.com/mattn/go-sqlite3 v1.14.28
+	github.com/mattn/go-sqlite3 v1.14.52
 	gopkg.in/yaml.v2 v2.4.0
 )
 
